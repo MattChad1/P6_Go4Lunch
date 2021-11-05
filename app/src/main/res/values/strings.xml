@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Go4Lunch</string>
+
+    // Navigation
+    // Destination short
+    <string name="map_view_link">Map View</string>
+    <string name="list_restaurants_link">List View</string>
+    <string name="list_workmates_link">Workmates</string>
+
+    // Destination long
+    <string name="map_view_desc">Restaurants map</string>
+    <string name="list_restaurants_desc">Restaurants list</string>
+    <string name="list_workmates_desc">Available workmates</string>
+
+    // Nav drawer
+    <string name="your_lunch">Your lunch</string>
+    <string name="settings">Settings</string>
+    <string name="logout">Logout</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+
+
+    //list_workmates
+    <string name="restaurant_chosen">%1$s mange %2$s (%3$s)</string>
+    <string name="restaurant_chosen2">%s sera là !</string>
+
+</resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_first_fragment"
+            android:icon="@drawable/ic_restaurant_menu"
+            android:title="@string/your_lunch" />
+        <item
+            android:id="@+id/nav_second_fragment"
+            android:icon="@drawable/ic_settings_24"
+            android:title="@string/settings" />
+        <item
+            android:id="@+id/nav_third_fragment"
+            android:icon="@drawable/ic_power_settings"
+            android:title="@string/logout" />
+    </group>
+</menu>

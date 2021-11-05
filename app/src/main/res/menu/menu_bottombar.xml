@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_bb_mapview"
+        android:title="@string/map_view_link"
+        android:icon="@drawable/ic_map">
+    </item>
+    <item android:id="@+id/menu_bb_listview"
+        android:title="@string/list_restaurants_link"
+        android:icon="@drawable/ic_list">
+    </item>
+    <item android:id="@+id/menu_bb_workmates"
+        android:title="@string/list_workmates_link"
+        android:icon="@drawable/ic_group">
+    </item>
+</menu>
