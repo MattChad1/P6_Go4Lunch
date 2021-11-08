@@ -4,7 +4,7 @@
     android:id="@+id/rv_list_workmates"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.list_workmates.ListWorkmatesFragment"
+    tools:context="com.go4lunch.ui.list_workmates.ListWorkmatesFragment"
     tools:listitem="@layout/item_workmate"
     />
 

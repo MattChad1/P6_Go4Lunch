@@ -3,15 +3,18 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_first_fragment"
+            android:id="@+id/menu_drawer_connexion"
+            android:title="Lien provisoire connexion" />
+        <item
+            android:id="@+id/menu_drawer_yourlunch"
             android:icon="@drawable/ic_restaurant_menu"
             android:title="@string/your_lunch" />
         <item
-            android:id="@+id/nav_second_fragment"
+            android:id="@+id/menu_drawer_settings"
             android:icon="@drawable/ic_settings_24"
             android:title="@string/settings" />
         <item
-            android:id="@+id/nav_third_fragment"
+            android:id="@+id/menu_drawer_logout"
             android:icon="@drawable/ic_power_settings"
             android:title="@string/logout" />
     </group>

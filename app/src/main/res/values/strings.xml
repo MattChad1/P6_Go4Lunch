@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">Go4Lunch</string>
+    <string name="app_subtitle">Find a nice restaurant and invite your co-workers for lunch!</string>
+
+    <string name="facebook_app_id">1461696640873001</string>
+    <string name="fb_login_protocol_scheme">fb1461696640873001</string>
+    <string name="google_maps_key">AIzaSyBQ0LvyvKXRyLvQstUVvBQOKvzXs1IFTE4</string>
+
 
     // Navigation
     // Destination short
@@ -18,6 +24,10 @@
     <string name="logout">Logout</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+
+    //Login Activity
+
 
 
 

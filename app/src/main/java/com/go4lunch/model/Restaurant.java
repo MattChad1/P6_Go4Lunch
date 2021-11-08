@@ -1,6 +1,5 @@
-package com.natationpourtous.go4lunch.model;
+package com.go4lunch.model;
 
-import android.location.Address;
 import android.os.Parcel;
 import android.os.Parcelable;
 

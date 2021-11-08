@@ -1,4 +1,4 @@
-package com.natationpourtous.go4lunch;
+package com.go4lunch;
 
 import org.junit.Test;
 

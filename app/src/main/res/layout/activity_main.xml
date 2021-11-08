@@ -6,7 +6,7 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainActivity"
+    tools:context="com.go4lunch.ui.MainActivity"
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 

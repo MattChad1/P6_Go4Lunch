@@ -1,9 +1,8 @@
-package com.natationpourtous.go4lunch.ui.list_restaurants;
+package com.go4lunch.ui.list_restaurants;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +10,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.natationpourtous.go4lunch.R;
-import com.natationpourtous.go4lunch.databinding.ItemRestaurantBinding;
-import com.natationpourtous.go4lunch.model.Restaurant;
-import com.natationpourtous.go4lunch.ui.detail_restaurant.DetailRestaurantActivity;
-import com.natationpourtous.go4lunch.ui.list_workmates.WorkmatesAdapter;
+import com.go4lunch.model.Restaurant;
+import com.go4lunch.ui.detail_restaurant.DetailRestaurantActivity;
+import com.go4lunch.databinding.ItemRestaurantBinding;
 
 import java.io.IOException;
 import java.io.InputStream;

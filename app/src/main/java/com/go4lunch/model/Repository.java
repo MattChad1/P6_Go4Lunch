@@ -1,4 +1,4 @@
-package com.natationpourtous.go4lunch.model;
+package com.go4lunch.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;

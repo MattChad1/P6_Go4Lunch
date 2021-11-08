@@ -1,4 +1,4 @@
-package com.natationpourtous.go4lunch.ui.list_restaurants;
+package com.go4lunch.ui.list_restaurants;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.natationpourtous.go4lunch.databinding.FragmentListRestaurantsBinding;
-import com.natationpourtous.go4lunch.model.Repository;
-import com.natationpourtous.go4lunch.model.Restaurant;
+import com.go4lunch.model.Repository;
+import com.go4lunch.model.Restaurant;
+import com.go4lunch.databinding.FragmentListRestaurantsBinding;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.natationpourtous.go4lunch.ui.list_workmates;
+package com.go4lunch.ui.detail_restaurant;
 
 import android.content.Context;
 import android.util.Log;
@@ -8,17 +8,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.DialogTitle;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.natationpourtous.go4lunch.R;
-import com.natationpourtous.go4lunch.model.Workmate;
+import com.go4lunch.model.Workmate;
+import com.go4lunch.R;
 
 import java.util.List;
 
-public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.ViewHolder> {
+public class DetailRestaurantAdapter extends RecyclerView.Adapter<DetailRestaurantAdapter.ViewHolder> {
 
     Context ctx;
     private List<Workmate> listWorkmates;
@@ -34,7 +33,7 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.View
         }
     }
 
-    public WorkmatesAdapter(Context ctx, List<Workmate> listWorkmates) {
+    public DetailRestaurantAdapter(Context ctx, List<Workmate> listWorkmates) {
         this.ctx = ctx;
         this.listWorkmates = listWorkmates;
     }
@@ -50,7 +49,7 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         Workmate workmate = listWorkmates.get(position);
-        viewHolder.tvName.setText(ctx.getString(R.string.restaurant_chosen, workmate.getName(), "", "")); //TODO:  mettre les fonctions du repo
+        viewHolder.tvName.setText(ctx.getString(R.string.restaurant_chosen2, workmate.getName())); //TODO:  mettre les fonctions du repo
         //TODO : remplacer par adresse avatar
         String name = workmate.getAvatar().substring(0 , workmate.getAvatar().indexOf('.'));
         int resourceId = ctx.getResources().getIdentifier(name, "drawable",
