@@ -52,8 +52,8 @@
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button_facebook"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
         app:layout_constraintTop_toBottomOf="@id/tv_login_subtitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -62,11 +62,12 @@
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/login_button_google"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
         app:layout_constraintTop_toBottomOf="@id/login_button_facebook"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
         />
 
 

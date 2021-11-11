@@ -54,16 +54,9 @@ public class LogInActivity extends AppCompatActivity {
 private String TAG = "LoginActivity";
 
     private ActivityLogInBinding binding;
-    private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
-            new FirebaseAuthUIActivityResultContract(),
-            new ActivityResultCallback<FirebaseAuthUIAuthenticationResult>() {
-                @Override
-                public void onActivityResult(FirebaseAuthUIAuthenticationResult result) {
-                    onSignInResult(result);
-                }
-            });
 
-    private static final int RC_SIGN_IN = 9001;
+
+    private static final int RC_SIGN_IN = 94201;
     private GoogleSignInClient mGoogleSignInClient;
 
     private FirebaseAuth mAuth;
@@ -78,11 +71,11 @@ private String TAG = "LoginActivity";
 
 
 
-
         // Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
         LoginButton loginButton = binding.loginButtonFacebook;
         loginButton.setReadPermissions("email", "public_profile");
+
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -101,6 +94,9 @@ private String TAG = "LoginActivity";
             }
         });
 
+
+
+
         // Configure Google Sign In
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -114,7 +110,10 @@ private String TAG = "LoginActivity";
         signInButton.setOnClickListener(v->signIn());
 
 
+
         mAuth = FirebaseAuth.getInstance();
+
+
 
     }
 
@@ -123,26 +122,10 @@ private String TAG = "LoginActivity";
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
-    }
-
-
-    public void createSignInIntent() {
-        // [START auth_fui_create_intent]
-        // Choose authentication providers
-        List<AuthUI.IdpConfig> providers = Arrays.asList(
-                new AuthUI.IdpConfig.EmailBuilder().build(),
-                new AuthUI.IdpConfig.GoogleBuilder().build(),
-                new AuthUI.IdpConfig.FacebookBuilder().build()
-                );
-
-        // Create and launch sign-in intent
-        Intent signInIntent = AuthUI.getInstance()
-                .createSignInIntentBuilder()
-                .setAvailableProviders(providers)
-                .build();
-        signInLauncher.launch(signInIntent);
-        // [END auth_fui_create_intent]
+        if(currentUser != null) {
+            currentUser.reload();
+            updateUI(currentUser);
+        }
     }
 
     private void signIn() {
@@ -151,7 +134,6 @@ private String TAG = "LoginActivity";
     }
 
 
-    // [START onactivityresult]
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -170,21 +152,7 @@ private String TAG = "LoginActivity";
             }
         }
     }
-    // [END onactivityresult]
 
-    private void onSignInResult(FirebaseAuthUIAuthenticationResult result) {
-        IdpResponse response = result.getIdpResponse();
-        if (result.getResultCode() == RESULT_OK) {
-            // Successfully signed in
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            // ...
-        } else {
-            // Sign in failed. If response is null the user canceled the
-            // sign-in flow using the back button. Otherwise check
-            // response.getError().getErrorCode() and handle the error.
-            // ...
-        }
-    }
 
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
@@ -234,7 +202,7 @@ private String TAG = "LoginActivity";
     // [END auth_with_facebook]
     private void updateUI(FirebaseUser user) {
         if (user!=null) {
-            Snackbar.make(binding.mainLayout, "Vous êtes connecté : " + user.getEmail(), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(binding.mainLayout, "Vous êtes connecté : " + user.getEmail() + user.getUid(), Snackbar.LENGTH_SHORT).show();
         }
 
     }

@@ -5,17 +5,24 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.firebase.ui.auth.AuthUI;
 import com.go4lunch.ui.list_restaurants.ListRestaurantsFragment;
 import com.go4lunch.ui.list_workmates.ListWorkmatesFragment;
 import com.go4lunch.ui.map.MapsFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.go4lunch.R;
 import com.go4lunch.databinding.ActivityMainBinding;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,6 +55,10 @@ public class MainActivity extends AppCompatActivity {
                 //menuItem.isChecked = true;
             if (menuItem.getItemId() == R.id.menu_drawer_connexion) {
                 startActivity(new Intent(this, LogInActivity.class));
+            }
+
+            else if (menuItem.getItemId()== R.id.menu_drawer_logout) {
+                signOut();
             }
 
         drawer.closeDrawer(GravityCompat.START);
@@ -89,9 +100,24 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+        // TODO : supprimer avec la fonction
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        testFirebase(user);
 
 
+    }
 
+
+    public void signOut() {
+        // [START auth_fui_signout]
+        AuthUI.getInstance()
+                .signOut(this)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // ...
+                    }
+                });
+        // [END auth_fui_signout]
     }
 
 
@@ -103,4 +129,11 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
+    private void testFirebase(FirebaseUser user) {
+        if (user != null) {
+            Snackbar.make(binding.drawerLayout, "Vous êtes connecté : " + user.getEmail() + user.getUid(), Snackbar.LENGTH_SHORT).show();
+        }
+    }
+
 }
