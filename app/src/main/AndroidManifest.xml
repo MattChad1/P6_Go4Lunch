@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.go4lunch">
+    package="com.go4lunch2">
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -31,44 +31,54 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBQ0LvyvKXRyLvQstUVvBQOKvzXs1IFTE4" />
 
-        <meta-data
-            tools:replace="android:value"
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
 
         <activity
-            android:name="com.go4lunch.ui.detail_restaurant.DetailRestaurantActivity"
-            android:exported="false"
-            android:theme="@style/Theme.Go4Lunch.WithoutStatus"/>
-        <activity
-            android:name="com.facebook.FacebookActivity"
-            android:configChanges= "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name" />
-        <activity android:name="com.facebook.CustomTabActivity"
-            android:exported="true">
-            <intent-filter> <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="@string/fb_login_protocol_scheme" />
-            </intent-filter>
-        </activity>
-
-
-        <activity
-            android:name="com.go4lunch.ui.MainActivity"
-            android:exported="true">
+            android:name=".ui.loggin.LogInActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Go4Lunch.WithoutStatus"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name="com.go4lunch.ui.LogInActivity"
-            android:exported="true"
-            android:theme="@style/Theme.Go4Lunch.WithoutStatus"
-            >
+            android:name=".ui.detail_restaurant.DetailRestaurantActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Go4Lunch.WithoutStatus"/>
+
+
+
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="true">
+
+
         </activity>
+
+
+        <meta-data
+            tools:replace="android:value"
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges= "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true"> <intent-filter>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="@string/fb_login_protocol_scheme" />
+        </intent-filter>
+        </activity>
+
+
+
     </application>
 
 </manifest>

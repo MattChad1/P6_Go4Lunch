@@ -21,5 +21,9 @@
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
+    <style name="Theme.Go4Lunch.Loggin" parent="Theme.Go4Lunch.WithoutStatus">
+        <item name="android:background">#003366</item>
+    </style>
+
 
 </resources>
