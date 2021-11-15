@@ -1,5 +1,5 @@
 
-package com.go4lunch2.ui.map.model_gmap;
+package com.go4lunch2.data.model.model_gmap;
 
 import java.util.List;
 import javax.annotation.Generated;
@@ -21,6 +21,10 @@ public class Place {
     @SerializedName("status")
     @Expose
     public String status;
+
+    public List<Result> getResults() {
+        return results;
+    }
 
     @Override
     public String toString() {

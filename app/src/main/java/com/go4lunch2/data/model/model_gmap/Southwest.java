@@ -1,18 +1,18 @@
 
-package com.go4lunch2.ui.map.model_gmap;
+package com.go4lunch2.data.model.model_gmap;
 
 import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @Generated("jsonschema2pojo")
-public class Geometry {
+public class Southwest {
 
-    @SerializedName("location")
+    @SerializedName("lat")
     @Expose
-    public Location location;
-    @SerializedName("viewport")
+    public Double lat;
+    @SerializedName("lng")
     @Expose
-    public Viewport viewport;
+    public Double lng;
 
 }

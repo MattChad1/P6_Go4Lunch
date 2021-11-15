@@ -1,4 +1,4 @@
-package com.go4lunch2.model;
+package com.go4lunch2.data.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -6,19 +6,28 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.List;
 
 public class Restaurant implements Parcelable {
-    @NonNull long id;
+    @NonNull String id;
+
+    // champs Google place
     @NonNull String name;
     @Nullable String image;
     @Nullable String type;
-    @NonNull String openingTime;
+    @Nullable String openingTime;
     @NonNull String adress;
     @NonNull Double latitude;
     @NonNull Double longitude;
 
-    public Restaurant(String name, String image, String type, String openingTime, String adress, Double latitude, Double longitude) {
-        this.id = requestMaxId() + 1;
+    // champs custom
+    @Nullable Double ratingAverage;
+    @Nullable List<Workmate> workmatesInterested;
+
+    public Restaurant(@NonNull String id, @NonNull String name, @Nullable String image, @Nullable String type, @Nullable String openingTime,
+                      @NonNull String adress, @NonNull Double latitude, @NonNull Double longitude, @Nullable Double ratingAverage,
+                      @Nullable List<Workmate> workmatesInterested) {
+        this.id = id;
         this.name = name;
         this.image = image;
         this.type = type;
@@ -26,17 +35,15 @@ public class Restaurant implements Parcelable {
         this.adress = adress;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.ratingAverage = ratingAverage;
+        this.workmatesInterested = workmatesInterested;
     }
 
-    public long requestMaxId() {
-        return 1;
-    }
-
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(long String) {
         this.id = id;
     }
 
@@ -103,6 +110,16 @@ public class Restaurant implements Parcelable {
         this.longitude = longitude;
     }
 
+    @Nullable
+    public Double getRatingAverage() {
+        return ratingAverage;
+    }
+
+    @Nullable
+    public List<Workmate> getWorkmatesInterested() {
+        return workmatesInterested;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -110,7 +127,7 @@ public class Restaurant implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel p, int i) {
-        p.writeLong (this.id);
+        p.writeString (this.id);
         p.writeString(this.name);
         p.writeString(this.image);
         p.writeString(this.type);
@@ -121,7 +138,7 @@ public class Restaurant implements Parcelable {
     }
 
     protected Restaurant(Parcel in) {
-        this.id = in.readLong();
+        this.id = in.readString();
         this.name = in.readString();
         this.image = in.readString();
         this.type = in.readString();

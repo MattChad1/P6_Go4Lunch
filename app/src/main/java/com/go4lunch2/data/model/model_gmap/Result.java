@@ -1,5 +1,5 @@
 
-package com.go4lunch2.ui.map.model_gmap;
+package com.go4lunch2.data.model.model_gmap;
 
 import java.util.List;
 import javax.annotation.Generated;
@@ -63,6 +63,36 @@ public class Result {
     @SerializedName("price_level")
     @Expose
     public Integer priceLevel;
+
+    public Geometry getGeometry() {
+        return geometry;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public OpeningHours getOpeningHours() {
+        return openingHours;
+    }
+
+    public List<Photo> getPhotos() {
+        return photos;
+    }
+
+    public String getPlaceId() {
+        return placeId;
+    }
+
+    public List<String> getTypes() {
+        return types;
+    }
+
+    public String getVicinity() {
+        return vicinity;
+    }
+
+
 
     @Override
     public String toString() {

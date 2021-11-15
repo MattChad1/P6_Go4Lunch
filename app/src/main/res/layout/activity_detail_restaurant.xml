@@ -45,7 +45,7 @@
             app:layout_constraintLeft_toRightOf="@id/restaurant_name"
 
 
-            android:src="@drawable/ic_star_rate"
+            android:src="@drawable/ic_star_filled"
             app:tint="@color/yellow"
             android:layout_marginStart="15dp"
             />
@@ -95,7 +95,7 @@
         style="@style/Widget.MaterialComponents.Button.TextButton"
         app:iconGravity="top"
         android:text="LIKE"
-        app:icon="@drawable/ic_star_rate"/>
+        app:icon="@drawable/ic_star_filled"/>
 <com.google.android.material.button.MaterialButton
     android:id="@+id/button_website"
         android:layout_width="wrap_content"

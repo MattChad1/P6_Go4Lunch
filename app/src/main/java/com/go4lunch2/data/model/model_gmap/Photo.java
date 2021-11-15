@@ -1,5 +1,5 @@
 
-package com.go4lunch2.ui.map.model_gmap;
+package com.go4lunch2.data.model.model_gmap;
 
 import java.util.List;
 import javax.annotation.Generated;

@@ -10,7 +10,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.go4lunch2.model.Restaurant;
+import com.go4lunch2.R;
+import com.go4lunch2.data.model.Restaurant;
 import com.go4lunch2.ui.detail_restaurant.DetailRestaurantActivity;
 import com.go4lunch2.databinding.ItemRestaurantBinding;
 
@@ -21,7 +22,7 @@ import java.util.List;
 public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.ViewHolder> {
 
     Context ctx;
-    private List<Restaurant> listRestaurants;
+    private List<RestaurantsViewState> listRestaurants;
     ItemRestaurantBinding binding;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -34,7 +35,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
         }
     }
 
-    public RestaurantsAdapter(Context ctx, List<Restaurant> listRestaurants) {
+    public RestaurantsAdapter(Context ctx, List<RestaurantsViewState> listRestaurants) {
         this.ctx = ctx;
         this.listRestaurants = listRestaurants;
     }
@@ -51,10 +52,17 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Restaurant restaurant = listRestaurants.get(position);
+        RestaurantsViewState restaurant = listRestaurants.get(position);
         binding.itemRestaurantName.setText(restaurant.getName());
         binding.itemRestaurantDesc1.setText(restaurant.getType() + "-" + restaurant.getAdress());
-        binding.itemRestaurantDesc2.setText(restaurant.getOpeningTime());
+        binding.itemRestaurantDesc2.setText(restaurant.getOpeningHours());
+
+        if (restaurant.getStarsCount()==0.5) binding.itemRestaurantNumStars1.setImageDrawable(ctx.getDrawable(R.drawable.ic_star_half));
+        else if (restaurant.getStarsCount()>0.5) binding.itemRestaurantNumStars1.setImageDrawable(ctx.getDrawable(R.drawable.ic_star_filled));
+        if (restaurant.getStarsCount()==1.5) binding.itemRestaurantNumStars2.setImageDrawable(ctx.getDrawable(R.drawable.ic_star_half));
+        else if (restaurant.getStarsCount()>1.5) binding.itemRestaurantNumStars2.setImageDrawable(ctx.getDrawable(R.drawable.ic_star_filled));
+        if (restaurant.getStarsCount()==2.5) binding.itemRestaurantNumStars3.setImageDrawable(ctx.getDrawable(R.drawable.ic_star_half));
+        else if (restaurant.getStarsCount()>2.5) binding.itemRestaurantNumStars3.setImageDrawable(ctx.getDrawable(R.drawable.ic_star_filled));
 
 
         try {
@@ -68,7 +76,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(ctx, DetailRestaurantActivity.class);
-            intent.putExtra(DetailRestaurantActivity.RESTAURANT_SELECTED, restaurant);
+            intent.putExtra(DetailRestaurantActivity.RESTAURANT_SELECTED, restaurant.getId());
             ctx.startActivity(intent);
         });
 

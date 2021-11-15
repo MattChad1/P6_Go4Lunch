@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.go4lunch2.model.Workmate;
+import com.go4lunch2.data.model.Workmate;
 import com.go4lunch2.R;
 
 import java.util.List;

@@ -9,13 +9,15 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.go4lunch2.model.Repository;
-import com.go4lunch2.model.Restaurant;
-import com.go4lunch2.model.Workmate;
+import com.go4lunch2.ViewModelFactory;
+import com.go4lunch2.data.Repository;
+import com.go4lunch2.data.model.Restaurant;
+import com.go4lunch2.data.model.Workmate;
 import com.go4lunch2.R;
 import com.go4lunch2.databinding.ActivityDetailRestaurantBinding;
 
@@ -26,6 +28,7 @@ import java.util.List;
 public class DetailRestaurantActivity extends AppCompatActivity {
 
     private ActivityDetailRestaurantBinding binding;
+    DetailRestaurantViewModel vm;
     RecyclerView rv;
     List<Workmate> workmatesInterested = Repository.FAKE_LIST_WORKMATES; // TODO : à remplacer
     Restaurant restaurant;
@@ -37,6 +40,8 @@ public class DetailRestaurantActivity extends AppCompatActivity {
         binding = ActivityDetailRestaurantBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        vm = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(DetailRestaurantViewModel.class);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getWindow();

@@ -42,14 +42,34 @@
 
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/item_restaurant_num_stars"
-        android:layout_width="60dp"
+        android:id="@+id/item_restaurant_num_stars1"
+        android:layout_width="18dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        app:layout_constraintEnd_toStartOf="@id/item_restaurant_num_stars2"
+        app:layout_constraintTop_toBottomOf="@id/item_restaurant_num_workmates"
+        app:tint="@color/yellow"
+        android:src="@drawable/ic_star_filled" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/item_restaurant_num_stars2"
+        android:layout_width="18dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        app:layout_constraintEnd_toStartOf="@id/item_restaurant_num_stars3"
+        app:layout_constraintTop_toBottomOf="@id/item_restaurant_num_workmates"
+        app:tint="@color/yellow"
+        android:src="@drawable/ic_star_half" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/item_restaurant_num_stars3"
+        android:layout_width="18dp"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         app:layout_constraintEnd_toStartOf="@id/item_restaurant_image"
         app:layout_constraintTop_toBottomOf="@id/item_restaurant_num_workmates"
         app:tint="@color/yellow"
-        android:src="@drawable/ic_star_rate" />
+        android:src="@drawable/ic_star_empty" />
 
 
     <TextView
@@ -81,7 +101,7 @@
         style="item_restaurant"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@id/item_restaurant_num_stars"
+        app:layout_constraintEnd_toStartOf="@id/item_restaurant_num_stars3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/item_restaurant_desc1"
         tools:text="Open until 7 pm" />

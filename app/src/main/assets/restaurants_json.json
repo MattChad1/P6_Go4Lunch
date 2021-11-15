@@ -1,0 +1,1021 @@
+{
+   "html_attributions" : [],
+   "next_page_token" : "Aap_uECDtrx6uRsXBSWQ1Xd1S2UhImHqWvCZSSWmIABFlJg53inhemYh7oU86Iz6J1ZmM08Ws-j466WNjIMtxnIFqrvgoHja7tNWcl_6Udus7x-CyjNu6dt6Ar58SAVvqaKpcsahPoVTMbo0sY6g3S77n02hnPXQZdqpRpDVWhIVFhl_4T-uigNXAlRdqNXhg_VazxZAiXttu3KKEycEsx5kvrE8sOQb1N4Zro1pkfatMIlUpHKoCAaiL5ManiFgLJSZv_EQIplah3PVfa6c3Oxqj-XmvY3qRjAvngdJ9Bpu1KdXeEbOcRvivDdThKQ1PfmV1AUPihgOFM4wZ_hNOxjCM5K1lfWSFaRnF5YZWDxmgIAapR3xCd8mPSypFRbi_gYQtLexD_MqkZJSzAJEoHCPn1EEyMrtNBm7t1-TUUSJvCH2qPOf3MejtRZ61DC-",
+   "results" : [
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 48.8642974,
+               "lng" : 2.3308142
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 48.8655789302915,
+                  "lng" : 2.332153980291502
+               },
+               "southwest" : {
+                  "lat" : 48.8628809697085,
+                  "lng" : 2.329456019708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/lodging-71.png",
+         "icon_background_color" : "#909CE1",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/hotel_pinlet",
+         "name" : "Saint James Albany Paris Hôtel Spa",
+         "opening_hours" : {
+            "open_now" : true
+         },
+         "photos" : [
+            {
+               "height" : 844,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/108570400659068256718\"\u003eSaint James Albany Paris Hôtel Spa\u003c/a\u003e"
+               ],
+               "photo_reference" : "Aap_uECXO_GtZI6xotwDlQ3jEnQEkYS-0R9iTQGlvX0FMzCkNem93_EH9yUoYyaED4orFV4t6LPDc9_IEUrjW7l5xa1FFBqe6z3WTp1QHy8KwtwRzoVe3dItwGmRiGbovj7fDWRVE-ShauCQ80-u_U4grrHhTWz_6r9XgB6tw_HFoi5WACv0",
+               "width" : 1500
+            }
+         ],
+         "place_id" : "ChIJ8znTVS5u5kcREq8TmzOICFs",
+         "plus_code" : {
+            "compound_code" : "V87J+P8 Paris, France",
+            "global_code" : "8FW4V87J+P8"
+         },
+         "rating" : 4,
+         "reference" : "ChIJ8znTVS5u5kcREq8TmzOICFs",
+         "scope" : "GOOGLE",
+         "types" : [
+            "lodging",
+            "bar",
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total" : 1075,
+         "vicinity" : "202 Rue de Rivoli, Paris"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 48.8683133,
+               "lng" : 2.3330852
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 48.8697401802915,
+                  "lng" : 2.334455980291502
+               },
+               "southwest" : {
+                  "lat" : 48.8670422197085,
+                  "lng" : 2.331758019708499
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/lodging-71.png",
+         "icon_background_color" : "#909CE1",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/hotel_pinlet",
+         "name" : "Hôtel Edouard 7",
+         "opening_hours" : {
+            "open_now" : true
+         },
+         "photos" : [
+            {
+               "height" : 4436,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/107195589265260459328\"\u003eHôtel Edouard 7\u003c/a\u003e"
+               ],
+               "photo_reference" : "Aap_uED2esb1XS8EcM-bw4M5Ot8Bo3cQ-7LXZITCUMsIT-E3IDi5W-oaX52GB_9aUHf6aiEeNIhZaj_xE1m5cglZZG4S8Ogd8YDMMD-i984LIAw-6UwnlcJAidIXsr-75Z9qG-l9avd2q9iPs929MPzczvgPnRKLQ64MUh1-nmieg-ELasN8",
+               "width" : 6651
+            }
+         ],
+         "place_id" : "ChIJ_Ze3ZjBu5kcRiCRPWLatnSg",
+         "plus_code" : {
+            "compound_code" : "V89M+86 Paris, France",
+            "global_code" : "8FW4V89M+86"
+         },
+         "rating" : 4.5,
+         "reference" : "ChIJ_Ze3ZjBu5kcRiCRPWLatnSg",
+         "scope" : "GOOGLE",
+         "types" : [
+            "lodging",
+            "bar",
+            "restaurant",
+            "food",
+            "gym",
+            "health",
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total" : 405,
+         "vicinity" : "39 Avenue de l'Opéra, Paris"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 48.86386539999999,
+               "lng" : 2.3325488
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 48.8650759802915,
+                  "lng" : 2.333775730291502
+               },
+               "southwest" : {
+                  "lat" : 48.8623780197085,
+                  "lng" : 2.331077769708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/lodging-71.png",
+         "icon_background_color" : "#909CE1",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/hotel_pinlet",
+         "name" : "Hôtel Regina Louvre",
+         "opening_hours" : {
+            "open_now" : true
+         },
+         "photos" : [
+            {
+               "height" : 3700,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/109908333790946649027\"\u003eHôtel Regina Louvre\u003c/a\u003e"
+               ],
+               "photo_reference" : "Aap_uEBLey6sNbr2_txjvQsb5sf0Vgtjj0j5sXH_pnN2Jd3f_9Z1u4Qu0tn5r_n8nFsdW1C8M9G-3Ep76eX7QxHdk-UC0qpVLxdseMWNii1Br74BTzgsRUisK5VjBTqYikhVfUpOH-F6AjAkiwGCPSEeyuSK6zDh3BoeoCp5GttWR6OyFseA",
+               "width" : 5550
+            }
+         ],
+         "place_id" : "ChIJP_-HCS9u5kcRsj9b1x7Pl8w",
+         "plus_code" : {
+            "compound_code" : "V87M+G2 Paris, France",
+            "global_code" : "8FW4V87M+G2"
+         },
+         "rating" : 4.4,
+         "reference" : "ChIJP_-HCS9u5kcRsj9b1x7Pl8w",
+         "scope" : "GOOGLE",
+         "types" : [
+            "lodging",
+            "bar",
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total" : 507,
+         "vicinity" : "2 Place des Pyramides, Paris"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 48.8720691,
+               "lng" : 2.3236657
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 48.87343223029151,
+                  "lng" : 2.325072680291501
+               },
+               "southwest" : {
+                  "lat" : 48.87073426970851,
+                  "lng" : 2.322374719708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/lodging-71.png",
+         "icon_background_color" : "#909CE1",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/hotel_pinlet",
+         "name" : "Hôtel Bedford Paris",
+         "photos" : [
+            {
+               "height" : 1181,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/100560231775928347732\"\u003eHôtel Bedford Paris\u003c/a\u003e"
+               ],
+               "photo_reference" : "Aap_uEDYIUYdmv-b10ab9qlqwRN5e3gKseHcwRG8ehv6zzYvWKnLFNo38eRhhdkOjnQg-iu6Pbgswos-sgzj5IcGhjmJlt7XyK4NQfLnImZRZ50yM2a0u2H7EdGDHlHSJVJnWQTA0dObq8WroYsqTHFNVDIHvlpBMVbTadVR0zeSUb_BpP4p",
+               "width" : 1772
+            }
+         ],
+         "place_id" : "ChIJA_GxrjRu5kcRHHGB8y34d0k",
+         "plus_code" : {
+            "compound_code" : "V8CF+RF Paris, France",
+            "global_code" : "8FW4V8CF+RF"
+         },
+         "rating" : 4.2,
+         "reference" : "ChIJA_GxrjRu5kcRHHGB8y34d0k",
+         "scope" : "GOOGLE",
+         "types" : [ "lodging", "restaurant", "food", "point_of_interest", "establishment" ],
+         "user_ratings_total" : 504,
+         "vicinity" : "17 Rue de l'Arcade, Paris"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 48.8732719,
+               "lng" : 2.3428869
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 48.8746287802915,
+                  "lng" : 2.344287680291502
+               },
+               "southwest" : {
+                  "lat" : 48.8719308197085,
+                  "lng" : 2.341589719708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/lodging-71.png",
+         "icon_background_color" : "#909CE1",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/hotel_pinlet",
+         "name" : "Hôtel Pulitzer",
+         "opening_hours" : {
+            "open_now" : true
+         },
+         "photos" : [
+            {
+               "height" : 3000,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/104722443820691209480\"\u003eHôtel Pulitzer Paris\u003c/a\u003e"
+               ],
+               "photo_reference" : "Aap_uEAe2gxkRujonAtsKou7LqzAFIcNwffPsLEzeTcq43_irz5rU1vEo1LYN0eGry__o275YWsO8U0AoE-CbIo9-RwH5MeYUbm_63hvMVukJd3hGSmqpzDyWJRJWYQEM-WNhY8aW-OceuueAfoxkt3O1EnxG_3KqkJbyLFWCJ7wuF7c3zIH",
+               "width" : 2000
+            }
+         ],
+         "place_id" : "ChIJldl69z5u5kcREiH-s7c4u-8",
+         "plus_code" : {
+            "compound_code" : "V8FV+85 Paris, France",
+            "global_code" : "8FW4V8FV+85"
+         },
+         "rating" : 4.3,
+         "reference" : "ChIJldl69z5u5kcREiH-s7c4u-8",
+         "scope" : "GOOGLE",
+         "types" : [ "lodging", "restaurant", "food", "point_of_interest", "establishment" ],
+         "user_ratings_total" : 272,
+         "vicinity" : "23 Rue du Faubourg Montmartre, Paris"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 48.8818723,
+               "lng" : 2.3373559
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 48.88321083029149,
+                  "lng" : 2.338660030291501
+               },
+               "southwest" : {
+                  "lat" : 48.8805128697085,
+                  "lng" : 2.335962069708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/lodging-71.png",
+         "icon_background_color" : "#909CE1",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/hotel_pinlet",
+         "name" : "Le Pigalle",
+         "opening_hours" : {
+            "open_now" : true
+         },
+         "photos" : [
+            {
+               "height" : 3888,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/117804288775651323894\"\u003eLe Pigalle\u003c/a\u003e"
+               ],
+               "photo_reference" : "Aap_uEBHpuQZDFMkXlvPEkM8DmgcriItV6HE3tzp6ch0aa8ND_OQBTh3vXCMRHRr6BFjINBsCBIJC2UDdkyf2Aa2gFG9WgE_s8WBvOKQsu0E9jlRprj_gVG3OtF8eAc5H2HUI4IZ9PHHEh-GkeCHOl8WqKSvn1SHDO1PrI5gcNOErBcCOUXZ",
+               "width" : 2592
+            }
+         ],
+         "place_id" : "ChIJqzBe2EVu5kcRvU67ufRGCTU",
+         "plus_code" : {
+            "compound_code" : "V8JP+PW Paris, France",
+            "global_code" : "8FW4V8JP+PW"
+         },
+         "rating" : 4.4,
+         "reference" : "ChIJqzBe2EVu5kcRvU67ufRGCTU",
+         "scope" : "GOOGLE",
+         "types" : [
+            "cafe",
+            "lodging",
+            "bar",
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total" : 334,
+         "vicinity" : "9 Rue Frochot, Paris"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 48.865253,
+               "lng" : 2.3329653
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 48.86657038029151,
+                  "lng" : 2.334411030291502
+               },
+               "southwest" : {
+                  "lat" : 48.86387241970851,
+                  "lng" : 2.331713069708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/lodging-71.png",
+         "icon_background_color" : "#909CE1",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/hotel_pinlet",
+         "name" : "Hôtel Lumen Paris Louvre",
+         "opening_hours" : {
+            "open_now" : true
+         },
+         "photos" : [
+            {
+               "height" : 1080,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/110188059882404399081\"\u003eMariana Repetto\u003c/a\u003e"
+               ],
+               "photo_reference" : "Aap_uEARVEJB9pwcoC3ZgJsffuzBdFku2xABDTkNy4BbnK6PVgMBsbZjoTexjkr5W1GjdQ9SO1r32cSL3BbfVzrG2CRM8qFiT-0HnP_82BHO3OAnKFPdJNgMNG_Lbk2_nQPH9dc_MsjxRdhMDQNO8R5DPCGJ9q5R88cVdEJV9aiVPJ1Jmkkw",
+               "width" : 1440
+            }
+         ],
+         "place_id" : "ChIJB2LT7C9u5kcRVFLuA29P-MI",
+         "plus_code" : {
+            "compound_code" : "V88M+45 Paris, France",
+            "global_code" : "8FW4V88M+45"
+         },
+         "rating" : 4.3,
+         "reference" : "ChIJB2LT7C9u5kcRVFLuA29P-MI",
+         "scope" : "GOOGLE",
+         "types" : [ "lodging", "restaurant", "food", "point_of_interest", "establishment" ],
+         "user_ratings_total" : 354,
+         "vicinity" : "15 Rue des Pyramides, Paris"
+      },
+      {
+         "business_status" : "CLOSED_TEMPORARILY",
+         "geometry" : {
+            "location" : {
+               "lat" : 48.88506109999999,
+               "lng" : 2.3250906
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 48.8864008802915,
+                  "lng" : 2.326447580291501
+               },
+               "southwest" : {
+                  "lat" : 48.8837029197085,
+                  "lng" : 2.323749619708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/lodging-71.png",
+         "icon_background_color" : "#909CE1",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/hotel_pinlet",
+         "name" : "HOTEL ELDORADO",
+         "permanently_closed" : true,
+         "photos" : [
+            {
+               "height" : 3024,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/106265678983581567873\"\u003eAlona Plaksina\u003c/a\u003e"
+               ],
+               "photo_reference" : "Aap_uEA-QgadlZaHw0sGsOapHfKOhN7QhhW0sJNXo1lBTFD4Wm_Np2vctMLJFJZM15y956YLhqjwW2VgZO-IoD6iawjOkjAIxV451w72nsaS6Vby8C4BuFSfC1Sai-ikTk4UJeW701FKrG7XRIWkFVvBh3F6yBeOWwB0b7I71irsVd0tcvvX",
+               "width" : 4032
+            }
+         ],
+         "place_id" : "ChIJE2vsOk1u5kcR1lGCulFQ-D8",
+         "plus_code" : {
+            "compound_code" : "V8PG+22 Paris, France",
+            "global_code" : "8FW4V8PG+22"
+         },
+         "price_level" : 1,
+         "rating" : 3.8,
+         "reference" : "ChIJE2vsOk1u5kcR1lGCulFQ-D8",
+         "scope" : "GOOGLE",
+         "types" : [ "lodging", "restaurant", "food", "point_of_interest", "establishment" ],
+         "user_ratings_total" : 136,
+         "vicinity" : "18 Rue des Dames, Paris"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 48.8837029,
+               "lng" : 2.3426649
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 48.88499923029149,
+                  "lng" : 2.344034280291502
+               },
+               "southwest" : {
+                  "lat" : 48.88230126970849,
+                  "lng" : 2.341336319708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/lodging-71.png",
+         "icon_background_color" : "#909CE1",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/hotel_pinlet",
+         "name" : "Hôtel Môm'Art",
+         "photos" : [
+            {
+               "height" : 2872,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/114291834256762716075\"\u003eStephane Moaty\u003c/a\u003e"
+               ],
+               "photo_reference" : "Aap_uEDctAKBrD33y1ygaLYfkQznE52ljzQvKq7IS98JBAYcDO-mtXqffFTlM82LyApCqcGcjbiDiQH-b0MSvoQdycD23rOyJeRRzQqU4_-CrSqpSnCKIrmzp32A8_Vj2cjiBtB_I4yVwkMdqdhCZowD6829hWTohc4CKgk_9i2tBzdgqDGJ",
+               "width" : 4032
+            }
+         ],
+         "place_id" : "ChIJEYTXo0Nu5kcRg9yVuGHSyUQ",
+         "plus_code" : {
+            "compound_code" : "V8MV+F3 Paris, France",
+            "global_code" : "8FW4V8MV+F3"
+         },
+         "rating" : 4.5,
+         "reference" : "ChIJEYTXo0Nu5kcRg9yVuGHSyUQ",
+         "scope" : "GOOGLE",
+         "types" : [
+            "spa",
+            "lodging",
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total" : 142,
+         "vicinity" : "42 Rue d'Orsel, Paris"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 48.8719635,
+               "lng" : 2.3426747
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 48.87328548029151,
+                  "lng" : 2.344272780291502
+               },
+               "southwest" : {
+                  "lat" : 48.87058751970851,
+                  "lng" : 2.341574819708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "Bouillon Chartier",
+         "opening_hours" : {
+            "open_now" : true
+         },
+         "photos" : [
+            {
+               "height" : 1365,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/101497228322225839534\"\u003eBouillon Chartier\u003c/a\u003e"
+               ],
+               "photo_reference" : "Aap_uECUcFm6mK4CKNtLCmceQKVxbZHCLKC6Wbvkq_MiyMvRt7UPG91-eWHVEvZ-DJB3Pw8_fjPvsGXKGXMCtG293zc4HIFGxIhlmBSycxlFEe_yOCzzg94ahHwozHnyTU9teM50gDrwKTOvtuHOUpM20MG8JYx-fTtmgqTDRYj0PaVoScWL",
+               "width" : 2048
+            }
+         ],
+         "place_id" : "ChIJ4xutfT5u5kcRaJn2NkiOhPU",
+         "plus_code" : {
+            "compound_code" : "V8CV+Q3 Paris, France",
+            "global_code" : "8FW4V8CV+Q3"
+         },
+         "price_level" : 1,
+         "rating" : 4,
+         "reference" : "ChIJ4xutfT5u5kcRaJn2NkiOhPU",
+         "scope" : "GOOGLE",
+         "types" : [ "restaurant", "food", "point_of_interest", "establishment" ],
+         "user_ratings_total" : 9735,
+         "vicinity" : "7 Rue du Faubourg Montmartre, Paris"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 48.8878431,
+               "lng" : 2.335341
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 48.8893733802915,
+                  "lng" : 2.336913930291502
+               },
+               "southwest" : {
+                  "lat" : 48.8866754197085,
+                  "lng" : 2.334215969708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/lodging-71.png",
+         "icon_background_color" : "#909CE1",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/hotel_pinlet",
+         "name" : "Hôtel Particulier Montmartre",
+         "opening_hours" : {
+            "open_now" : false
+         },
+         "photos" : [
+            {
+               "height" : 1440,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/109359171826641725085\"\u003eHôtel Particulier Montmartre\u003c/a\u003e"
+               ],
+               "photo_reference" : "Aap_uECJm_tzDfRmEBFI3-14YWddOI4f_BJy7U-rlMvrHPSfKeZ357W3Zc-tXQG8l3b3isui8pEmUrAg1O1F1SA6Age8ZyH_wAFucFk3I9EtFhey7hXe98yH3LicKDXTZIvlgCC7IQ_05sa2QcOB6wL11GKE3wQHkPWTZ2Le1G4TaSDaqYnN",
+               "width" : 1440
+            }
+         ],
+         "place_id" : "ChIJIUY0clBu5kcR2MbFUXrBQXE",
+         "plus_code" : {
+            "compound_code" : "V8QP+44 Paris, France",
+            "global_code" : "8FW4V8QP+44"
+         },
+         "price_level" : 4,
+         "rating" : 4.3,
+         "reference" : "ChIJIUY0clBu5kcR2MbFUXrBQXE",
+         "scope" : "GOOGLE",
+         "types" : [
+            "lodging",
+            "bar",
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total" : 1398,
+         "vicinity" : "23 Avenue Junot Pavillon D, Paris"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 48.8719442,
+               "lng" : 2.3416045
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 48.8731989302915,
+                  "lng" : 2.342916930291502
+               },
+               "southwest" : {
+                  "lat" : 48.8705009697085,
+                  "lng" : 2.340218969708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "Hard Rock Cafe",
+         "opening_hours" : {
+            "open_now" : true
+         },
+         "photos" : [
+            {
+               "height" : 3456,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/108464627459179923986\"\u003eHard Rock Cafe\u003c/a\u003e"
+               ],
+               "photo_reference" : "Aap_uEDzufPOcQmKMx3QxoKLZzjfFhY-tOWDBOlpY2n0uExUXlXl1aBH2w0Erims-0xrBf6cJY_COwzA07wU9syfvTeQi1AiV_QmqwoRdIT-NmnPNiqxXivq0zBaSD5FWhoXvZH0wVrvUFaCWf-DSC1Xa-gTGMO6vArg-9l0LBwgo2BmZH6m",
+               "width" : 5016
+            }
+         ],
+         "place_id" : "ChIJldbFmD5u5kcRN_hD8mPd5ZQ",
+         "plus_code" : {
+            "compound_code" : "V8CR+QJ Paris, France",
+            "global_code" : "8FW4V8CR+QJ"
+         },
+         "price_level" : 2,
+         "rating" : 4.3,
+         "reference" : "ChIJldbFmD5u5kcRN_hD8mPd5ZQ",
+         "scope" : "GOOGLE",
+         "types" : [ "restaurant", "food", "point_of_interest", "establishment" ],
+         "user_ratings_total" : 11375,
+         "vicinity" : "14 Boulevard Montmartre, Paris"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 48.8807608,
+               "lng" : 2.3349739
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 48.8820874302915,
+                  "lng" : 2.336272680291502
+               },
+               "southwest" : {
+                  "lat" : 48.8793894697085,
+                  "lng" : 2.333574719708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png",
+         "icon_background_color" : "#13B5C7",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet",
+         "name" : "Bus Palladium",
+         "opening_hours" : {
+            "open_now" : false
+         },
+         "photos" : [
+            {
+               "height" : 3096,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/110751531213092205763\"\u003eFred Jurie\u003c/a\u003e"
+               ],
+               "photo_reference" : "Aap_uEBZFpoGrNNVM1AuyaMmrWxkyto_sKg94S22th3GkyjLbohMqXDxcesAqy7s6_5M9zn_K1dimZs3cjde6cveuUnwDIuv_aVdxDKJWGBVqq2wX7qFBlUS8kjN7QL6HiUSNwnmNgO9Xni5vo1Y1uoHENZcO84Wz-LvSnb_CedZKHGQNf4e",
+               "width" : 5504
+            }
+         ],
+         "place_id" : "ChIJ8ZEtpEhu5kcRw5pLxuX2wJo",
+         "plus_code" : {
+            "compound_code" : "V8JM+8X Paris, France",
+            "global_code" : "8FW4V8JM+8X"
+         },
+         "rating" : 3.7,
+         "reference" : "ChIJ8ZEtpEhu5kcRw5pLxuX2wJo",
+         "scope" : "GOOGLE",
+         "types" : [
+            "night_club",
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total" : 973,
+         "vicinity" : "6 Rue Pierre Fontaine, Paris"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 48.8708719,
+               "lng" : 2.3317623
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 48.8721285802915,
+                  "lng" : 2.333097730291501
+               },
+               "southwest" : {
+                  "lat" : 48.8694306197085,
+                  "lng" : 2.330399769708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "Café de la Paix Paris",
+         "opening_hours" : {
+            "open_now" : true
+         },
+         "photos" : [
+            {
+               "height" : 5355,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/107866266596950248765\"\u003eCafé de la Paix Paris\u003c/a\u003e"
+               ],
+               "photo_reference" : "Aap_uEC_QQ7OtaV6OQNZJbnJdXFtfID0mWYNUFS2J9xNZw3vNmxxinUTYF5HJj4WeNHpmucBlIS43YOqDB4RAWd6AvGZgKUhe_6xGQgJ8ynwAE5-zThtPVMWQMk-ZVG5axtSbnic-EUJ2OVXyBE8itjXYfWQykpRw0VIerNP7pHKYJT_PKhd",
+               "width" : 8028
+            }
+         ],
+         "place_id" : "ChIJlW2G2zBu5kcRhim6uqUi8Fs",
+         "plus_code" : {
+            "compound_code" : "V8CJ+8P Paris, France",
+            "global_code" : "8FW4V8CJ+8P"
+         },
+         "price_level" : 3,
+         "rating" : 4.2,
+         "reference" : "ChIJlW2G2zBu5kcRhim6uqUi8Fs",
+         "scope" : "GOOGLE",
+         "types" : [ "restaurant", "food", "point_of_interest", "establishment" ],
+         "user_ratings_total" : 2945,
+         "vicinity" : "5 Place de l'Opéra, Paris"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 48.86628049999999,
+               "lng" : 2.3279734
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 48.8676789802915,
+                  "lng" : 2.329451130291502
+               },
+               "southwest" : {
+                  "lat" : 48.8649810197085,
+                  "lng" : 2.326753169708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/lodging-71.png",
+         "icon_background_color" : "#909CE1",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/hotel_pinlet",
+         "name" : "Hôtel Costes",
+         "photos" : [
+            {
+               "height" : 3154,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/111295921656044987740\"\u003eHôtel Costes\u003c/a\u003e"
+               ],
+               "photo_reference" : "Aap_uEBD_qvXKjSVERDvhsrkbxRcRV5XcV8LTvnR4fBcDGhrcr8zvomB9kMmGKjBDfuWepuim8mXPs8KKYDn1w3h95unhG-no-DbxS4EvwTUoo6r8f1RDlj7qBOkv200NbvhX1re8fbwC9bwGon_kkJ_akUTDBMHwuFDehC36scAdDkxmTZY",
+               "width" : 3922
+            }
+         ],
+         "place_id" : "ChIJsa_SADJu5kcRQPS1EqkYIPQ",
+         "plus_code" : {
+            "compound_code" : "V88H+G5 Paris, France",
+            "global_code" : "8FW4V88H+G5"
+         },
+         "price_level" : 4,
+         "rating" : 4.1,
+         "reference" : "ChIJsa_SADJu5kcRQPS1EqkYIPQ",
+         "scope" : "GOOGLE",
+         "types" : [ "lodging", "restaurant", "food", "point_of_interest", "establishment" ],
+         "user_ratings_total" : 1727,
+         "vicinity" : "7 Rue de Castiglione, Paris"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 48.8674666,
+               "lng" : 2.3211192
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 48.8686127302915,
+                  "lng" : 2.322327430291502
+               },
+               "southwest" : {
+                  "lat" : 48.8659147697085,
+                  "lng" : 2.319629469708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/lodging-71.png",
+         "icon_background_color" : "#909CE1",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/hotel_pinlet",
+         "name" : "Hôtel de Crillon, A Rosewood Hotel",
+         "opening_hours" : {
+            "open_now" : true
+         },
+         "photos" : [
+            {
+               "height" : 1757,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/107391412809171961712\"\u003eHôtel de Crillon, A Rosewood Hotel\u003c/a\u003e"
+               ],
+               "photo_reference" : "Aap_uED23HHkldrdS7jHjIM0t7eYKo_F5xckeDhIMXf1K11DPDkao7kZRIvU4uCiSqGUSl67aM--fK8NgGhSk-gZu4QEHuul4AZ2ERJN2iTg3DTEIhnN3epZ_s1e7RS7fo_4xxJWhbCrKYHqQBxSbSD9rzwT84eM5ffJicH7wxBB-UpOdw2L",
+               "width" : 2843
+            }
+         ],
+         "place_id" : "ChIJC_jkvdJv5kcRqjbmf7Zql3s",
+         "plus_code" : {
+            "compound_code" : "V88C+XC Paris, France",
+            "global_code" : "8FW4V88C+XC"
+         },
+         "price_level" : 4,
+         "rating" : 4.7,
+         "reference" : "ChIJC_jkvdJv5kcRqjbmf7Zql3s",
+         "scope" : "GOOGLE",
+         "types" : [
+            "spa",
+            "lodging",
+            "bar",
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total" : 1514,
+         "vicinity" : "10 Place de la Concorde, Paris"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 48.8680915,
+               "lng" : 2.3216457
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 48.86947953029149,
+                  "lng" : 2.322864680291502
+               },
+               "southwest" : {
+                  "lat" : 48.86678156970849,
+                  "lng" : 2.320166719708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "Buddha-Bar Paris",
+         "opening_hours" : {
+            "open_now" : false
+         },
+         "photos" : [
+            {
+               "height" : 787,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/111410768747942341550\"\u003eBuddha-Bar Paris\u003c/a\u003e"
+               ],
+               "photo_reference" : "Aap_uEBzFFO97pgYhWmxrxduTEXu6FKBJDTNz3pagJK1QIey14HYIun3dOIlnFOE7QOX2WdgGwiEN1uK3IogzhK6iIFizWVsnXPRwDn1Qazhvfeioei4iqmDSETDmDZOcsJOdhapz35DwsPOpaTl9Xe1vVPejW2d85URUa8I3Qz1RqI8XP9E",
+               "width" : 1399
+            }
+         ],
+         "place_id" : "ChIJRS81ac1v5kcRRUqQBmTTJJU",
+         "plus_code" : {
+            "compound_code" : "V89C+6M Paris, France",
+            "global_code" : "8FW4V89C+6M"
+         },
+         "price_level" : 4,
+         "rating" : 4.1,
+         "reference" : "ChIJRS81ac1v5kcRRUqQBmTTJJU",
+         "scope" : "GOOGLE",
+         "types" : [
+            "night_club",
+            "bar",
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total" : 3210,
+         "vicinity" : "8-12 Rue Boissy d'Anglas, Paris"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 48.86508979999999,
+               "lng" : 2.3284434
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 48.8663760302915,
+                  "lng" : 2.329745280291502
+               },
+               "southwest" : {
+                  "lat" : 48.8636780697085,
+                  "lng" : 2.327047319708499
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "Angelina Paris",
+         "opening_hours" : {
+            "open_now" : true
+         },
+         "photos" : [
+            {
+               "height" : 1333,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/111012272945986742088\"\u003eAngelina Paris\u003c/a\u003e"
+               ],
+               "photo_reference" : "Aap_uEBj4BX9RiL_QAnHJ4ZJe5ryCpt_1GMwwtpLXpqRHp6CtxYsOhKg-a4XQhMBgLILsY_nlRWtPdc8MaIRZAwJdPW1dn33l6F_FD2ipU6Fv6Jfj7YMDwU121tgKQi-R8hq3w_dAtzxGq9L0wn4HOY6sQI1bKPGrApzIOE2U3bMY7DIOQDf",
+               "width" : 2000
+            }
+         ],
+         "place_id" : "ChIJWVhEdi5u5kcRRl0Vdpqt7RI",
+         "plus_code" : {
+            "compound_code" : "V88H+29 Paris, France",
+            "global_code" : "8FW4V88H+29"
+         },
+         "price_level" : 3,
+         "rating" : 4.4,
+         "reference" : "ChIJWVhEdi5u5kcRRl0Vdpqt7RI",
+         "scope" : "GOOGLE",
+         "types" : [
+            "bakery",
+            "cafe",
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "store",
+            "establishment"
+         ],
+         "user_ratings_total" : 8107,
+         "vicinity" : "226 Rue de Rivoli, Paris"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 48.8696812,
+               "lng" : 2.3231271
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 48.87098558029149,
+                  "lng" : 2.324578080291502
+               },
+               "southwest" : {
+                  "lat" : 48.8682876197085,
+                  "lng" : 2.321880119708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "Maison Lucas Carton",
+         "opening_hours" : {
+            "open_now" : false
+         },
+         "photos" : [
+            {
+               "height" : 1367,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/102960697427896498420\"\u003eLucas Carton\u003c/a\u003e"
+               ],
+               "photo_reference" : "Aap_uEAlenhrDVQ9BZWf0_gzsU96nwvLWXcEB8UjYWv_iAiHg5vk31yXH5Bkx0-7LsbFPIVpL2rg5SQKXiKdB0en6EAxWargC-MWfTCGxxQm84L37DfhFvpjl1KbDj8JFI10vCWIqjWLMszEjmicXhPoOeFa5pJODGus9Ic_c-qwzGh8nNPI",
+               "width" : 2048
+            }
+         ],
+         "place_id" : "ChIJrf6XLDNu5kcRgypP8GERVqw",
+         "plus_code" : {
+            "compound_code" : "V89F+V7 Paris, France",
+            "global_code" : "8FW4V89F+V7"
+         },
+         "price_level" : 4,
+         "rating" : 4.4,
+         "reference" : "ChIJrf6XLDNu5kcRgypP8GERVqw",
+         "scope" : "GOOGLE",
+         "types" : [ "restaurant", "food", "point_of_interest", "establishment" ],
+         "user_ratings_total" : 353,
+         "vicinity" : "9 Place de la Madeleine, Paris"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 48.8666252,
+               "lng" : 2.3390047
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 48.86799148029151,
+                  "lng" : 2.340283380291502
+               },
+               "southwest" : {
+                  "lat" : 48.86529351970851,
+                  "lng" : 2.337585419708498
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "Le Grand Colbert",
+         "opening_hours" : {
+            "open_now" : false
+         },
+         "photos" : [
+            {
+               "height" : 6656,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/107993872399444105185\"\u003eLe Grand Colbert\u003c/a\u003e"
+               ],
+               "photo_reference" : "Aap_uEBM_O7ynChnw5dPYTEeFzdc4cgMMzVlCJZKpB8jWB9v5UM4Uq4Qw8bi431z1foZE1_RUV7W7UVvPDUdIy0csljaAZ4IWlhehqjKmtLoARsvKNzVjVOhDxOA2GGLGUlJiJBjKx4oOR5ypKAEi613_aw7b6plCpSToFmA0M7ycj6WVGBL",
+               "width" : 13312
+            }
+         ],
+         "place_id" : "ChIJpbKdWjtu5kcRQDSu42z_j_A",
+         "plus_code" : {
+            "compound_code" : "V88Q+MJ Paris, France",
+            "global_code" : "8FW4V88Q+MJ"
+         },
+         "price_level" : 3,
+         "rating" : 4.2,
+         "reference" : "ChIJpbKdWjtu5kcRQDSu42z_j_A",
+         "scope" : "GOOGLE",
+         "types" : [ "restaurant", "food", "point_of_interest", "establishment" ],
+         "user_ratings_total" : 1380,
+         "vicinity" : "2 Rue Vivienne, Paris"
+      }
+   ],
+   "status" : "OK"
+}

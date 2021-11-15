@@ -1,33 +1,31 @@
-package com.go4lunch2.model;
+package com.go4lunch2.data.model;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class Workmate {
     @NonNull
-    long id;
+    String id;
     @NonNull
     String name;
     @Nullable
     String avatar;
-    long idRestaurantChosen;
+    @Nullable
+    String idRestaurantChosen;
 
-    public Workmate(@NonNull String name, @Nullable String avatar, long idRestaurantChosen) {
-        this.id = requestMaxId();
+    public Workmate(@NonNull String id, @NonNull String name, @Nullable String avatar, String idRestaurantChosen) {
+        this.id = id;
         this.name = name;
         this.avatar = avatar;
         this.idRestaurantChosen = idRestaurantChosen;
     }
 
-    public long requestMaxId() {
-        return 1;
-    }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -49,11 +47,11 @@ public class Workmate {
         this.avatar = avatar;
     }
 
-    public long getIdRestaurantChosen() {
+    public String getIdRestaurantChosen() {
         return idRestaurantChosen;
     }
 
-    public void setIdRestaurantChosen(long idRestaurantChosen) {
+    public void setIdRestaurantChosen(String idRestaurantChosen) {
         this.idRestaurantChosen = idRestaurantChosen;
     }
 }

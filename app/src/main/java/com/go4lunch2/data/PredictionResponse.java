@@ -1,4 +1,4 @@
-package com.go4lunch2.ui.map;
+package com.go4lunch2.data;
 
 import android.gesture.Prediction;
 
