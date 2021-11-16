@@ -14,24 +14,20 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.go4lunch2.ViewModelFactory;
-import com.go4lunch2.data.Repository;
-import com.go4lunch2.data.model.Restaurant;
-import com.go4lunch2.data.model.Workmate;
 import com.go4lunch2.R;
+import com.go4lunch2.ViewModelFactory;
 import com.go4lunch2.databinding.ActivityDetailRestaurantBinding;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 public class DetailRestaurantActivity extends AppCompatActivity {
 
     private ActivityDetailRestaurantBinding binding;
     DetailRestaurantViewModel vm;
     RecyclerView rv;
-    List<Workmate> workmatesInterested = Repository.FAKE_LIST_WORKMATES; // TODO : à remplacer
-    Restaurant restaurant;
+    //List<Workmate> workmatesInterested = Repository.FAKE_LIST_WORKMATES; // TODO : à remplacer
+    DetailRestaurantViewState restaurant;
     static public final String RESTAURANT_SELECTED = "restaurant_selected";
 
     @Override
@@ -41,41 +37,44 @@ public class DetailRestaurantActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        vm = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(DetailRestaurantViewModel.class);
+        Intent intent = getIntent();
+        String idRestaurant = intent.getStringExtra(RESTAURANT_SELECTED);
 
+        vm = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(DetailRestaurantViewModel.class);
+        vm.getDetailRestaurantLiveData(idRestaurant).observe(this, restaurant -> {
+
+
+        //TODO : essayer suppression
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getWindow();
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
 
-        Intent intent = getIntent();
-        restaurant = intent.getParcelableExtra(RESTAURANT_SELECTED);
+        if (restaurant != null) {
+            binding.restaurantName.setText(restaurant.getName());
 
-        binding.restaurantName.setText(restaurant.getName());
-        binding.restaurantDesc1.setText(restaurant.getType() + "-" + restaurant.getAdress());
+            binding.restaurantDesc1.setText(restaurant.getType() + "-" + restaurant.getAdress());
 //TODO : if user has chosen this restaurant
-        binding.fabRestaurantChosen.setColorFilter(this.getResources().getColor(R.color.green_select_fab));
+            binding.fabRestaurantChosen.setColorFilter(this.getResources().getColor(R.color.green_select_fab));
 
+            try {
+                InputStream ims = this.getAssets().open(restaurant.getImage());
+                binding.restaurantImage.setImageDrawable(Drawable.createFromStream(ims, null));
+                ims.close();
+            } catch (IOException ex) {
+                return;
+            }
 
-        try {
-            InputStream ims = this.getAssets().open(restaurant.getImage());
-            binding.restaurantImage.setImageDrawable(Drawable.createFromStream(ims, null));
-            ims.close();
+            rv = binding.rvListWorkmatesForOneRestaurant;
+            rv.setLayoutManager(new LinearLayoutManager(this));
+            rv.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+            DetailRestaurantAdapter adapter = new DetailRestaurantAdapter(this, restaurant.workmatesInterested);
+            rv.setAdapter(adapter);
+
         }
-        catch(IOException ex) {
-            return;
-        }
-
-        rv = binding.rvListWorkmatesForOneRestaurant;
-        rv.setLayoutManager(new LinearLayoutManager(this));
-        rv.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        initList();
-
-
+        else finish();
+        });
     }
 
-    private void initList() {
-        DetailRestaurantAdapter adapter = new DetailRestaurantAdapter(this, workmatesInterested);
-        rv.setAdapter(adapter);
-    }
+
 }

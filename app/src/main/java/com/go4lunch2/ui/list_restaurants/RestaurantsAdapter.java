@@ -11,9 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.go4lunch2.R;
-import com.go4lunch2.data.model.Restaurant;
-import com.go4lunch2.ui.detail_restaurant.DetailRestaurantActivity;
 import com.go4lunch2.databinding.ItemRestaurantBinding;
+import com.go4lunch2.ui.detail_restaurant.DetailRestaurantActivity;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,7 +21,7 @@ import java.util.List;
 public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.ViewHolder> {
 
     Context ctx;
-    private List<RestaurantsViewState> listRestaurants;
+    private final List<RestaurantsViewState> listRestaurants;
     ItemRestaurantBinding binding;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -57,22 +56,29 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
         binding.itemRestaurantDesc1.setText(restaurant.getType() + "-" + restaurant.getAdress());
         binding.itemRestaurantDesc2.setText(restaurant.getOpeningHours());
 
-        if (restaurant.getStarsCount()==0.5) binding.itemRestaurantNumStars1.setImageDrawable(ctx.getDrawable(R.drawable.ic_star_half));
-        else if (restaurant.getStarsCount()>0.5) binding.itemRestaurantNumStars1.setImageDrawable(ctx.getDrawable(R.drawable.ic_star_filled));
-        if (restaurant.getStarsCount()==1.5) binding.itemRestaurantNumStars2.setImageDrawable(ctx.getDrawable(R.drawable.ic_star_half));
-        else if (restaurant.getStarsCount()>1.5) binding.itemRestaurantNumStars2.setImageDrawable(ctx.getDrawable(R.drawable.ic_star_filled));
-        if (restaurant.getStarsCount()==2.5) binding.itemRestaurantNumStars3.setImageDrawable(ctx.getDrawable(R.drawable.ic_star_half));
-        else if (restaurant.getStarsCount()>2.5) binding.itemRestaurantNumStars3.setImageDrawable(ctx.getDrawable(R.drawable.ic_star_filled));
+        if (restaurant.getStarsCount()==null) {
+            binding.itemRestaurantNumStars1.setVisibility(View.GONE);
+            binding.itemRestaurantNumStars2.setVisibility(View.GONE);
+            binding.itemRestaurantNumStars3.setVisibility(View.GONE);
 
+        }
+        else{
+            if (restaurant.getStarsCount() == 0.5) binding.itemRestaurantNumStars1.setImageDrawable(ctx.getDrawable(R.drawable.ic_star_half));
+            else if (restaurant.getStarsCount() > 0.5) binding.itemRestaurantNumStars1.setImageDrawable(ctx.getDrawable(R.drawable.ic_star_filled));
+            if (restaurant.getStarsCount() == 1.5) binding.itemRestaurantNumStars2.setImageDrawable(ctx.getDrawable(R.drawable.ic_star_half));
+            else if (restaurant.getStarsCount() > 1.5) binding.itemRestaurantNumStars2.setImageDrawable(ctx.getDrawable(R.drawable.ic_star_filled));
+            if (restaurant.getStarsCount() == 2.5) binding.itemRestaurantNumStars3.setImageDrawable(ctx.getDrawable(R.drawable.ic_star_half));
+            else if (restaurant.getStarsCount() > 2.5) binding.itemRestaurantNumStars3.setImageDrawable(ctx.getDrawable(R.drawable.ic_star_filled));
+        }
 
-        try {
-            InputStream ims = ctx.getAssets().open(restaurant.getImage());
-            binding.itemRestaurantImage.setImageDrawable(Drawable.createFromStream(ims, null));
-            ims .close();
-        }
-        catch(IOException ex) {
-            return;
-        }
+//        try {
+//            InputStream ims = ctx.getAssets().open(restaurant.getImage());
+//            binding.itemRestaurantImage.setImageDrawable(Drawable.createFromStream(ims, null));
+//            ims.close();
+//        }
+//        catch(IOException ex) {
+//            return; // TODO:ajouter image par défaut
+//        }
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(ctx, DetailRestaurantActivity.class);

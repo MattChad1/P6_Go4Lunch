@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
+import com.go4lunch2.Utils.Utils;
 import com.go4lunch2.data.Repository;
 import com.go4lunch2.data.model.Restaurant;
 
@@ -34,7 +35,7 @@ public class ListRestaurantsViewModel extends ViewModel {
                                                   r.getAdress(),
                                                   r.getOpeningTime(),
                                                   "100 m",
-                                                  ((int) (r.getRatingAverage() * 2 + .5)) / 2.0,
+                                                  Utils.ratingToStars(r.getRatingAverage()),
                                                   r.getWorkmatesInterested().size(),
                                                   r.getImage()
                                           )

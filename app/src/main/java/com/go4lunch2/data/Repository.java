@@ -1,10 +1,10 @@
 package com.go4lunch2.data;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.MyApplication;
@@ -23,10 +23,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -39,36 +37,44 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class Repository {
 
     private final MutableLiveData<List<Restaurant>> restaurantsLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Restaurant> restaurantSelectedLiveData = new MutableLiveData<>();
     Context ctx = MyApplication.getInstance();
-
+    List<Restaurant> allRestaurants = new ArrayList<>();
     //TODO : change for Firebase
     List<Rating> allRatings = FAKE_RATES;
     List<Workmate> allWorkmates = FAKE_LIST_WORKMATES;
 
     public MutableLiveData<List<Restaurant>> getRestaurantsLiveData() {
-        List<Restaurant> listRestaurants = new ArrayList<>();
-
+        allRestaurants.clear();
         List<Result> results = getPlacesAPI(48.856614, 2.3522219);
 
         for (Result result : results) {
-            List<Workmate> workmatesInterested = getWorkmatesIntersted(result.getPlaceId());
+            List<Workmate> workmatesInterested = getWorkmatesInterested(result.getPlaceId());
             Double rating = getAverageRating(result.getPlaceId());
-            listRestaurants.add(new Restaurant(
+            allRestaurants.add(new Restaurant(
                     result.getPlaceId(),
                     result.getName(),
                     "", //TODO : image from Places.API?
                     "", //TODO : type from Places.API?
-                    result.getOpeningHours() != null ? result.getOpeningHours().getOpenNow() : "", //TODO : voir comment récupérer la chaîne avec les horaires
+                    result.getOpeningHours() != null ? result.getOpeningHours().getOpenNow() : "",
+                    //TODO : voir comment récupérer la chaîne avec les horaires
                     result.getVicinity(),
                     result.getGeometry().location.lat,
                     result.getGeometry().location.getLng(),
                     rating,
                     workmatesInterested
-                    ));
-
+            ));
         }
-        restaurantsLiveData.setValue(listRestaurants);
+        restaurantsLiveData.setValue(allRestaurants);
         return restaurantsLiveData;
+    }
+
+    public Restaurant getRestaurantById(String idRestaurant) {
+
+        return Stream.of(allRestaurants)
+                .filter(restaurant -> restaurant.getId().equals(idRestaurant))
+                .findFirst()
+                .get();
     }
 
     private List<Result> getPlacesAPI(Double latitude, Double longitude) {
@@ -126,26 +132,24 @@ public class Repository {
         return results;
     }
 
-    private List<Workmate> getWorkmatesIntersted(String idRestaurant) {
+    private List<Workmate> getWorkmatesInterested(String idRestaurant) {
+
         return Stream.of(allWorkmates)
-                .filter(workmate -> workmate.getIdRestaurantChosen()==idRestaurant)
+                .filter(workmate -> workmate.getIdRestaurantChosen()!=null && workmate.getIdRestaurantChosen().equals(idRestaurant))
                 .toList();
     }
 
-    private Double getAverageRating (String idRestaurant) {
+    private Double getAverageRating(String idRestaurant) {
         Double total = 0.0;
         int num = 0;
 
-
-        for (Rating rating: allRatings) {
-            if (rating.getIdRestaurant()==idRestaurant) {
+        for (Rating rating : allRatings) {
+            if (rating.getIdRestaurant() == idRestaurant) {
                 total += rating.getRateGiven();
-                num +=1;
+                num += 1;
             }
-
         }
-        return total/num;
-
+        return num!=0? total / num : null;
     }
 
     static public List<Workmate> FAKE_LIST_WORKMATES = new ArrayList<>(Arrays.asList(
@@ -161,7 +165,7 @@ public class Repository {
             new Rating("r2", "w1", 2d),
             new Rating("r1", "w2", 3d),
             new Rating("r2", "w3", 2d)
-            )
+                                                                         )
     );
 
     static public List<Restaurant> FAKE_LIST_RESTAURANTS = new ArrayList<>(Arrays.asList(

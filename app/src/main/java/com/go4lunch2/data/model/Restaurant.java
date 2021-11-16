@@ -39,11 +39,12 @@ public class Restaurant implements Parcelable {
         this.workmatesInterested = workmatesInterested;
     }
 
+    @NonNull
     public String getId() {
         return id;
     }
 
-    public void setId(long String) {
+    public void setId(@NonNull String id) {
         this.id = id;
     }
 
@@ -160,12 +161,19 @@ public class Restaurant implements Parcelable {
         }
     };
 
-
-
-
-
-
-
-
-
+    @Override
+    public String toString() {
+        return "Restaurant{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", image='" + image + '\'' +
+                ", type='" + type + '\'' +
+                ", openingTime='" + openingTime + '\'' +
+                ", adress='" + adress + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", ratingAverage=" + ratingAverage +
+                ", workmatesInterested=" + workmatesInterested +
+                '}';
+    }
 }

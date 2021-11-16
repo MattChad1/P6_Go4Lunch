@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="go4lunch2.ui.detail_restaurant.DetailRestaurantActivity">
+    tools:context=".ui.detail_restaurant.DetailRestaurantActivity">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/restaurant_image"
@@ -14,7 +14,7 @@
         android:adjustViewBounds="true"
         app:layout_constraintStart_toStartOf="parent"
         android:scaleType="centerCrop"
-        tools:src="@drawable/r1"
+        android:src="@drawable/r1"
         />
 
     <androidx.constraintlayout.widget.ConstraintLayout
