@@ -6,15 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.go4lunch2.ViewModelFactory;
-import com.go4lunch2.data.Repository;
-import com.go4lunch2.data.model.Restaurant;
 import com.go4lunch2.databinding.FragmentListRestaurantsBinding;
 
 import java.util.ArrayList;
@@ -23,9 +20,9 @@ import java.util.List;
 public class ListRestaurantsFragment extends Fragment {
 
     FragmentListRestaurantsBinding binding;
-    ViewModel vm;
+    ListRestaurantsViewModel vm;
 
-    List<RestaurantsViewState> datas = new ArrayList<>();
+    List<RestaurantViewState> datas = new ArrayList<>();
     RecyclerView rv;
 
     public ListRestaurantsFragment() {
@@ -48,7 +45,7 @@ public class ListRestaurantsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentListRestaurantsBinding.inflate(inflater, container, false);
 
-        ListRestaurantsViewModel vm = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(ListRestaurantsViewModel.class);
+        vm = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(ListRestaurantsViewModel.class);
 
         rv = binding.rvListRestaurants;
         rv.setLayoutManager(new LinearLayoutManager(getContext()));

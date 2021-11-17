@@ -8,26 +8,27 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.go4lunch2.data.model.model_gmap.Result;
+import com.go4lunch2.R;
+import com.go4lunch2.ViewModelFactory;
+import com.go4lunch2.databinding.FragmentMapsBinding;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.go4lunch2.R;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsFragment extends Fragment {
-Result result;
-
-
+    FragmentMapsBinding binding;
+    MapsViewModel vm;
 
     private OnMapReadyCallback callback;
 
     {
         callback = new OnMapReadyCallback() {
-
-
 
             /**
              * Manipulates the map once available.
@@ -41,7 +42,29 @@ Result result;
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 LatLng paris = new LatLng(48.856614, 2.3522219);
-                googleMap.moveCamera(CameraUpdateFactory.newLatLng(paris));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(paris, 13f));
+                //googleMap.setMyLocationEnabled(true);
+                googleMap.getUiSettings().setZoomControlsEnabled(true);
+
+                vm.getMarkersLiveData().observe(MapsFragment.this, mapsStateItems -> {
+                    for (MapsStateItem item : mapsStateItems) {
+
+                        int iconeMarker = item.getWorkmatesCount() >0 ? R.drawable.marker_restaurant_orange : R.drawable.marker_restaurant_green;
+
+                            googleMap.addMarker(new MarkerOptions()
+                                                        .position(new LatLng(item.getLatitude(), item.getLongitude()))
+                                                        .title(item.getName())
+                                                        .icon(BitmapDescriptorFactory.fromResource(iconeMarker))
+                                               );
+
+
+
+                    }
+
+
+
+                });
+
             }
         };
     }
@@ -49,7 +72,12 @@ Result result;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_maps, container, false);
+        binding = FragmentMapsBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
+
+        vm = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(MapsViewModel.class);
+
+        return view;
 
     }
 

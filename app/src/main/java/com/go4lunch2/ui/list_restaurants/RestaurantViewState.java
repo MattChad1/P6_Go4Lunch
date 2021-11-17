@@ -1,7 +1,7 @@
 package com.go4lunch2.ui.list_restaurants;
 
 
-public class RestaurantsViewState {
+public class RestaurantViewState {
 
     String id;
     String name;
@@ -13,9 +13,9 @@ public class RestaurantsViewState {
     int workmatesCount;
     String image;
 
-    public RestaurantsViewState(String id, String name, String type, String adress, String openingHours, String distance, Double starsCount,
-                                int workmatesCount,
-                                String image) {
+    public RestaurantViewState(String id, String name, String type, String adress, String openingHours, String distance, Double starsCount,
+                               int workmatesCount,
+                               String image) {
         this.id = id;
         this.name = name;
         this.type = type;

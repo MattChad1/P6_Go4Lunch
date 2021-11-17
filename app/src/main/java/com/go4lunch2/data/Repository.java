@@ -4,10 +4,9 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.util.Log;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.MyApplication;
+import com.go4lunch2.MyApplication;
 import com.annimon.stream.Stream;
 import com.go4lunch2.BuildConfig;
 import com.go4lunch2.data.model.Rating;
@@ -153,11 +152,11 @@ public class Repository {
     }
 
     static public List<Workmate> FAKE_LIST_WORKMATES = new ArrayList<>(Arrays.asList(
-            new Workmate("w1", "Bob", "a1.png", "r1"),
-            new Workmate("w2", "Léa", "a1.png", "r2"),
-            new Workmate("w3", "Joe", "a1.png", "r1"),
+            new Workmate("w1", "Bob", "a1.png", "ChIJ8znTVS5u5kcREq8TmzOICFs"),
+            new Workmate("w2", "Léa", "a1.png", "ChIJ_Ze3ZjBu5kcRiCRPWLatnSg"),
+            new Workmate("w3", "Joe", "a1.png", "ChIJ8znTVS5u5kcREq8TmzOICFs"),
             new Workmate("w4", "Yasmine", "a1.png", null),
-            new Workmate("w5", "Pierre-Jean", "a1.png", "r1"))
+            new Workmate("w5", "Pierre-Jean", "a1.png", "ChIJ8znTVS5u5kcREq8TmzOICFs"))
     );
 
     static public List<Rating> FAKE_RATES = new ArrayList<>(Arrays.asList(

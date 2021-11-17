@@ -5,4 +5,6 @@
     android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="go4lunch2.ui.map.MapsFragment" />
+    android:paddingBottom="?attr/actionBarSize"
+    android:layout_marginBottom="60dp"
+    tools:context=".ui.map.MapsFragment" />

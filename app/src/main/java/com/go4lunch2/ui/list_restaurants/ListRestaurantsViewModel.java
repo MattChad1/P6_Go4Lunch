@@ -15,7 +15,7 @@ import java.util.List;
 public class ListRestaurantsViewModel extends ViewModel {
 
     private Repository repository;
-    private MutableLiveData<List<RestaurantsViewState>> allRestaurantsLiveData = new MutableLiveData<>();
+    private MutableLiveData<List<RestaurantViewState>> allRestaurantsLiveData = new MutableLiveData<>();
 
     ;
 
@@ -23,12 +23,12 @@ public class ListRestaurantsViewModel extends ViewModel {
         this.repository = repository;
     }
 
-    public LiveData<List<RestaurantsViewState>> getAllRestaurantsViewStateLiveData() {
+    public LiveData<List<RestaurantViewState>> getAllRestaurantsViewStateLiveData() {
         return Transformations.map(repository.getRestaurantsLiveData(), restaurantsList -> {
-            List<RestaurantsViewState> restaurantsViewStates = new ArrayList<>();
+            List<RestaurantViewState> restaurantViewStates = new ArrayList<>();
             for (Restaurant r : restaurantsList) {
 
-                restaurantsViewStates.add(new RestaurantsViewState(
+                restaurantViewStates.add(new RestaurantViewState(
                                                   r.getId(),
                                                   r.getName(),
                                                   r.getType(),
@@ -39,11 +39,11 @@ public class ListRestaurantsViewModel extends ViewModel {
                                                   r.getWorkmatesInterested().size(),
                                                   r.getImage()
                                           )
-                                         );
+                                        );
             }
 
-            allRestaurantsLiveData.setValue(restaurantsViewStates);
-            return restaurantsViewStates;
+            allRestaurantsLiveData.setValue(restaurantViewStates);
+            return restaurantViewStates;
         });
     }
 }

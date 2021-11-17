@@ -1,4 +1,4 @@
-package com;
+package com.go4lunch2;
 
 
 import android.app.Application;

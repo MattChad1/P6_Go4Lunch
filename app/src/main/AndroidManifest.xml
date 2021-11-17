@@ -13,7 +13,7 @@
 
     <application
         android:allowBackup="true"
-        android:name="com.MyApplication"
+        android:name=".MyApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -30,7 +30,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBQ0LvyvKXRyLvQstUVvBQOKvzXs1IFTE4" />
+            android:value="AIzaSyDPT3z_nIFl7aRVa9x8NCqY1nR4gED7gjY" />
 
 
         <activity

@@ -2,7 +2,6 @@ package com.go4lunch2.ui.list_restaurants;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +13,12 @@ import com.go4lunch2.R;
 import com.go4lunch2.databinding.ItemRestaurantBinding;
 import com.go4lunch2.ui.detail_restaurant.DetailRestaurantActivity;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.ViewHolder> {
 
     Context ctx;
-    private final List<RestaurantsViewState> listRestaurants;
+    private final List<RestaurantViewState> listRestaurants;
     ItemRestaurantBinding binding;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -34,7 +31,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
         }
     }
 
-    public RestaurantsAdapter(Context ctx, List<RestaurantsViewState> listRestaurants) {
+    public RestaurantsAdapter(Context ctx, List<RestaurantViewState> listRestaurants) {
         this.ctx = ctx;
         this.listRestaurants = listRestaurants;
     }
@@ -51,7 +48,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        RestaurantsViewState restaurant = listRestaurants.get(position);
+        RestaurantViewState restaurant = listRestaurants.get(position);
         binding.itemRestaurantName.setText(restaurant.getName());
         binding.itemRestaurantDesc1.setText(restaurant.getType() + "-" + restaurant.getAdress());
         binding.itemRestaurantDesc2.setText(restaurant.getOpeningHours());
