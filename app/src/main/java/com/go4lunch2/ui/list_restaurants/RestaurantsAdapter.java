@@ -2,6 +2,7 @@ package com.go4lunch2.ui.list_restaurants;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import com.go4lunch2.R;
 import com.go4lunch2.databinding.ItemRestaurantBinding;
 import com.go4lunch2.ui.detail_restaurant.DetailRestaurantActivity;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.ViewHolder> {
@@ -41,8 +44,6 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         binding = ItemRestaurantBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false);
     View view = binding.getRoot();
-
-    //View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_restaurant, viewGroup, false);
         return new ViewHolder(view);
     }
 
@@ -68,14 +69,14 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
             else if (restaurant.getStarsCount() > 2.5) binding.itemRestaurantNumStars3.setImageDrawable(ctx.getDrawable(R.drawable.ic_star_filled));
         }
 
-//        try {
-//            InputStream ims = ctx.getAssets().open(restaurant.getImage());
-//            binding.itemRestaurantImage.setImageDrawable(Drawable.createFromStream(ims, null));
-//            ims.close();
-//        }
-//        catch(IOException ex) {
-//            return; // TODO:ajouter image par défaut
-//        }
+        try {
+            InputStream ims = ctx.getAssets().open(restaurant.getImage());
+            binding.itemRestaurantImage.setImageDrawable(Drawable.createFromStream(ims, null));
+            ims.close();
+        }
+        catch(IOException ex) {
+            return; // TODO:ajouter image par défaut
+        }
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(ctx, DetailRestaurantActivity.class);

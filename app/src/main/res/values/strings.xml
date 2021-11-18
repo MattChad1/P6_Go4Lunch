@@ -26,6 +26,11 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
 
+    //All
+    <string name="num_workmates">(%d)</string>
+
+
+
     //Login Activity
 
 

@@ -1,6 +1,8 @@
 package com.go4lunch2.ui.map;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,32 +15,31 @@ import androidx.lifecycle.ViewModelProvider;
 import com.go4lunch2.R;
 import com.go4lunch2.ViewModelFactory;
 import com.go4lunch2.databinding.FragmentMapsBinding;
+import com.go4lunch2.databinding.InfoWindowBinding;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsFragment extends Fragment {
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+public class MapsFragment extends Fragment implements GoogleMap.InfoWindowAdapter {
     FragmentMapsBinding binding;
     MapsViewModel vm;
+    List<MapsStateItem> allMarkers = new ArrayList<>();
 
     private OnMapReadyCallback callback;
 
     {
         callback = new OnMapReadyCallback() {
 
-            /**
-             * Manipulates the map once available.
-             * This callback is triggered when the map is ready to be used.
-             * This is where we can add markers or lines, add listeners or move the camera.
-             * In this case, we just add a marker near Sydney, Australia.
-             * If Google Play services is not installed on the device, the user will be prompted to
-             * install it inside the SupportMapFragment. This method will only be triggered once the
-             * user has installed Google Play services and returned to the app.
-             */
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 LatLng paris = new LatLng(48.856614, 2.3522219);
@@ -47,24 +48,21 @@ public class MapsFragment extends Fragment {
                 googleMap.getUiSettings().setZoomControlsEnabled(true);
 
                 vm.getMarkersLiveData().observe(MapsFragment.this, mapsStateItems -> {
-                    for (MapsStateItem item : mapsStateItems) {
+                    allMarkers = mapsStateItems;
+                    for (MapsStateItem marker : allMarkers) {
 
-                        int iconeMarker = item.getWorkmatesCount() >0 ? R.drawable.marker_restaurant_orange : R.drawable.marker_restaurant_green;
+                        int iconeMarker = marker.getWorkmatesCount() > 0 ? R.drawable.marker_restaurant_orange : R.drawable.marker_restaurant_green;
 
-                            googleMap.addMarker(new MarkerOptions()
-                                                        .position(new LatLng(item.getLatitude(), item.getLongitude()))
-                                                        .title(item.getName())
-                                                        .icon(BitmapDescriptorFactory.fromResource(iconeMarker))
-                                               );
+                        googleMap.addMarker(new MarkerOptions()
+                                                    .position(new LatLng(marker.getLatitude(), marker.getLongitude()))
+                                                    .title(marker.getName())
+                                                    .icon(BitmapDescriptorFactory.fromResource(iconeMarker))
 
-
-
+                                           ).setTag(allMarkers.indexOf(marker));
                     }
-
-
-
                 });
 
+                googleMap.setInfoWindowAdapter(MapsFragment.this);
             }
         };
     }
@@ -78,7 +76,6 @@ public class MapsFragment extends Fragment {
         vm = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(MapsViewModel.class);
 
         return view;
-
     }
 
     @Override
@@ -88,5 +85,53 @@ public class MapsFragment extends Fragment {
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
+    }
+
+    @Nullable
+    @Override
+    public View getInfoContents(@NonNull Marker marker) {
+        int position = (int) marker.getTag();
+        MapsStateItem item = allMarkers.get(position);
+
+        InfoWindowBinding bindingWindow = InfoWindowBinding.inflate(MapsFragment.this.getLayoutInflater());
+        bindingWindow.tvMapwindowTitle.setText(item.name);
+        bindingWindow.tvMapwindowSubtitle.setText(""); //TODO : mettre type de cuisine?
+
+        if (item.getStarsCount() == null) {
+            bindingWindow.mapwindowNumStars1.setVisibility(View.INVISIBLE);
+            bindingWindow.mapwindowNumStars2.setVisibility(View.INVISIBLE);
+            bindingWindow.mapwindowNumStars3.setVisibility(View.INVISIBLE);
+        }
+        else {
+            if (item.getStarsCount() == 0.5) bindingWindow.mapwindowNumStars1.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_half));
+            else if (item.getStarsCount() > 0.5)
+                bindingWindow.mapwindowNumStars1.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_filled));
+            if (item.getStarsCount() == 1.5) bindingWindow.mapwindowNumStars2.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_half));
+            else if (item.getStarsCount() > 1.5)
+                bindingWindow.mapwindowNumStars2.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_filled));
+            if (item.getStarsCount() == 2.5) bindingWindow.mapwindowNumStars3.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_half));
+            else if (item.getStarsCount() > 2.5)
+                bindingWindow.mapwindowNumStars3.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_filled));
+        }
+
+        bindingWindow.tvMapwindowWorkmates.setText(getString(R.string.num_workmates, item.workmatesCount));
+
+        if (item.image != null && item.image != "") {
+            try {
+                InputStream ims = getResources().getAssets().open(item.getImage());
+                bindingWindow.ivMapwindow.setImageDrawable(Drawable.createFromStream(ims, null));
+                ims.close();
+            } catch (IOException ex) {
+                Log.i("MapsFragment", "Image not found : " + item.getImage());
+            }
+        }
+        View view = bindingWindow.getRoot();
+        return view;
+    }
+
+    @Nullable
+    @Override
+    public View getInfoWindow(@NonNull Marker marker) {
+        return null;
     }
 }
