@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModel;
 import com.go4lunch2.Utils.Utils;
 import com.go4lunch2.data.Repository;
 import com.go4lunch2.data.model.Restaurant;
-import com.go4lunch2.ui.list_restaurants.RestaurantViewState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +31,8 @@ public class MapsViewModel extends ViewModel {
                                                  r.getImage(),
                                                  r.getLatitude(),
                                                  r.getLongitude(),
-                                                 Utils.ratingToStars(r.getRatingAverage()),
-                                                 r.getWorkmatesInterested().size()
+                                                 Utils.ratingToStars(r.getRcf().getAverageRate()),
+                                                 r.getRcf().getWorkmatesInterestedIds().size()
                                    ));
             }
 

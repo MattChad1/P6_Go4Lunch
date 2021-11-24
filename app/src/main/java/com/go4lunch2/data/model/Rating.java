@@ -4,13 +4,16 @@ package com.go4lunch2.data.model;
 public class Rating {
     String idRestaurant;
     String idWorkmate;
-    Double rateGiven;
+    Integer rateGiven;
 
-    public Rating(String idRestaurant, String idWorkmate, Double rateGiven) {
+    public Rating(String idRestaurant, String idWorkmate, Integer rateGiven) {
         this.idRestaurant = idRestaurant;
         this.idWorkmate = idWorkmate;
         this.rateGiven = rateGiven;
     }
+
+    //for Firebase, to avoid Could not deserialize object error
+    public Rating (){}
 
     public String getIdRestaurant() {
         return idRestaurant;
@@ -28,11 +31,11 @@ public class Rating {
         this.idWorkmate = idWorkmate;
     }
 
-    public Double getRateGiven() {
+    public Integer getRateGiven() {
         return rateGiven;
     }
 
-    public void setRateGiven(Double rateGiven) {
+    public void setRateGiven(Integer rateGiven) {
         this.rateGiven = rateGiven;
     }
 }

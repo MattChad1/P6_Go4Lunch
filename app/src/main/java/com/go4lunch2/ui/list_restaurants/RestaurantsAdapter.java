@@ -69,14 +69,14 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
             else if (restaurant.getStarsCount() > 2.5) binding.itemRestaurantNumStars3.setImageDrawable(ctx.getDrawable(R.drawable.ic_star_filled));
         }
 
-        try {
-            InputStream ims = ctx.getAssets().open(restaurant.getImage());
-            binding.itemRestaurantImage.setImageDrawable(Drawable.createFromStream(ims, null));
-            ims.close();
-        }
-        catch(IOException ex) {
-            return; // TODO:ajouter image par défaut
-        }
+//        try {
+//            InputStream ims = ctx.getAssets().open(restaurant.getImage());
+//            binding.itemRestaurantImage.setImageDrawable(Drawable.createFromStream(ims, null));
+//            ims.close();
+//        }
+//        catch(IOException ex) {
+//            return; // TODO:ajouter image par défaut
+//        }
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(ctx, DetailRestaurantActivity.class);

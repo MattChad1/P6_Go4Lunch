@@ -4,6 +4,7 @@
     android:id="@+id/rv_list_workmates"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="?attr/actionBarSize"
     tools:context=".ui.list_workmates.ListWorkmatesFragment"
     tools:listitem="@layout/item_workmate"
     />

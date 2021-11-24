@@ -3,6 +3,7 @@ package com.go4lunch2.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     DrawerLayout drawer;
+    FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,11 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        // TODO : supprimer avec la fonction
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        testFirebase(user);
+
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -49,6 +56,11 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(v -> {
             drawer.openDrawer(GravityCompat.START);
         });
+
+        if (user!=null) { //TODO : supprimer le if car user ne peut pas être null ici (connecté)
+            TextView tvMailUser = binding.navigationDrawer.findViewById(R.id.nav_drawer_tv_email);
+            tvMailUser.setText(user.getEmail());
+        }
 
         binding.navigationDrawer.setNavigationItemSelectedListener ( menuItem -> {
                 // Handle menu item selected
@@ -100,9 +112,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        // TODO : supprimer avec la fonction
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        testFirebase(user);
+
 
 
     }

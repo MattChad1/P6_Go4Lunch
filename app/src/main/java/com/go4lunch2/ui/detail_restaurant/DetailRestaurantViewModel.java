@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.go4lunch2.Utils.Utils;
 import com.go4lunch2.data.Repository;
+import com.go4lunch2.data.model.Rating;
 import com.go4lunch2.data.model.Restaurant;
 
 public class DetailRestaurantViewModel extends ViewModel {
@@ -28,15 +29,18 @@ public class DetailRestaurantViewModel extends ViewModel {
                     r.getAdress(),
                     r.getOpeningTime(),
                     "100 m",
-                    Utils.ratingToStars(r.getRatingAverage()),
-                    r.getWorkmatesInterested(),
+                    Utils.ratingToStars(r.getRcf().getAverageRate()),
+                    repository.getListWorkmatesByIds(r.getRcf().getWorkmatesInterestedIds()),
                     r.getImage()
             );
         }
 
         restaurantSelectedLiveData.setValue(detail);
-//            }
-//        }
         return restaurantSelectedLiveData;
+    }
+
+    public void addRate (String idWorkmate, String idRestaurant, int givenRate) {
+        repository.addGrade(new Rating(idRestaurant, idWorkmate, givenRate));
+
     }
 }

@@ -35,9 +35,15 @@
 
 
     //list_workmates
-    <string name="restaurant_chosen">%1$s mange %2$s (%3$s)</string>
-    <string name="restaurant_chosen2">%s sera là !</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="restaurant_chosen">%1$s eats %2$s (%3$s)</string>
+    <string name="restaurant_chosen2">%s will be there !</string>
+
+    //Detail activity
+    <string name="give_rate">What do you think of this restaurant?</string>
+    <string-array name="rates">
+        <item>Just correct</item>
+        <item>Good</item>
+        <item>Wonderful</item>
+    </string-array>
 
 </resources>

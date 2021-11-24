@@ -20,7 +20,7 @@ import java.util.List;
 public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.ViewHolder> {
 
     Context ctx;
-    private List<Workmate> listWorkmates;
+    private List<WorkmateViewStateItem> listWorkmates;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvName;
@@ -33,7 +33,7 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.View
         }
     }
 
-    public WorkmatesAdapter(Context ctx, List<Workmate> listWorkmates) {
+    public WorkmatesAdapter(Context ctx, List<WorkmateViewStateItem> listWorkmates) {
         this.ctx = ctx;
         this.listWorkmates = listWorkmates;
     }
@@ -48,8 +48,8 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.View
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        Workmate workmate = listWorkmates.get(position);
-        viewHolder.tvName.setText(ctx.getString(R.string.restaurant_chosen, workmate.getName(), "", "")); //TODO:  mettre les fonctions du repo
+        WorkmateViewStateItem workmate = listWorkmates.get(position);
+        viewHolder.tvName.setText(ctx.getString(R.string.restaurant_chosen, workmate.getNameWorkmate(), workmate.getTypeFood(), workmate.getNameRestaurant())); //TODO:  mettre les fonctions du repo
         //TODO : remplacer par adresse avatar
         String name = workmate.getAvatar().substring(0 , workmate.getAvatar().indexOf('.'));
         int resourceId = ctx.getResources().getIdentifier(name, "drawable",

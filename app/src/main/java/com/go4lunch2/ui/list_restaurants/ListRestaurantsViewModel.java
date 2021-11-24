@@ -1,5 +1,7 @@
 package com.go4lunch2.ui.list_restaurants;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
@@ -14,10 +16,11 @@ import java.util.List;
 
 public class ListRestaurantsViewModel extends ViewModel {
 
+    String TAG = "MyLog RestaurantsViewModel";
+
     private Repository repository;
     private MutableLiveData<List<RestaurantViewState>> allRestaurantsLiveData = new MutableLiveData<>();
 
-    ;
 
     public ListRestaurantsViewModel(Repository repository) {
         this.repository = repository;
@@ -28,6 +31,8 @@ public class ListRestaurantsViewModel extends ViewModel {
             List<RestaurantViewState> restaurantViewStates = new ArrayList<>();
             for (Restaurant r : restaurantsList) {
 
+
+
                 restaurantViewStates.add(new RestaurantViewState(
                                                   r.getId(),
                                                   r.getName(),
@@ -35,11 +40,14 @@ public class ListRestaurantsViewModel extends ViewModel {
                                                   r.getAdress(),
                                                   r.getOpeningTime(),
                                                   "100 m",
-                                                  Utils.ratingToStars(r.getRatingAverage()),
-                                                  r.getWorkmatesInterested().size(),
+                                                  Utils.ratingToStars(r.getRcf().getAverageRate()),
+                                                  r.getRcf().getWorkmatesInterestedIds() == null ? 0 : r.getRcf().getWorkmatesInterestedIds().size(),
                                                   r.getImage()
                                           )
                                         );
+
+
+
             }
 
             allRestaurantsLiveData.setValue(restaurantViewStates);

@@ -1,7 +1,11 @@
 package com.go4lunch2.ui.loggin;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -13,6 +17,7 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.go4lunch2.R;
@@ -33,6 +38,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 public class LogInActivity extends AppCompatActivity {
@@ -53,6 +60,19 @@ public class LogInActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
+
+//        try {
+//            PackageInfo info = getPackageManager().getPackageInfo("com.go4lunch2", PackageManager.GET_SIGNATURES);
+//            for (Signature signature : info.signatures) {
+//                MessageDigest md = MessageDigest.getInstance("SHA");
+//                md.update(signature.toByteArray());
+//                Log.i("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+//            }
+//        } catch (PackageManager.NameNotFoundException e) {
+//            Log.i("KeyHash:", "Exception 1");
+//        } catch (NoSuchAlgorithmException e) {
+//            Log.i("KeyHash:", "Exception 2");
+//        }
 
 
         binding = ActivityLogInBinding.inflate(getLayoutInflater());
@@ -87,7 +107,7 @@ public class LogInActivity extends AppCompatActivity {
         });
 
         // Initialize Facebook Login button
-        mCallbackManager = CallbackManager.Factory.create();
+       mCallbackManager = CallbackManager.Factory.create();
         LoginButton loginButton = binding.loginButtonFacebook;
         loginButton.setReadPermissions(Arrays.asList(
                 "public_profile", "email"));
