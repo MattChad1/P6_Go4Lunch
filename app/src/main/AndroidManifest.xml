@@ -34,7 +34,7 @@
 
 
         <activity
-            android:name=".ui.loggin.LogInActivity"
+            android:name=".ui.login.LogInActivity"
             android:exported="true"
             android:theme="@style/Theme.Go4Lunch.WithoutStatus"
             >

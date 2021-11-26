@@ -32,7 +32,7 @@ public class MapsViewModel extends ViewModel {
                                                  r.getLatitude(),
                                                  r.getLongitude(),
                                                  Utils.ratingToStars(r.getRcf().getAverageRate()),
-                                                 r.getRcf().getWorkmatesInterestedIds().size()
+                                                 r.getRcf().getWorkmatesInterestedIds() == null ? 0 : r.getRcf().getWorkmatesInterestedIds().size()
                                    ));
             }
 

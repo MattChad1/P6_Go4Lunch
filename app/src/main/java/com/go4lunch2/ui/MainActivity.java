@@ -13,7 +13,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.firebase.ui.auth.AuthUI;
 import com.go4lunch2.ui.list_restaurants.ListRestaurantsFragment;
 import com.go4lunch2.ui.list_workmates.ListWorkmatesFragment;
-import com.go4lunch2.ui.loggin.LogInActivity;
+import com.go4lunch2.ui.login.LogInActivity;
 import com.go4lunch2.ui.map.MapsFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

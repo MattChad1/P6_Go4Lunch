@@ -53,6 +53,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
         binding.itemRestaurantName.setText(restaurant.getName());
         binding.itemRestaurantDesc1.setText(restaurant.getType() + "-" + restaurant.getAdress());
         binding.itemRestaurantDesc2.setText(restaurant.getOpeningHours());
+        binding.itemRestaurantDistance.setText(restaurant.getDistance());
 
         if (restaurant.getStarsCount()==null) {
             binding.itemRestaurantNumStars1.setVisibility(View.GONE);

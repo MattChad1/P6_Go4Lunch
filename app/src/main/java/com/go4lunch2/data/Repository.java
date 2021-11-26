@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.annimon.stream.Stream;
 import com.go4lunch2.BuildConfig;
 import com.go4lunch2.MyApplication;
+import com.go4lunch2.R;
 import com.go4lunch2.data.model.Rating;
 import com.go4lunch2.data.model.Restaurant;
 import com.go4lunch2.data.model.RestaurantCustomFields;
@@ -106,14 +107,14 @@ public class Repository {
         for (Restaurant r: allRestaurants) {
             if (r.getRcf().getAverageRate()!=null) Log.i(TAG, "getRestaurantsLiveData: " + r.toString());
         }
-
-
         restaurantsLiveData.setValue(allRestaurants);
         return restaurantsLiveData;
     }
 
+
+
     public RestaurantCustomFields getRestaurantCustomFields(String idRestaurant) {
-        final RestaurantCustomFields[] rcf = {new RestaurantCustomFields("Test", null, null)};
+        final RestaurantCustomFields[] rcf = new RestaurantCustomFields[1];
         DocumentReference docRef = db.collection("restaurants").document(idRestaurant);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 
@@ -134,8 +135,11 @@ public class Repository {
         });
 
         if (rcf[0] != null) Log.i(TAG, "getRestaurantCustomFields: " + rcf[0].getIdRestaurant() + rcf[0].getAverageRate());
+        else rcf[0] = new RestaurantCustomFields();
         return rcf[0];
     }
+
+
 
     public void addGrade(Rating rating) {// Create a new user with a first, middle, and last name
 
@@ -259,7 +263,7 @@ public class Repository {
 //                .build();
 
             PlacesAPI service = retrofit.create(PlacesAPI.class);
-            Call<Place> callAsync = service.getResults(latitude.toString(), longitude.toString());
+            Call<Place> callAsync = service.getResults(latitude.toString(), longitude.toString(), ctx.getString(R.string.google_maps_key));
 
             callAsync.enqueue(new Callback<Place>() {
                 @Override
@@ -276,6 +280,15 @@ public class Repository {
         }
         return results;
     }
+
+
+
+
+
+
+
+
+
 
     static public List<Workmate> FAKE_LIST_WORKMATES = new ArrayList<>(Arrays.asList(
             new Workmate("w1", "Bob", "a1.png", "ChIJ8znTVS5u5kcREq8TmzOICFs"),
