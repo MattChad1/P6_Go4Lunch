@@ -7,6 +7,8 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.annimon.stream.IntStream;
+import com.annimon.stream.OptionalInt;
 import com.annimon.stream.Stream;
 import com.go4lunch2.BuildConfig;
 import com.go4lunch2.MyApplication;
@@ -61,23 +63,61 @@ public class Repository {
     List<Workmate> allWorkmates = FAKE_LIST_WORKMATES;
 
     public MutableLiveData<List<Restaurant>> getRestaurantsLiveData() {
-        allRestaurants.clear();
         List<Result> results = getPlacesAPI(48.856614, 2.3522219);
 
         for (Result result : results) {
-            RestaurantCustomFields restaurantCustomFields = getRestaurantCustomFields(result.getPlaceId());
-            allRestaurants.add(new Restaurant(
-                    result.getPlaceId(),
-                    result.getName(),
-                    "", //TODO : image from Places.API?
-                    "", //TODO : type from Places.API?
-                    result.getOpeningHours() != null ? result.getOpeningHours().getOpenNow() : "",
-                    //TODO : voir comment récupérer la chaîne avec les horaires
-                    result.getVicinity(),
-                    result.getGeometry().location.lat,
-                    result.getGeometry().location.getLng(),
-                    restaurantCustomFields
-            ));
+            //RestaurantCustomFields restaurantCustomFields = getRestaurantCustomFields(result.getPlaceId());
+
+            DocumentReference docRef = db.collection("restaurants").document(result.getPlaceId());
+
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        RestaurantCustomFields rcf;
+                        if (document.exists()) {
+                            rcf = document.toObject(RestaurantCustomFields.class);
+                            Log.i(TAG, "onComplete: " + rcf.getIdRestaurant() + "=>" + rcf.getAverageRate());
+                        }
+
+                        // Si document n'existe pas dans la base, création
+                        else {
+
+                            rcf = new RestaurantCustomFields();
+                            Map<String, Object> data = new HashMap<>();
+                            data.put("idRestaurant", result.getPlaceId());
+                            data.put("averageRate", null);
+                            data.put("workmatesInterestedIds", new ArrayList<String>());
+
+                            db.collection("restaurants").document(result.getPlaceId())
+                                    .set(data);
+                            Log.i(TAG, "onComplete!!: " + rcf.getIdRestaurant() + "=>" + rcf.getAverageRate());
+                        }
+
+                        allRestaurants.add(new Restaurant(
+                                result.getPlaceId(),
+                                result.getName(),
+                                "", //TODO : image from Places.API?
+                                "", //TODO : type from Places.API?
+                                result.getOpeningHours() != null ? result.getOpeningHours().getOpenNow() : "",
+                                //TODO : voir comment récupérer la chaîne avec les horaires
+                                result.getVicinity(),
+                                result.getGeometry().location.lat,
+                                result.getGeometry().location.getLng(),
+                                rcf
+                        ));
+
+                        restaurantsLiveData.setValue(allRestaurants);
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w(TAG, "Error", e);
+                }
+            });
 
             db.collection("restaurants")
                     .document(result.getPlaceId())
@@ -104,42 +144,37 @@ public class Repository {
                     });
         }
 
-        for (Restaurant r: allRestaurants) {
-            if (r.getRcf().getAverageRate()!=null) Log.i(TAG, "getRestaurantsLiveData: " + r.toString());
+        for (Restaurant r : allRestaurants) {
+            if (r.getRcf().getAverageRate() != null) Log.i(TAG, "getRestaurantsLiveData: " + r.toString());
         }
-        restaurantsLiveData.setValue(allRestaurants);
         return restaurantsLiveData;
     }
 
-
-
-    public RestaurantCustomFields getRestaurantCustomFields(String idRestaurant) {
-        final RestaurantCustomFields[] rcf = new RestaurantCustomFields[1];
-        DocumentReference docRef = db.collection("restaurants").document(idRestaurant);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        rcf[0] = document.toObject(RestaurantCustomFields.class);
-                    }
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.w(TAG, "Error", e);
-            }
-        });
-
-        if (rcf[0] != null) Log.i(TAG, "getRestaurantCustomFields: " + rcf[0].getIdRestaurant() + rcf[0].getAverageRate());
-        else rcf[0] = new RestaurantCustomFields();
-        return rcf[0];
-    }
-
-
+//    public RestaurantCustomFields getRestaurantCustomFields(String idRestaurant) {
+//        final RestaurantCustomFields[] rcf = new RestaurantCustomFields[1];
+//        DocumentReference docRef = db.collection("restaurants").document(idRestaurant);
+//        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    DocumentSnapshot document = task.getResult();
+//                    if (document.exists()) {
+//                        rcf[0] = document.toObject(RestaurantCustomFields.class);
+//                    }
+//                }
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                Log.w(TAG, "Error", e);
+//            }
+//        });
+//
+//        if (rcf[0] != null) Log.i(TAG, "getRestaurantCustomFields: " + rcf[0].getIdRestaurant() + rcf[0].getAverageRate());
+//        else rcf[0] = new RestaurantCustomFields();
+//        return rcf[0];
+//    }
 
     public void addGrade(Rating rating) {// Create a new user with a first, middle, and last name
 
@@ -199,7 +234,6 @@ public class Repository {
                         double average = 0.0;
                         if (count[0] > 0) {
                             average = total[0] / count[0];
-
                             db.collection("restaurants").document(idRestaurant)
                                     .update("averageRate", average);
                         }
@@ -220,16 +254,14 @@ public class Repository {
     }
 
     public List<Workmate> getListWorkmatesByIds(List<String> ids) {
-        if (ids==null) return null;
+        if (ids == null) return null;
         else return Stream.of(allWorkmates)
                 .filter(workmate -> ids.contains(workmate.getId()))
                 .toList();
     }
 
     private List<Result> getPlacesAPI(Double latitude, Double longitude) {
-
         List<Result> results = new ArrayList<>();
-
         if (BuildConfig.DEBUG) {
             try {
                 AssetManager am = ctx.getAssets();
@@ -244,7 +276,6 @@ public class Repository {
         }
 
         else {
-
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
             logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
             OkHttpClient client = new OkHttpClient.Builder()
@@ -263,32 +294,28 @@ public class Repository {
 //                .build();
 
             PlacesAPI service = retrofit.create(PlacesAPI.class);
-            Call<Place> callAsync = service.getResults(latitude.toString(), longitude.toString(), ctx.getString(R.string.google_maps_key));
+            Call<Place> callAsync = service.getResults(latitude.toString() + "," + longitude.toString(), "1500", "restaurant",
+                                                       ctx.getString(R.string.google_maps_key22));
 
             callAsync.enqueue(new Callback<Place>() {
                 @Override
                 public void onResponse(Call<Place> call, Response<Place> response) {
-                    Log.i("Test retrofit", "onResponse: " + response.body());
+                    Log.i("Test retrofit", "Repository - onResponse: " + response.body());
                     results.addAll(response.body().getResults());
+                    Log.i(TAG, "onResponse: Résults" + results.toString());
                 }
 
                 @Override
                 public void onFailure(Call<Place> call, Throwable t) {
+
+                    Log.i(TAG, "Repository - onFailure: " + t);
                     System.out.println(t);
                 }
             });
         }
+
         return results;
     }
-
-
-
-
-
-
-
-
-
 
     static public List<Workmate> FAKE_LIST_WORKMATES = new ArrayList<>(Arrays.asList(
             new Workmate("w1", "Bob", "a1.png", "ChIJ8znTVS5u5kcREq8TmzOICFs"),

@@ -2,10 +2,12 @@ package com.go4lunch2.ui.list_restaurants;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,23 +16,19 @@ import com.go4lunch2.R;
 import com.go4lunch2.databinding.ItemRestaurantBinding;
 import com.go4lunch2.ui.detail_restaurant.DetailRestaurantActivity;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.ViewHolder> {
 
+    String TAG = "MyLog RestaurantsAdapter";
     Context ctx;
     private final List<RestaurantViewState> listRestaurants;
     ItemRestaurantBinding binding;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-
-
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
         }
     }
 
@@ -43,31 +41,31 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         binding = ItemRestaurantBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false);
-    View view = binding.getRoot();
-        return new ViewHolder(view);
+        return new ViewHolder(binding.getRoot());
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Log.i(TAG, "onBindViewHolder: ");
+        View v = holder.itemView;
         RestaurantViewState restaurant = listRestaurants.get(position);
-        binding.itemRestaurantName.setText(restaurant.getName());
-        binding.itemRestaurantDesc1.setText(restaurant.getType() + "-" + restaurant.getAdress());
-        binding.itemRestaurantDesc2.setText(restaurant.getOpeningHours());
-        binding.itemRestaurantDistance.setText(restaurant.getDistance());
+        ((TextView) v.findViewById(R.id.item_restaurant_name)).setText(restaurant.getName());
+        ((TextView) v.findViewById(R.id.item_restaurant_desc1)).setText(restaurant.getType() + "-" + restaurant.getAdress());
+        ((TextView) v.findViewById(R.id.item_restaurant_desc2)).setText(restaurant.getOpeningHours());
+        ((TextView) v.findViewById(R.id.item_restaurant_distance)).setText(restaurant.getDistance());
 
-        if (restaurant.getStarsCount()==null) {
-            binding.itemRestaurantNumStars1.setVisibility(View.GONE);
-            binding.itemRestaurantNumStars2.setVisibility(View.GONE);
-            binding.itemRestaurantNumStars3.setVisibility(View.GONE);
-
+        if (restaurant.getStarsCount() == null) {
+            v.findViewById(R.id.item_restaurant_num_stars1).setVisibility(View.GONE);
+            v.findViewById(R.id.item_restaurant_num_stars2).setVisibility(View.GONE);
+            v.findViewById(R.id.item_restaurant_num_stars3).setVisibility(View.GONE);
         }
-        else{
-            if (restaurant.getStarsCount() == 0.5) binding.itemRestaurantNumStars1.setImageDrawable(ctx.getDrawable(R.drawable.ic_star_half));
-            else if (restaurant.getStarsCount() > 0.5) binding.itemRestaurantNumStars1.setImageDrawable(ctx.getDrawable(R.drawable.ic_star_filled));
-            if (restaurant.getStarsCount() == 1.5) binding.itemRestaurantNumStars2.setImageDrawable(ctx.getDrawable(R.drawable.ic_star_half));
-            else if (restaurant.getStarsCount() > 1.5) binding.itemRestaurantNumStars2.setImageDrawable(ctx.getDrawable(R.drawable.ic_star_filled));
-            if (restaurant.getStarsCount() == 2.5) binding.itemRestaurantNumStars3.setImageDrawable(ctx.getDrawable(R.drawable.ic_star_half));
-            else if (restaurant.getStarsCount() > 2.5) binding.itemRestaurantNumStars3.setImageDrawable(ctx.getDrawable(R.drawable.ic_star_filled));
+        else {
+            if (restaurant.getStarsCount() == 0.5) ((ImageView) v.findViewById(R.id.item_restaurant_num_stars1)).setImageDrawable(ctx.getDrawable(R.drawable.ic_star_half));
+            else if (restaurant.getStarsCount() > 0.5) ((ImageView) v.findViewById(R.id.item_restaurant_num_stars1)).setImageDrawable(ctx.getDrawable(R.drawable.ic_star_filled));
+            if (restaurant.getStarsCount() == 1.5) ((ImageView) v.findViewById(R.id.item_restaurant_num_stars2)).setImageDrawable(ctx.getDrawable(R.drawable.ic_star_half));
+            else if (restaurant.getStarsCount() > 1.5) ((ImageView) v.findViewById(R.id.item_restaurant_num_stars2)).setImageDrawable(ctx.getDrawable(R.drawable.ic_star_filled));
+            if (restaurant.getStarsCount() == 2.5) ((ImageView) v.findViewById(R.id.item_restaurant_num_stars3)).setImageDrawable(ctx.getDrawable(R.drawable.ic_star_half));
+            else if (restaurant.getStarsCount() > 2.5) ((ImageView) v.findViewById(R.id.item_restaurant_num_stars3)).setImageDrawable(ctx.getDrawable(R.drawable.ic_star_filled));
         }
 
 //        try {
@@ -79,15 +77,12 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
 //            return; // TODO:ajouter image par défaut
 //        }
 
-        holder.itemView.setOnClickListener(v -> {
+        v.setOnClickListener(view -> {
             Intent intent = new Intent(ctx, DetailRestaurantActivity.class);
             intent.putExtra(DetailRestaurantActivity.RESTAURANT_SELECTED, restaurant.getId());
             ctx.startActivity(intent);
         });
-
-
     }
-
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override

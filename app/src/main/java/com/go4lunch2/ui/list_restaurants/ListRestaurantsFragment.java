@@ -1,6 +1,7 @@
 package com.go4lunch2.ui.list_restaurants;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import java.util.List;
 
 public class ListRestaurantsFragment extends Fragment {
 
+    String TAG = "MyLog ListRestaurantsFragment";
     FragmentListRestaurantsBinding binding;
     ListRestaurantsViewModel vm;
 
@@ -54,6 +56,7 @@ public class ListRestaurantsFragment extends Fragment {
         rv.setAdapter(adapter);
 
         vm.getAllRestaurantsViewStateLiveData().observe(getViewLifecycleOwner(), listRestaurants -> {
+            Log.i(TAG, "onCreateView: ListRestaurantsFragment");
             datas.clear();
             datas.addAll(listRestaurants);
             adapter.notifyDataSetChanged();

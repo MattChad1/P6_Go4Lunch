@@ -4,7 +4,8 @@
 
     <string name="facebook_app_id">311473977462820</string>
     <string name="fb_login_protocol_scheme">fb311473977462820</string>
-    <string name="google_maps_key">AIzaSyDPT3z_nIFl7aRVa9x8NCqY1nR4gED7gjY</string>
+    <string name="google_maps_key">AIzaSyDUgzpnzy73hWZYbH24UO0_Pkfoks3bdBE</string>
+    <string name="google_maps_key22">AIzaSyDUgzpnzy73hWZYbH24UO0_Pkfoks3bdBE</string>
 
 
     // Navigation
