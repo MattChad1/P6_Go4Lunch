@@ -1,5 +1,7 @@
 package com.go4lunch2.ui.map;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
@@ -8,12 +10,14 @@ import androidx.lifecycle.ViewModel;
 import com.go4lunch2.Utils.Utils;
 import com.go4lunch2.data.Repository;
 import com.go4lunch2.data.model.Restaurant;
+import com.go4lunch2.ui.list_restaurants.RestaurantViewState;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MapsViewModel extends ViewModel {
 
+    String TAG = "MyLog MapsViewModel";
     Repository repository;
     MutableLiveData<List<MapsStateItem>> markersLiveData = new MutableLiveData<>();
 
@@ -36,7 +40,11 @@ public class MapsViewModel extends ViewModel {
                                    ));
             }
 
-            markersLiveData.setValue(mapsStateItems);
+            for (MapsStateItem r : mapsStateItems) {
+                Log.i(TAG, r.getName() + "=>" + r.getWorkmatesCount());
+            }
+
+            //markersLiveData.setValue(mapsStateItems);
             return mapsStateItems;
         });
     }

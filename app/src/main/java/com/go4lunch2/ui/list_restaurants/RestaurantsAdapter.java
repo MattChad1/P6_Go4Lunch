@@ -46,7 +46,6 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Log.i(TAG, "onBindViewHolder: ");
         View v = holder.itemView;
         RestaurantViewState restaurant = listRestaurants.get(position);
         ((TextView) v.findViewById(R.id.item_restaurant_name)).setText(restaurant.getName());

@@ -56,7 +56,6 @@ public class ListRestaurantsFragment extends Fragment {
         rv.setAdapter(adapter);
 
         vm.getAllRestaurantsViewStateLiveData().observe(getViewLifecycleOwner(), listRestaurants -> {
-            Log.i(TAG, "onCreateView: ListRestaurantsFragment");
             datas.clear();
             datas.addAll(listRestaurants);
             adapter.notifyDataSetChanged();

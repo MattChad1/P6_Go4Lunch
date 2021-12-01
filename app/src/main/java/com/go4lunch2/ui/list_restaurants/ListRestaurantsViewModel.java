@@ -54,7 +54,7 @@ public class ListRestaurantsViewModel extends ViewModel {
     public LiveData<List<RestaurantViewState>> getAllRestaurantsViewStateLiveData() {
         return Transformations.map(repository.getRestaurantsLiveData(), restaurantsList -> {
             List<RestaurantViewState> restaurantViewStates = new ArrayList<>();
-            Log.i(TAG, "getAllRestaurantsViewStateLiveData: ");
+            Log.i(TAG, "Appel getAllRestaurantsViewStateLiveData");
             List<String> ids = new ArrayList<>();
             for (Restaurant r : restaurantsList) ids.add(r.getId());
             Map<String, String> mapDistance = getDistancesAPI(48.856614, 2.3522219, ids);
@@ -75,7 +75,6 @@ public class ListRestaurantsViewModel extends ViewModel {
                                         );
             }
 
-            allRestaurantsLiveData.setValue(restaurantViewStates);
             return restaurantViewStates;
         });
     }
@@ -144,6 +143,10 @@ public class ListRestaurantsViewModel extends ViewModel {
             } catch (NullPointerException e) {
                 Log.i(TAG, "Erreur : " + destinations.get(i));
                 mapResult.put(destinations.get(i), "");
+            }
+            catch (IndexOutOfBoundsException e) {
+                Log.i(TAG, "Erreur getDistancesAPI: " + destinations.get(i));
+
             }
         }
 
