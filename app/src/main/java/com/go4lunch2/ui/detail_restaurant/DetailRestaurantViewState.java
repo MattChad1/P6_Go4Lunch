@@ -15,9 +15,11 @@ public class DetailRestaurantViewState {
     Double starsCount;
     List<Workmate> workmatesInterested;
     String image;
+    String phone;
+    String website;
 
     public DetailRestaurantViewState(String id, String name, String type, String adress, String openingHours, String distance,
-                                     Double starsCount, List<Workmate> workmatesInterested, String image) {
+                                     Double starsCount, List<Workmate> workmatesInterested, String image, String phone, String website) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -27,6 +29,8 @@ public class DetailRestaurantViewState {
         this.starsCount = starsCount;
         this.workmatesInterested = workmatesInterested;
         this.image = image;
+        this.phone = phone;
+        this.website = website;
     }
 
     public String getId() {
@@ -63,5 +67,13 @@ public class DetailRestaurantViewState {
 
     public String getImage() {
         return image;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getWebsite() {
+        return website;
     }
 }

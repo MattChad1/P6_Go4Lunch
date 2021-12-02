@@ -29,6 +29,8 @@
 
     //All
     <string name="num_workmates">(%d)</string>
+    <string name="open">Open</string>
+    <string name="closed">Closed</string>
 
 
 
@@ -41,11 +43,15 @@
 
     //Detail activity
     <string name="give_rate">What do you think of this restaurant?</string>
+    <string name="no_phone">No phone number registered</string>
+    <string name="no_website">No website registered</string>
     <string-array name="rates">
         <item>Just correct</item>
         <item>Good</item>
         <item>Wonderful</item>
     </string-array>
+
+
 
 
     //Permissions

@@ -66,8 +66,8 @@ public class ListRestaurantsViewModel extends ViewModel {
                                                  r.getName(),
                                                  r.getType(),
                                                  r.getAdress(),
-                                                 r.getOpeningTime(),
-                                                mapDistance.get(r.getId()),
+                                                 (r.getOpeningTime()=="true")? ctx.getString(R.string.open) : ctx.getString(R.string.closed),
+                                                 mapDistance.get(r.getId()),
                                                  Utils.ratingToStars(r.getRcf().getAverageRate()),
                                                  r.getRcf().getWorkmatesInterestedIds() == null ? 0 : r.getRcf().getWorkmatesInterestedIds().size(),
                                                  r.getImage()

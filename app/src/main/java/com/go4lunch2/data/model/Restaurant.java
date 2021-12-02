@@ -1,13 +1,7 @@
 package com.go4lunch2.data.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Restaurant {
     @NonNull String id;
@@ -24,6 +18,25 @@ public class Restaurant {
     // champs custom
     @NonNull RestaurantCustomFields rcf;
 
+    // champs contacts
+    @NonNull RestaurantDetails restaurantDetails;
+
+    public Restaurant(@NonNull String id, @NonNull String name, @Nullable String image, @Nullable String type, @Nullable String openingTime,
+                      @NonNull String adress, @NonNull Double latitude, @NonNull Double longitude, @NonNull RestaurantCustomFields rcf, @NonNull RestaurantDetails restaurantDetails) {
+
+
+        this.id = id;
+        this.name = name;
+        this.image = image;
+        this.type = type;
+        this.openingTime = openingTime;
+        this.adress = adress;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.rcf = rcf;
+        this.restaurantDetails = restaurantDetails;
+    }
+
     public Restaurant(@NonNull String id, @NonNull String name, @Nullable String image, @Nullable String type, @Nullable String openingTime,
                       @NonNull String adress, @NonNull Double latitude, @NonNull Double longitude, @NonNull RestaurantCustomFields rcf) {
 
@@ -37,6 +50,7 @@ public class Restaurant {
         this.latitude = latitude;
         this.longitude = longitude;
         this.rcf = rcf;
+        this.restaurantDetails = new RestaurantDetails();
     }
 
     @NonNull
@@ -114,6 +128,15 @@ public class Restaurant {
     @NonNull
     public RestaurantCustomFields getRcf() {
         return rcf;
+    }
+
+    @NonNull
+    public RestaurantDetails getRestaurantDetails() {
+        return restaurantDetails;
+    }
+
+    public void setRestaurantDetails(@NonNull RestaurantDetails restaurantDetails) {
+        this.restaurantDetails = restaurantDetails;
     }
 
     @Override

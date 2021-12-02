@@ -2,6 +2,10 @@ package com.go4lunch2.ui.detail_restaurant;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -67,7 +72,36 @@ public class DetailRestaurantActivity extends AppCompatActivity {
 //                return;
 //            }
 
+            if (restaurant.getPhone()!=null && !restaurant.getPhone().isEmpty()) {
+                binding.buttonCall.setEnabled(true);
+                binding.buttonCall.setOnClickListener(v -> {
+                    Intent i = new Intent(Intent.ACTION_DIAL);
+                    i.setData(Uri.parse("tel:" + restaurant.getPhone()));
+                    startActivity(i);
+                });
+            }
+            else {
+                binding.buttonCall.setEnabled(false);
+                //binding.buttonCall.setIconTint(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.light_grey)));
+                //binding.buttonCall.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.light_grey)));
+            }
+
             binding.buttonRate.setOnClickListener(v -> createAlertGrade());
+
+            if (restaurant.getWebsite()!=null && !restaurant.getWebsite().isEmpty()) {
+                binding.buttonWebsite.setEnabled(true);
+                binding.buttonWebsite.setOnClickListener(v -> {
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse( restaurant.getWebsite()));
+                    startActivity(i);
+
+                });
+            }
+            else {
+                binding.buttonWebsite.setEnabled(false);
+            }
+
+
 
             if (restaurant.workmatesInterested!=null) {
                 rv = binding.rvListWorkmatesForOneRestaurant;
@@ -78,12 +112,6 @@ public class DetailRestaurantActivity extends AppCompatActivity {
             }
         }
         });
-
-
-
-
-
-
 
     }
 
