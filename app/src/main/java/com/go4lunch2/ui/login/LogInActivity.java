@@ -127,14 +127,14 @@ public class LogInActivity extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         SignInButton signInButton = findViewById(R.id.login_button_google);
-        for (int i = 0; i < signInButton.getChildCount(); i++) {
-            View v = signInButton.getChildAt(i);
-            if (v instanceof TextView) {
-                TextView tv = (TextView) v;
-                tv.setPadding(0, 8, 0, 0);
-                return;
-            }
-        }
+//        for (int i = 0; i < signInButton.getChildCount(); i++) {
+//            View v = signInButton.getChildAt(i);
+//            if (v instanceof TextView) {
+//                TextView tv = (TextView) v;
+//                tv.setPadding(0, 8, 0, 0);
+//                return;
+//            }
+//        }
 
         signInButton.setOnClickListener(v -> signIn());
 
