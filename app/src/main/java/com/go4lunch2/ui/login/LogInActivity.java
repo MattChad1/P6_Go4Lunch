@@ -13,6 +13,7 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.go4lunch2.R;
@@ -26,6 +27,7 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
@@ -33,11 +35,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+
 import java.util.Arrays;
 
 public class LogInActivity extends AppCompatActivity {
 
-    private String TAG = "LoginActivity";
+    private String TAG = "MyLog LogInActivity";
 
     private ActivityLogInBinding binding;
 
@@ -54,6 +59,8 @@ public class LogInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
 
+        mCallbackManager = CallbackManager.Factory.create();
+
 //        try {
 //            PackageInfo info = getPackageManager().getPackageInfo("com.go4lunch2", PackageManager.GET_SIGNATURES);
 //            for (Signature signature : info.signatures) {
@@ -66,7 +73,7 @@ public class LogInActivity extends AppCompatActivity {
 //        } catch (NoSuchAlgorithmException e) {
 //            Log.i("KeyHash:", "Exception 2");
 //        }
-
+        FacebookSdk.sdkInitialize(getApplicationContext());
 
         binding = ActivityLogInBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
@@ -100,26 +107,31 @@ public class LogInActivity extends AppCompatActivity {
         });
 
         // Initialize Facebook Login button
-       mCallbackManager = CallbackManager.Factory.create();
-        LoginButton loginButton = binding.loginButtonFacebook;
-        loginButton.setReadPermissions(Arrays.asList(
-                "public_profile", "email"));
 
-        loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+        LoginButton loginButton = binding.loginButtonFacebook;
+//        loginButton.setReadPermissions(Arrays.asList(
+//                "public_profile", "email"));
+
+        LoginManager.getInstance()
+                .logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
+
+      loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+//        LoginManager.getInstance().registerCallback(mCallbackManager,
+//                                                    new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Log.d("LoginActivity", "facebook:onSuccess:" + loginResult);
+                Log.i(TAG, "facebook:onSuccess:" + loginResult);
                 handleFacebookAccessToken(loginResult.getAccessToken());
             }
 
             @Override
             public void onCancel() {
-                Log.d("LoginActivity", "facebook:onCancel");
+                Log.i(TAG, "facebook:onCancel");
             }
 
             @Override
             public void onError(FacebookException error) {
-                Log.d("LoginActivity", "facebook:onError", error);
+                Log.i(TAG, "facebook:onError", error);
             }
         });
 
@@ -143,11 +155,11 @@ public class LogInActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-
+        Log.i(TAG, "onActivityResult: ");
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
+            Log.i(TAG, "onActivityResult: requestCode == RC_SIGN_IN");
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 // Google Sign In was successful, authenticate with Firebase
@@ -159,7 +171,11 @@ public class LogInActivity extends AppCompatActivity {
                 Log.w(TAG, "Google sign in failed", e);
             }
         }
-        else mCallbackManager.onActivityResult(requestCode, resultCode, data);
+        else {
+            mCallbackManager.onActivityResult(requestCode, resultCode, data);
+            Log.i(TAG, "onActivityResult: requestCode != RC_SIGN_IN (else)");
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     private void firebaseAuthWithGoogle(String idToken) {
@@ -208,7 +224,7 @@ public class LogInActivity extends AppCompatActivity {
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
-           //Snackbar.make(binding.mainLayout, "Vous êtes connecté : " + user.getEmail() + user.getUid(), Snackbar.LENGTH_SHORT).show();
+           Snackbar.make(binding.mainLayout, "Vous êtes connecté : " + user.getEmail() + user.getUid(), Snackbar.LENGTH_SHORT).show();
             if (!user.isAnonymous()) startActivity(new Intent(this, MainActivity.class));
         }
     }
