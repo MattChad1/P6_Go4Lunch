@@ -81,7 +81,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (user!=null) { //TODO : supprimer le if car user ne peut pas être null ici (connecté)
             TextView tvMailUser = binding.navigationDrawer.findViewById(R.id.nav_drawer_tv_email);
-            tvMailUser.setText(user.getEmail());
+            //tvMailUser.setText(user.getEmail());
+            Toast.makeText(this, "Vous êtes connecté !!!!", Toast.LENGTH_SHORT).show();
         }
 
         binding.navigationDrawer.setNavigationItemSelectedListener ( menuItem -> {

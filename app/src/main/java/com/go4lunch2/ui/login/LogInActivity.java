@@ -57,10 +57,10 @@ public class LogInActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAuth = FirebaseAuth.getInstance();
 
+        FacebookSdk.sdkInitialize(getApplicationContext());
         mCallbackManager = CallbackManager.Factory.create();
-
+        mAuth = FirebaseAuth.getInstance();
 //        try {
 //            PackageInfo info = getPackageManager().getPackageInfo("com.go4lunch2", PackageManager.GET_SIGNATURES);
 //            for (Signature signature : info.signatures) {
@@ -73,47 +73,29 @@ public class LogInActivity extends AppCompatActivity {
 //        } catch (NoSuchAlgorithmException e) {
 //            Log.i("KeyHash:", "Exception 2");
 //        }
-        FacebookSdk.sdkInitialize(getApplicationContext());
+
 
         binding = ActivityLogInBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 
-
-
-        // Configure Google Sign In
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-        SignInButton signInButton = binding.loginButtonGoogle;
-        for (int i = 0; i < signInButton.getChildCount(); i++) {
-            View v = signInButton.getChildAt(i);
-            if (v instanceof TextView) {
-                TextView tv = (TextView) v;
-                tv.setPadding(0, 8, 0, 0);
-                return;
-            }
-        }
-
-        signInButton.setOnClickListener(v -> signIn());
-
-
         binding.tvLienMain.setOnClickListener(v -> {
+            Log.i(TAG, "onCreate: clic lien main");
             startActivity(new Intent(this, MainActivity.class));
         });
+        
+
+
+        
 
         // Initialize Facebook Login button
+        LoginButton loginButton = findViewById(R.id.login_button_facebook);
+        loginButton.setReadPermissions(Arrays.asList(
+                "public_profile", "email"));
 
-        LoginButton loginButton = binding.loginButtonFacebook;
-//        loginButton.setReadPermissions(Arrays.asList(
-//                "public_profile", "email"));
+//        LoginManager.getInstance()
+//                .logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
 
-        LoginManager.getInstance()
-                .logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
 
       loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
 //        LoginManager.getInstance().registerCallback(mCallbackManager,
@@ -136,6 +118,29 @@ public class LogInActivity extends AppCompatActivity {
         });
 
 
+        // Configure Google Sign In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        SignInButton signInButton = findViewById(R.id.login_button_google);
+        for (int i = 0; i < signInButton.getChildCount(); i++) {
+            View v = signInButton.getChildAt(i);
+            if (v instanceof TextView) {
+                TextView tv = (TextView) v;
+                tv.setPadding(0, 8, 0, 0);
+                return;
+            }
+        }
+
+        signInButton.setOnClickListener(v -> signIn());
+
+
+
+
     }
 
     // [START on_start_check_user]
@@ -155,7 +160,7 @@ public class LogInActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+        super.onActivityResult(requestCode, resultCode, data);
         Log.i(TAG, "onActivityResult: ");
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
@@ -174,7 +179,6 @@ public class LogInActivity extends AppCompatActivity {
         else {
             mCallbackManager.onActivityResult(requestCode, resultCode, data);
             Log.i(TAG, "onActivityResult: requestCode != RC_SIGN_IN (else)");
-            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
