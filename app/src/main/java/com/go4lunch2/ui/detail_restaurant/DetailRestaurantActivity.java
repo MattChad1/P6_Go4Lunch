@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -24,9 +26,13 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.go4lunch2.R;
 import com.go4lunch2.ViewModelFactory;
 import com.go4lunch2.databinding.ActivityDetailRestaurantBinding;
+
+import java.io.InputStream;
+import java.net.URL;
 
 public class DetailRestaurantActivity extends AppCompatActivity {
 
@@ -64,13 +70,23 @@ public class DetailRestaurantActivity extends AppCompatActivity {
             binding.restaurantDesc1.setText(restaurant.getType() + "-" + restaurant.getAdress());
 //TODO : if user has chosen this restaurant
             binding.fabRestaurantChosen.setColorFilter(this.getResources().getColor(R.color.green_select_fab));
-//            try {
-//                InputStream ims = this.getAssets().open(restaurant.getImage());
-//                binding.restaurantImage.setImageDrawable(Drawable.createFromStream(ims, null));
-//                ims.close();
-//            } catch (IOException ex) {
-//                return;
-//            }
+
+            if (restaurant.getImage()!=null)
+                Glide.with(this).load(Uri.parse(restaurant.getImage())).into(binding.restaurantImage);
+
+            if (restaurant.getStarsCount() == null) {
+                binding.ivDetailStar1.setVisibility(View.GONE);
+                binding.ivDetailStar2.setVisibility(View.GONE);
+                binding.ivDetailStar3.setVisibility(View.GONE);
+            }
+            else {
+                if (restaurant.getStarsCount() == 0.5) binding.ivDetailStar1.setImageDrawable(getDrawable(R.drawable.ic_star_half));
+                else if (restaurant.getStarsCount() > 0.5) binding.ivDetailStar1.setImageDrawable(getDrawable(R.drawable.ic_star_filled));
+                if (restaurant.getStarsCount() == 1.5) binding.ivDetailStar2.setImageDrawable(getDrawable(R.drawable.ic_star_half));
+                else if (restaurant.getStarsCount() > 1.5) binding.ivDetailStar2.setImageDrawable(getDrawable(R.drawable.ic_star_filled));
+                if (restaurant.getStarsCount() == 2.5) binding.ivDetailStar3.setImageDrawable(getDrawable(R.drawable.ic_star_half));
+                else if (restaurant.getStarsCount() > 2.5) binding.ivDetailStar3.setImageDrawable(getDrawable(R.drawable.ic_star_filled));
+            }
 
             if (restaurant.getPhone()!=null && !restaurant.getPhone().isEmpty()) {
                 binding.buttonCall.setEnabled(true);
@@ -135,5 +151,7 @@ public class DetailRestaurantActivity extends AppCompatActivity {
                 .create();
         dialog.show();
     }
+
+
 
 }

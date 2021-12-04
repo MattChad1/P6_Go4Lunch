@@ -36,13 +36,30 @@
             tools:text="Le Zinc" />
 
         <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_detail_star1"
             android:layout_width="wrap_content"
             android:layout_height="18dp"
             android:layout_marginStart="15dp"
-            android:src="@drawable/ic_star_filled"
-
-
+            android:src="@drawable/ic_star_empty"
             app:layout_constraintLeft_toRightOf="@id/restaurant_name"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/yellow" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_detail_star2"
+            android:layout_width="wrap_content"
+            android:layout_height="18dp"
+            android:src="@drawable/ic_star_empty"
+            app:layout_constraintLeft_toRightOf="@id/iv_detail_star1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/yellow" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_detail_star3"
+            android:layout_width="wrap_content"
+            android:layout_height="18dp"
+            android:src="@drawable/ic_star_empty"
+            app:layout_constraintLeft_toRightOf="@id/iv_detail_star2"
             app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/yellow" />
 

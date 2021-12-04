@@ -28,6 +28,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DetailRestaurantViewModel extends ViewModel {
 
+    String TAG = "MyLog DetailRestaurantViewModel";
     Repository repository;
     MutableLiveData<DetailRestaurantViewState> restaurantSelectedLiveData = new MutableLiveData<>();
     Context ctx = MyApplication.getInstance();
@@ -88,6 +89,13 @@ public class DetailRestaurantViewModel extends ViewModel {
                 String phone = response.body().getResult().getInternationalPhoneNumber();
                 String website = response.body().getResult().getWebsite();
 
+                String image =
+                        "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400"
+                        + "&photo_reference=" + response.body().getResult().getPhotos().get(0).getPhotoReference()
+                        + "&key=" + ctx.getString(R.string.google_maps_key22);
+
+                Log.i(TAG, "onResponse: " + image);
+
                 DetailRestaurantViewState restaurantViewStateUpdated = new DetailRestaurantViewState(
                         r.getId(),
                         r.getName(),
@@ -97,7 +105,7 @@ public class DetailRestaurantViewModel extends ViewModel {
                         r.getDistance(),
                         r.starsCount,
                         r.getWorkmatesInterested(),
-                        r.getImage(),
+                        image,
                         phone,
                         website
                 );
