@@ -1,5 +1,8 @@
 package com.go4lunch2.ui.login;
 
+import static com.go4lunch2.BaseActivity.currentUser;
+import static com.go4lunch2.BaseActivity.mAuth;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +11,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -16,9 +21,12 @@ import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.go4lunch2.BaseActivity;
 import com.go4lunch2.R;
+import com.go4lunch2.ViewModelFactory;
 import com.go4lunch2.databinding.ActivityLogInBinding;
 import com.go4lunch2.ui.MainActivity;
+import com.go4lunch2.ui.list_restaurants.ListRestaurantsViewModel;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -40,7 +48,7 @@ import com.facebook.appevents.AppEventsLogger;
 
 import java.util.Arrays;
 
-public class LogInActivity extends AppCompatActivity {
+public class LogInActivity extends BaseActivity {
 
     private String TAG = "MyLog LogInActivity";
 
@@ -49,8 +57,9 @@ public class LogInActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 94201;
     private GoogleSignInClient mGoogleSignInClient;
 
-    private FirebaseAuth mAuth;
+//    private FirebaseAuth mAuth;
     private CallbackManager mCallbackManager;
+    private LogInViewModel vm;
 
 
 
@@ -58,9 +67,10 @@ public class LogInActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        vm = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(LogInViewModel.class);
         FacebookSdk.sdkInitialize(getApplicationContext());
         mCallbackManager = CallbackManager.Factory.create();
-        mAuth = FirebaseAuth.getInstance();
+//        mAuth = FirebaseAuth.getInstance();
 //        try {
 //            PackageInfo info = getPackageManager().getPackageInfo("com.go4lunch2", PackageManager.GET_SIGNATURES);
 //            for (Signature signature : info.signatures) {
@@ -93,13 +103,8 @@ public class LogInActivity extends AppCompatActivity {
         loginButton.setReadPermissions(Arrays.asList(
                 "public_profile", "email"));
 
-//        LoginManager.getInstance()
-//                .logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
-
 
       loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-//        LoginManager.getInstance().registerCallback(mCallbackManager,
-//                                                    new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.i(TAG, "facebook:onSuccess:" + loginResult);
@@ -148,7 +153,6 @@ public class LogInActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
     }
     // [END on_start_check_user]
@@ -164,7 +168,6 @@ public class LogInActivity extends AppCompatActivity {
         Log.i(TAG, "onActivityResult: ");
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
-            Log.i(TAG, "onActivityResult: requestCode == RC_SIGN_IN");
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 // Google Sign In was successful, authenticate with Firebase
@@ -178,7 +181,6 @@ public class LogInActivity extends AppCompatActivity {
         }
         else {
             mCallbackManager.onActivityResult(requestCode, resultCode, data);
-            Log.i(TAG, "onActivityResult: requestCode != RC_SIGN_IN (else)");
         }
     }
 
@@ -227,9 +229,9 @@ public class LogInActivity extends AppCompatActivity {
 
 
     private void updateUI(FirebaseUser user) {
-        if (user != null) {
-           Snackbar.make(binding.mainLayout, "Vous êtes connecté : " + user.getEmail() + user.getUid(), Snackbar.LENGTH_SHORT).show();
-            if (!user.isAnonymous()) startActivity(new Intent(this, MainActivity.class));
+        if (user != null && !user.isAnonymous()) {
+            vm.createUser(user.getUid(), user.getDisplayName(), user.getPhotoUrl().toString());
+            startActivity(new Intent(this, MainActivity.class));
         }
     }
 }

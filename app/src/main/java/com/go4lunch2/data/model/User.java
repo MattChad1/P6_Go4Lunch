@@ -3,21 +3,35 @@ package com.go4lunch2.data.model;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class Workmate {
+public class User {
     @NonNull
     String id;
-    @NonNull
+    @Nullable
     String name;
     @Nullable
     String avatar;
     @Nullable
     String idRestaurantChosen;
 
-    public Workmate(@NonNull String id, @NonNull String name, @Nullable String avatar, String idRestaurantChosen) {
+    public User(@NonNull String id, @NonNull String name, @Nullable String avatar, String idRestaurantChosen) {
         this.id = id;
         this.name = name;
         this.avatar = avatar;
         this.idRestaurantChosen = idRestaurantChosen;
+    }
+
+    public User(@NonNull String id) {
+        this.id = id;
+        this.name = null;
+        this.avatar = null;
+        this.idRestaurantChosen = null;
+    }
+
+    public User() {
+        this.id = "Error";
+        this.name = null;
+        this.avatar = null;
+        this.idRestaurantChosen = null;
     }
 
 

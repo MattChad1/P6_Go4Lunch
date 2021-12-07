@@ -8,9 +8,8 @@ import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import com.go4lunch2.Utils.Utils;
-import com.go4lunch2.data.Repository;
+import com.go4lunch2.data.repositories.RestaurantRepository;
 import com.go4lunch2.data.model.Restaurant;
-import com.go4lunch2.ui.list_restaurants.RestaurantViewState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,15 +17,15 @@ import java.util.List;
 public class MapsViewModel extends ViewModel {
 
     String TAG = "MyLog MapsViewModel";
-    Repository repository;
+    RestaurantRepository restaurantRepository;
     MutableLiveData<List<MapsStateItem>> markersLiveData = new MutableLiveData<>();
 
-    public MapsViewModel(Repository repository) {
-        this.repository = repository;
+    public MapsViewModel(RestaurantRepository restaurantRepository) {
+        this.restaurantRepository = restaurantRepository;
     }
 
     public LiveData<List<MapsStateItem>> getMarkersLiveData() {
-        return Transformations.map(repository.getRestaurantsLiveData(), restaurantsList -> {
+        return Transformations.map(restaurantRepository.getRestaurantsLiveData(), restaurantsList -> {
             List<MapsStateItem> mapsStateItems = new ArrayList<>();
             for (Restaurant r : restaurantsList) {
                 mapsStateItems.add(new MapsStateItem(

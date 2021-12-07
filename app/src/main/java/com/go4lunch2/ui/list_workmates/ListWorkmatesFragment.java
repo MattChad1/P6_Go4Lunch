@@ -12,11 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.go4lunch2.ViewModelFactory;
-import com.go4lunch2.data.Repository;
-import com.go4lunch2.data.model.Workmate;
 import com.go4lunch2.databinding.FragmentListWorkmatesBinding;
-
-import java.util.List;
 
 public class ListWorkmatesFragment extends Fragment {
 

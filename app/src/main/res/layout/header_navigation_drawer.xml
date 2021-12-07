@@ -10,6 +10,7 @@ android:id="@+id/nav_drawer_header"
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        app:layout_constraintTop_toTopOf="parent"
         android:src="@drawable/header_go4lunch_unsplash"
         android:scaleType="centerCrop"
         />

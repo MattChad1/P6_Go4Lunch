@@ -2,6 +2,7 @@ package com.go4lunch2.ui.list_restaurants;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.go4lunch2.R;
 import com.go4lunch2.databinding.ItemRestaurantBinding;
 import com.go4lunch2.ui.detail_restaurant.DetailRestaurantActivity;
@@ -67,14 +69,14 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
             else if (restaurant.getStarsCount() > 2.5) ((ImageView) v.findViewById(R.id.item_restaurant_num_stars3)).setImageDrawable(ctx.getDrawable(R.drawable.ic_star_filled));
         }
 
-//        try {
-//            InputStream ims = ctx.getAssets().open(restaurant.getImage());
-//            binding.itemRestaurantImage.setImageDrawable(Drawable.createFromStream(ims, null));
-//            ims.close();
-//        }
-//        catch(IOException ex) {
-//            return; // TODO:ajouter image par défaut
-//        }
+        if (restaurant.getImage()!= null && !restaurant.getImage().isEmpty()) {
+            Glide.with(v.getContext()).load(restaurant.getImage())
+                    .placeholder(R.drawable.r2)
+                    .error(R.drawable.ic_search)
+                    .centerCrop()
+                    .into((ImageView) v.findViewById(R.id.item_restaurant_image));
+        }
+
 
         v.setOnClickListener(view -> {
             Intent intent = new Intent(ctx, DetailRestaurantActivity.class);

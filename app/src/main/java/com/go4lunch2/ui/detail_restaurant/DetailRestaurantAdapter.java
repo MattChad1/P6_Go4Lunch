@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.go4lunch2.data.model.Workmate;
+import com.go4lunch2.data.model.User;
 import com.go4lunch2.R;
 
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.List;
 public class DetailRestaurantAdapter extends RecyclerView.Adapter<DetailRestaurantAdapter.ViewHolder> {
 
     Context ctx;
-    private List<Workmate> listWorkmates;
+    private List<User> listUsers;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvName;
@@ -33,9 +33,9 @@ public class DetailRestaurantAdapter extends RecyclerView.Adapter<DetailRestaura
         }
     }
 
-    public DetailRestaurantAdapter(Context ctx, List<Workmate> listWorkmates) {
+    public DetailRestaurantAdapter(Context ctx, List<User> listUsers) {
         this.ctx = ctx;
-        this.listWorkmates = listWorkmates;
+        this.listUsers = listUsers;
     }
 
     // Create new views (invoked by the layout manager)
@@ -48,23 +48,23 @@ public class DetailRestaurantAdapter extends RecyclerView.Adapter<DetailRestaura
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        Workmate workmate = listWorkmates.get(position);
-        viewHolder.tvName.setText(ctx.getString(R.string.restaurant_chosen2, workmate.getName())); //TODO:  mettre les fonctions du repo
+        User user = listUsers.get(position);
+        viewHolder.tvName.setText(ctx.getString(R.string.restaurant_chosen2, user.getName())); //TODO:  mettre les fonctions du repo
         //TODO : remplacer par adresse avatar
-        String name = workmate.getAvatar().substring(0 , workmate.getAvatar().indexOf('.'));
+        String name = user.getAvatar().substring(0 , user.getAvatar().indexOf('.'));
         int resourceId = ctx.getResources().getIdentifier(name, "drawable",
                 ctx.getPackageName());
         Glide.with(viewHolder.ivAvatar.getContext())
                 .load(resourceId)
                 .apply(RequestOptions.circleCropTransform())
                 .into(viewHolder.ivAvatar);
-        Log.i("Glide", workmate.getAvatar().substring(0 , workmate.getAvatar().indexOf('.')));
+        Log.i("Glide", user.getAvatar().substring(0 , user.getAvatar().indexOf('.')));
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return listWorkmates.size();
+        return listUsers.size();
     }
 }
 

@@ -285,4 +285,34 @@ public class Result {
         this.website = website;
     }
 
+    @Override
+    public String toString() {
+        return "Result{" +
+                "addressComponents=" + addressComponents +
+                ", adrAddress='" + adrAddress + '\'' +
+                ", businessStatus='" + businessStatus + '\'' +
+                ", formattedAddress='" + formattedAddress + '\'' +
+                ", formattedPhoneNumber='" + formattedPhoneNumber + '\'' +
+                ", geometry=" + geometry +
+                ", icon='" + icon + '\'' +
+                ", iconBackgroundColor='" + iconBackgroundColor + '\'' +
+                ", iconMaskBaseUri='" + iconMaskBaseUri + '\'' +
+                ", internationalPhoneNumber='" + internationalPhoneNumber + '\'' +
+                ", name='" + name + '\'' +
+                ", openingHours=" + openingHours +
+                ", photos=" + photos +
+                ", placeId='" + placeId + '\'' +
+                ", plusCode=" + plusCode +
+                ", priceLevel=" + priceLevel +
+                ", rating=" + rating +
+                ", reference='" + reference + '\'' +
+                ", reviews=" + reviews +
+                ", types=" + types +
+                ", url='" + url + '\'' +
+                ", userRatingsTotal=" + userRatingsTotal +
+                ", utcOffset=" + utcOffset +
+                ", vicinity='" + vicinity + '\'' +
+                ", website='" + website + '\'' +
+                '}';
+    }
 }

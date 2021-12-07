@@ -22,4 +22,7 @@ public class Photo {
     @Expose
     public Integer width;
 
+    public String getPhotoReference() {
+        return photoReference;
+    }
 }

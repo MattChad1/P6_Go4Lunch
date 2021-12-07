@@ -7,19 +7,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.firebase.ui.auth.AuthUI;
+import com.go4lunch2.BaseActivity;
 import com.go4lunch2.R;
-import com.go4lunch2.data.PlaceAutocompleteAPI;
+import com.go4lunch2.data.api.PlaceAutocompleteAPI;
 import com.go4lunch2.data.model.model_gmap.place_autocomplete.Prediction;
 import com.go4lunch2.data.model.model_gmap.place_autocomplete.Root;
 import com.go4lunch2.databinding.ActivityMainBinding;
@@ -31,8 +34,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +50,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     String TAG = "MyLog MainActivity";
     //int AUTOCOMPLETE_REQUEST_CODE = 1221;
@@ -64,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        // TODO : supprimer avec la fonction
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (savedInstanceState == null) {
@@ -83,8 +87,20 @@ public class MainActivity extends AppCompatActivity {
         });
 
         if (user != null) { //TODO : supprimer le if car user ne peut pas être null ici (connecté)
-            TextView tvMailUser = binding.navigationDrawer.findViewById(R.id.nav_drawer_tv_email);
-            //tvMailUser.setText(user.getEmail());
+            NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_drawer);
+            View headerView = navigationView.getHeaderView(0);
+            TextView tvMailUser = headerView.findViewById(R.id.nav_drawer_tv_email);
+            TextView tvNameUser = headerView.findViewById(R.id.nav_drawer_name);
+            ImageView ivAvatarUser = headerView.findViewById(R.id.nav_drawer_avatar);
+
+            for (UserInfo profile : user.getProviderData()) {
+                tvMailUser.setText(profile.getDisplayName());
+                tvNameUser.setText(profile.getEmail());
+                Glide.with(this).load(profile.getPhotoUrl())
+                        .transform(new CircleCrop())
+                        .into(ivAvatarUser);
+                //ivAvatarUser.setImageURI(profile.getPhotoUrl());
+            }
             Toast.makeText(this, "Vous êtes connecté !!!!", Toast.LENGTH_SHORT).show();
         }
 
@@ -154,6 +170,8 @@ public class MainActivity extends AppCompatActivity {
                         // ...
                     }
                 });
+        startActivity(new Intent(this, LogInActivity.class));
+        finish();
         // [END auth_fui_signout]
     }
 
@@ -215,7 +233,6 @@ public class MainActivity extends AppCompatActivity {
 
                     else {
                         arrayAdapter.getFilter().filter(s);
-
                     }
 
                     listView.setVisibility(View.VISIBLE);

@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.go4lunch2.BaseActivity;
 import com.go4lunch2.R;
 import com.go4lunch2.ViewModelFactory;
 import com.go4lunch2.databinding.ActivityDetailRestaurantBinding;
@@ -34,7 +35,7 @@ import com.go4lunch2.databinding.ActivityDetailRestaurantBinding;
 import java.io.InputStream;
 import java.net.URL;
 
-public class DetailRestaurantActivity extends AppCompatActivity {
+public class DetailRestaurantActivity extends BaseActivity {
 
     private String TAG = "MyLog DetailRestaurantA";
     private ActivityDetailRestaurantBinding binding;
@@ -67,9 +68,15 @@ public class DetailRestaurantActivity extends AppCompatActivity {
         if (restaurant == null) finish();
         else {
             binding.restaurantName.setText(restaurant.getName());
-            binding.restaurantDesc1.setText(restaurant.getType() + "-" + restaurant.getAdress());
+            binding.restaurantDesc1.setText(restaurant.getAdress());
 //TODO : if user has chosen this restaurant
-            binding.fabRestaurantChosen.setColorFilter(this.getResources().getColor(R.color.green_select_fab));
+
+            binding.fabRestaurantChosen.setOnClickListener(v-> {
+                vm.updateRestaurantChosen(currentUser.getUid(), idRestaurant);
+                binding.fabRestaurantChosen.setColorFilter(this.getResources().getColor(R.color.green_select_fab));
+            });
+
+
 
             if (restaurant.getImage()!=null)
                 Glide.with(this).load(Uri.parse(restaurant.getImage())).into(binding.restaurantImage);

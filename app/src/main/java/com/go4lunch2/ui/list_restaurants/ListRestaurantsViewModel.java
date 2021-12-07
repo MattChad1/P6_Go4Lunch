@@ -9,12 +9,11 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
-import com.go4lunch2.BuildConfig;
 import com.go4lunch2.MyApplication;
 import com.go4lunch2.R;
 import com.go4lunch2.Utils.Utils;
-import com.go4lunch2.data.DistancesAPI;
-import com.go4lunch2.data.Repository;
+import com.go4lunch2.data.api.DistancesAPI;
+import com.go4lunch2.data.repositories.RestaurantRepository;
 import com.go4lunch2.data.model.Restaurant;
 import com.go4lunch2.data.model.model_gmap.Element;
 import com.go4lunch2.data.model.model_gmap.Matrix;
@@ -42,37 +41,39 @@ public class ListRestaurantsViewModel extends ViewModel {
 
     String TAG = "MyLog RestaurantsViewModel";
 
-    private Repository repository;
+    private RestaurantRepository restaurantRepository;
     private MutableLiveData<List<RestaurantViewState>> allRestaurantsLiveData = new MutableLiveData<>();
 
     Context ctx = MyApplication.getInstance();
 
-    public ListRestaurantsViewModel(Repository repository) {
-        this.repository = repository;
+    public ListRestaurantsViewModel(RestaurantRepository restaurantRepository) {
+        this.restaurantRepository = restaurantRepository;
     }
 
     public LiveData<List<RestaurantViewState>> getAllRestaurantsViewStateLiveData() {
-        return Transformations.map(repository.getRestaurantsLiveData(), restaurantsList -> {
+        return Transformations.map(restaurantRepository.getRestaurantsLiveData(), restaurantsList -> {
             List<RestaurantViewState> restaurantViewStates = new ArrayList<>();
             Log.i(TAG, "Appel getAllRestaurantsViewStateLiveData");
             List<String> ids = new ArrayList<>();
             for (Restaurant r : restaurantsList) ids.add(r.getId());
             Map<String, String> mapDistance = getDistancesAPI(48.856614, 2.3522219, ids);
-
+int i=0;
             for (Restaurant r : restaurantsList) {
-
-                restaurantViewStates.add(new RestaurantViewState(
-                                                 r.getId(),
-                                                 r.getName(),
-                                                 r.getType(),
-                                                 r.getAdress(),
-                                                 (r.getOpeningTime()=="true")? ctx.getString(R.string.open) : ctx.getString(R.string.closed),
-                                                 mapDistance.get(r.getId()),
-                                                 Utils.ratingToStars(r.getRcf().getAverageRate()),
-                                                 r.getRcf().getWorkmatesInterestedIds() == null ? 0 : r.getRcf().getWorkmatesInterestedIds().size(),
-                                                 r.getImage()
-                                         )
-                                        );
+                if (i<5) {
+                    restaurantViewStates.add(new RestaurantViewState(
+                                                     r.getId(),
+                                                     r.getName(),
+                                                     r.getType(),
+                                                     r.getAdress(),
+                                                     (r.getOpeningTime() == "true") ? ctx.getString(R.string.open) : ctx.getString(R.string.closed),
+                                                     mapDistance.get(r.getId()),
+                                                     Utils.ratingToStars(r.getRcf().getAverageRate()),
+                                                     r.getRcf().getWorkmatesInterestedIds() == null ? 0 : r.getRcf().getWorkmatesInterestedIds().size(),
+                                                     r.getImage()
+                                             )
+                                            );
+                }
+                i++;
             }
 
             return restaurantViewStates;
@@ -84,7 +85,7 @@ public class ListRestaurantsViewModel extends ViewModel {
         List<Element> elements = new ArrayList<>();
         Map<String, String> mapResult = new HashMap<>();
 
-        if (BuildConfig.DEBUG) {
+        if (MyApplication.getDebug()) {
             try {
                 AssetManager am = ctx.getAssets();
                 InputStream is = am.open("distances_matrix.json");

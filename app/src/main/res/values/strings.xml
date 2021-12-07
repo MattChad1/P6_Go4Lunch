@@ -38,7 +38,7 @@
 
 
     //list_workmates
-    <string name="restaurant_chosen">%1$s eats %2$s (%3$s)</string>
+    <string name="restaurant_chosen">%1$s eats at %2$s</string>
     <string name="restaurant_chosen2">%s will be there !</string>
 
     //Detail activity

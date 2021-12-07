@@ -7,13 +7,11 @@
     android:padding="6dp">
 
 
-    <com.google.android.material.imageview.ShapeableImageView
+    <ImageView
         android:id="@+id/item_restaurant_image"
         android:layout_width="80dp"
         android:layout_height="match_parent"
-        android:layout_rowSpan="3"
         android:adjustViewBounds="true"
-
         android:scaleType="fitXY"
         android:src="@drawable/r1"
         app:layout_constraintEnd_toEndOf="parent"

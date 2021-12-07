@@ -1,4 +1,4 @@
-package com.go4lunch2.data;
+package com.go4lunch2.data.repositories;
 
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -10,13 +10,13 @@ import androidx.lifecycle.MutableLiveData;
 import com.annimon.stream.IntStream;
 import com.annimon.stream.OptionalInt;
 import com.annimon.stream.Stream;
-import com.go4lunch2.BuildConfig;
 import com.go4lunch2.MyApplication;
 import com.go4lunch2.R;
+import com.go4lunch2.data.api.PlacesAPI;
 import com.go4lunch2.data.model.Rating;
 import com.go4lunch2.data.model.Restaurant;
 import com.go4lunch2.data.model.RestaurantCustomFields;
-import com.go4lunch2.data.model.Workmate;
+import com.go4lunch2.data.model.User;
 import com.go4lunch2.data.model.model_gmap.Place;
 import com.go4lunch2.data.model.model_gmap.Result;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -48,30 +48,25 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Repository {
+public class RestaurantRepository {
 
     String TAG = "MyLog Repository";
 
     private final MutableLiveData<List<Restaurant>> restaurantsLiveData = new MutableLiveData<>();
-    private final MutableLiveData<List<Workmate>> workmatesLiveData = new MutableLiveData<>();
+
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     Context ctx = MyApplication.getInstance();
     List<Restaurant> allRestaurants = new ArrayList<>();
     //TODO : change for Firebase
-    List<Workmate> allWorkmates = FAKE_LIST_WORKMATES;
+    List<User> allUsers = fakeListUsers;
 
-    public Repository() {
+    public RestaurantRepository() {
         getPlacesAPI(48.856614, 2.3522219);
     }
 
     public MutableLiveData<List<Restaurant>> getRestaurantsLiveData() {
-
-        List<Restaurant> li = restaurantsLiveData.getValue();
-        int num = 0;
-        if (li!=null) num = li.size();
-        Log.i(TAG, "getRestaurantsLiveData: " + num);
         return restaurantsLiveData;
     }
 
@@ -81,7 +76,7 @@ public class Repository {
     private void getPlacesAPI(Double latitude, Double longitude) {
         Log.i(TAG, "Appel getPlacesAPI");
         List<Result> results = new ArrayList<>();
-        if (BuildConfig.DEBUG) {
+        if (MyApplication.getDebug()) {
             try {
                 AssetManager am = ctx.getAssets();
                 InputStream is = am.open("restaurants_json.json");
@@ -131,22 +126,20 @@ public class Repository {
             });
         }
 
-
     }
-
-
-
-
-
-
-
-
-
-
 
 
     private void getCustomFields (List<Result> results) {
         for (Result result : results) {
+
+            String image;
+            if (!MyApplication.getDebug()) {
+                image =
+                        "https://maps.googleapis.com/maps/api/place/photo?maxwidth=150"
+                                + "&photo_reference=" + result.getPhotos().get(0).getPhotoReference()
+                                + "&key=" + ctx.getString(R.string.google_maps_key22);
+            }
+            else image ="";
 
             DocumentReference docRef = db.collection("restaurants").document(result.getPlaceId());
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -161,19 +154,14 @@ public class Repository {
 
                         // Si document n'existe pas dans la base, création
                         else {
+                            insertNewRestaurantDB (result.getPlaceId());
                             rcf = new RestaurantCustomFields();
-                            Map<String, Object> data = new HashMap<>();
-                            data.put("idRestaurant", result.getPlaceId());
-                            data.put("averageRate", null);
-                            data.put("workmatesInterestedIds", new ArrayList<String>());
-                            db.collection("restaurants").document(result.getPlaceId())
-                                    .set(data);
                         }
 
                         Restaurant newRestaurant = new Restaurant(
                                 result.getPlaceId(),
                                 result.getName(),
-                                "", //TODO : image from Places.API?
+                                image, //TODO : image from Places.API?
                                 "", //TODO : type from Places.API?
                                 result.getOpeningHours() != null ? result.getOpeningHours().getOpenNow() : "",
                                 //TODO : voir comment récupérer la chaîne avec les horaires
@@ -190,11 +178,9 @@ public class Repository {
 
                         if (!num.isEmpty()) {
                             allRestaurants.set(num.getAsInt(), newRestaurant);
-                            Log.i(TAG, "getCustomFields: " + newRestaurant.getName() + "/" + num.getAsInt());
                         }
                         else {
                             allRestaurants.add(newRestaurant);
-                            Log.i(TAG, "getCustomFields: " + newRestaurant.getName() + "/ new");
                         }
 
                         restaurantsLiveData.setValue(allRestaurants);
@@ -206,10 +192,7 @@ public class Repository {
                     Log.w(TAG, "Error", e);
                 }
             });
-
-
         }
-
  }
 
 
@@ -265,7 +248,6 @@ public class Repository {
                         if (task.isSuccessful()) {
                             if (task.getResult().size() > 0) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Log.d(TAG, document.getId() + " => " + document.getData());
                                     db.collection("rates").document(document.getId()).update("rateGiven", rating.getRateGiven());
                                     updateAverageRate(rating.getIdRestaurant());
                                 }
@@ -318,10 +300,6 @@ public class Repository {
                 });
     }
 
-    public MutableLiveData<List<Workmate>> getWorkmatesLiveData() {
-        workmatesLiveData.setValue(allWorkmates);
-        return workmatesLiveData;
-    }
 
     public Restaurant getRestaurantById(String idRestaurant) {
         return Stream.of(allRestaurants)
@@ -330,21 +308,16 @@ public class Repository {
                 .get();
     }
 
-    public List<Workmate> getListWorkmatesByIds(List<String> ids) {
-        if (ids == null) return null;
-        else return Stream.of(allWorkmates)
-                .filter(workmate -> ids.contains(workmate.getId()))
-                .toList();
-    }
 
 
 
-    static public List<Workmate> FAKE_LIST_WORKMATES = new ArrayList<>(Arrays.asList(
-            new Workmate("w1", "Bob", "a1.png", "ChIJ8znTVS5u5kcREq8TmzOICFs"),
-            new Workmate("w2", "Léa", "a1.png", "ChIJ_Ze3ZjBu5kcRiCRPWLatnSg"),
-            new Workmate("w3", "Joe", "a1.png", "ChIJ8znTVS5u5kcREq8TmzOICFs"),
-            new Workmate("w4", "Yasmine", "a1.png", null),
-            new Workmate("w5", "Pierre-Jean", "a1.png", "ChIJ8znTVS5u5kcREq8TmzOICFs"))
+
+    static public List<User> fakeListUsers = new ArrayList<>(Arrays.asList(
+            new User("w1", "Bob", "a1.png", "ChIJ8znTVS5u5kcREq8TmzOICFs"),
+            new User("w2", "Léa", "a1.png", "ChIJ_Ze3ZjBu5kcRiCRPWLatnSg"),
+            new User("w3", "Joe", "a1.png", "ChIJ8znTVS5u5kcREq8TmzOICFs"),
+            new User("w4", "Yasmine", "a1.png", null),
+            new User("w5", "Pierre-Jean", "a1.png", "ChIJ8znTVS5u5kcREq8TmzOICFs"))
     );
 
 //    static public List<Rating> FAKE_RATES = new ArrayList<>(Arrays.asList(

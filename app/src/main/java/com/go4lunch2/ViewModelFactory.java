@@ -4,10 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.go4lunch2.data.Repository;
+import com.go4lunch2.data.repositories.RestaurantRepository;
+import com.go4lunch2.data.repositories.UserRepository;
 import com.go4lunch2.ui.detail_restaurant.DetailRestaurantViewModel;
 import com.go4lunch2.ui.list_restaurants.ListRestaurantsViewModel;
 import com.go4lunch2.ui.list_workmates.ListWorkmatesViewModel;
+import com.go4lunch2.ui.login.LogInViewModel;
 import com.go4lunch2.ui.map.MapsViewModel;
 
 public class ViewModelFactory implements ViewModelProvider.Factory {
@@ -18,7 +20,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
         if (factory == null) {
             synchronized (ViewModelFactory.class) {
                 if (factory == null) {
-                    factory = new ViewModelFactory(new Repository());
+                    factory = new ViewModelFactory(new RestaurantRepository(), new UserRepository());
                 }
             }
         }
@@ -26,11 +28,14 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     }
 
     @NonNull
-    private final Repository repository;
+    private final RestaurantRepository restaurantRepository;
 
+    @NonNull
+    private final UserRepository userRepository;
 
-    private ViewModelFactory(@NonNull Repository repository) {
-        this.repository = repository;
+    private ViewModelFactory(@NonNull RestaurantRepository restaurantRepository, @NonNull UserRepository userRepository) {
+        this.restaurantRepository = restaurantRepository;
+        this.userRepository = userRepository;
     }
 
     @SuppressWarnings("unchecked")
@@ -38,16 +43,19 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
         if (modelClass.isAssignableFrom(ListRestaurantsViewModel.class)) {
-            return (T) new ListRestaurantsViewModel(repository);
+            return (T) new ListRestaurantsViewModel(restaurantRepository);
+        }
+        else if (modelClass.isAssignableFrom(LogInViewModel.class)) {
+            return (T) new LogInViewModel(userRepository);
         }
         else if (modelClass.isAssignableFrom(DetailRestaurantViewModel.class)) {
-            return (T) new DetailRestaurantViewModel(repository);
+            return (T) new DetailRestaurantViewModel(restaurantRepository, userRepository);
         }
         else if (modelClass.isAssignableFrom(MapsViewModel.class)) {
-            return (T) new MapsViewModel(repository);
+            return (T) new MapsViewModel(restaurantRepository);
         }
         else if (modelClass.isAssignableFrom(ListWorkmatesViewModel.class)) {
-            return (T) new ListWorkmatesViewModel(repository);
+            return (T) new ListWorkmatesViewModel(restaurantRepository, userRepository);
         }
         else throw new IllegalArgumentException("Unknown ViewModel class");
     }

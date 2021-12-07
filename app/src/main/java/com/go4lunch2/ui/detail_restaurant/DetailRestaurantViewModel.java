@@ -10,13 +10,13 @@ import androidx.lifecycle.ViewModel;
 import com.go4lunch2.MyApplication;
 import com.go4lunch2.R;
 import com.go4lunch2.Utils.Utils;
-import com.go4lunch2.data.PlaceDetailsAPI;
-import com.go4lunch2.data.PlacesAPI;
-import com.go4lunch2.data.Repository;
+import com.go4lunch2.data.api.PlaceDetailsAPI;
+import com.go4lunch2.data.repositories.RestaurantRepository;
+import com.go4lunch2.data.repositories.UserRepository;
 import com.go4lunch2.data.model.Rating;
 import com.go4lunch2.data.model.Restaurant;
-import com.go4lunch2.data.model.model_gmap.Place;
 import com.go4lunch2.data.model.model_gmap.restaurant_details.RestaurantDetailsJson;
+import com.go4lunch2.data.model.model_gmap.restaurant_details.Result;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -29,18 +29,20 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class DetailRestaurantViewModel extends ViewModel {
 
     String TAG = "MyLog DetailRestaurantViewModel";
-    Repository repository;
+    RestaurantRepository restaurantRepository;
+    UserRepository userRepository;
     MutableLiveData<DetailRestaurantViewState> restaurantSelectedLiveData = new MutableLiveData<>();
     Context ctx = MyApplication.getInstance();
 
-    public DetailRestaurantViewModel(Repository repository) {
-        this.repository = repository;
+    public DetailRestaurantViewModel(RestaurantRepository restaurantRepository, UserRepository userRepository) {
+        this.restaurantRepository = restaurantRepository;
+        this.userRepository = userRepository;
     }
 
     public LiveData<DetailRestaurantViewState> getDetailRestaurantLiveData(String idRestaurant) {
 
         DetailRestaurantViewState detail = null;
-        Restaurant r = repository.getRestaurantById(idRestaurant);
+        Restaurant r = restaurantRepository.getRestaurantById(idRestaurant);
 
         if (r != null) {
 
@@ -52,7 +54,7 @@ public class DetailRestaurantViewModel extends ViewModel {
                     r.getOpeningTime(),
                     "100 m",
                     Utils.ratingToStars(r.getRcf().getAverageRate()),
-                    repository.getListWorkmatesByIds(r.getRcf().getWorkmatesInterestedIds()),
+                    userRepository.getListWorkmatesByIds(r.getRcf().getWorkmatesInterestedIds()),
                     r.getImage(),
                     r.getRestaurantDetails().getPhone(),
                     r.getRestaurantDetails().getWebsite()
@@ -65,6 +67,7 @@ public class DetailRestaurantViewModel extends ViewModel {
     }
 
     public void getDetailsFromAPI (DetailRestaurantViewState r) {
+        Log.i(TAG, "Appel getDetailsFromAPI: id = " + r.getId());
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
         OkHttpClient client = new OkHttpClient.Builder()
@@ -86,8 +89,11 @@ public class DetailRestaurantViewModel extends ViewModel {
         callAsync.enqueue(new Callback<RestaurantDetailsJson>() {
             @Override
             public void onResponse(Call<RestaurantDetailsJson> call, Response<RestaurantDetailsJson> response) {
-                String phone = response.body().getResult().getInternationalPhoneNumber();
-                String website = response.body().getResult().getWebsite();
+                Log.i(TAG, "onResponse: " + response.body().toString());
+                Result res = response.body().getResult();
+                Log.i(TAG, "onResponse: " + res.toString());
+                String phone = res.getInternationalPhoneNumber();
+                String website = res.getWebsite();
 
                 String image =
                         "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400"
@@ -124,7 +130,11 @@ public class DetailRestaurantViewModel extends ViewModel {
 
 
     public void addRate (String idWorkmate, String idRestaurant, int givenRate) {
-        repository.addGrade(new Rating(idRestaurant, idWorkmate, givenRate));
-
+        restaurantRepository.addGrade(new Rating(idRestaurant, idWorkmate, givenRate));
     }
+
+    public void updateRestaurantChosen (String idUser, String idRestaurant) {
+        userRepository.updateRestaurantChosen( idUser, idRestaurant);
+    }
+
 }

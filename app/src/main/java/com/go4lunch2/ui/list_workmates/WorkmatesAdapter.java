@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.go4lunch2.data.model.Workmate;
 import com.go4lunch2.R;
 
 import java.util.List;
@@ -48,17 +47,20 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.View
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        WorkmateViewStateItem workmate = listWorkmates.get(position);
-        viewHolder.tvName.setText(ctx.getString(R.string.restaurant_chosen, workmate.getNameWorkmate(), workmate.getTypeFood(), workmate.getNameRestaurant())); //TODO:  mettre les fonctions du repo
-        //TODO : remplacer par adresse avatar
-        String name = workmate.getAvatar().substring(0 , workmate.getAvatar().indexOf('.'));
-        int resourceId = ctx.getResources().getIdentifier(name, "drawable",
-                ctx.getPackageName());
-        Glide.with(viewHolder.ivAvatar.getContext())
-                .load(resourceId)
-                .apply(RequestOptions.circleCropTransform())
-                .into(viewHolder.ivAvatar);
-        Log.i("Glide", workmate.getAvatar().substring(0 , workmate.getAvatar().indexOf('.')));
+        if (listWorkmates!=null && !listWorkmates.isEmpty()) {
+            WorkmateViewStateItem workmate = listWorkmates.get(position);
+//            viewHolder.tvName.setText(ctx.getString(R.string.restaurant_chosen, workmate.getNameWorkmate(), workmate.getTypeFood(),
+//                                                    workmate.getNameRestaurant())); //TODO:  mettre les fonctions du repo
+            viewHolder.tvName.setText(workmate.getNameWorkmate());
+            //TODO : remplacer par adresse avatar
+//            String name = workmate.getAvatar().substring(0, workmate.getAvatar().indexOf('.'));
+//            int resourceId = ctx.getResources().getIdentifier(name, "drawable",
+//                                                              ctx.getPackageName());
+            Glide.with(viewHolder.ivAvatar.getContext())
+                    .load(workmate.getAvatar())
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(viewHolder.ivAvatar);
+        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)

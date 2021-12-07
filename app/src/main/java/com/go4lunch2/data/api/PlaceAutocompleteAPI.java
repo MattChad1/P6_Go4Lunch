@@ -1,4 +1,4 @@
-package com.go4lunch2.data;
+package com.go4lunch2.data.api;
 
 import com.go4lunch2.data.model.model_gmap.Place;
 import com.go4lunch2.data.model.model_gmap.place_autocomplete.Root;
