@@ -50,6 +50,7 @@
         <item>Good</item>
         <item>Wonderful</item>
     </string-array>
+    <string name="rate_registered">Your rate has been registered</string>
 
 
 

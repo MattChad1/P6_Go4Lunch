@@ -57,9 +57,8 @@ public class ListRestaurantsViewModel extends ViewModel {
             List<String> ids = new ArrayList<>();
             for (Restaurant r : restaurantsList) ids.add(r.getId());
             Map<String, String> mapDistance = getDistancesAPI(48.856614, 2.3522219, ids);
-int i=0;
             for (Restaurant r : restaurantsList) {
-                if (i<5) {
+
                     restaurantViewStates.add(new RestaurantViewState(
                                                      r.getId(),
                                                      r.getName(),
@@ -73,8 +72,6 @@ int i=0;
                                              )
                                             );
                 }
-                i++;
-            }
 
             return restaurantViewStates;
         });

@@ -152,7 +152,7 @@ public class DetailRestaurantActivity extends BaseActivity {
                         vm.addRate("w1", restaurantSelected.id, which + 1);
                         Log.i(TAG, "onClick: grade given" + which);
                         dialog.dismiss();
-                        Toast.makeText(DetailRestaurantActivity.this, "You have chosen" + which, Toast.LENGTH_LONG).show();
+                        Toast.makeText(DetailRestaurantActivity.this, R.string.rate_registered, Toast.LENGTH_LONG).show();
                     }
                 })
                 .create();

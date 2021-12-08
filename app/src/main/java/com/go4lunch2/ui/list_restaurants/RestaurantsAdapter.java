@@ -2,6 +2,7 @@ package com.go4lunch2.ui.list_restaurants;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -51,9 +52,16 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
         View v = holder.itemView;
         RestaurantViewState restaurant = listRestaurants.get(position);
         ((TextView) v.findViewById(R.id.item_restaurant_name)).setText(restaurant.getName());
-        ((TextView) v.findViewById(R.id.item_restaurant_desc1)).setText(restaurant.getType() + "-" + restaurant.getAdress());
+        ((TextView) v.findViewById(R.id.item_restaurant_desc1)).setText(restaurant.getAdress());
         ((TextView) v.findViewById(R.id.item_restaurant_desc2)).setText(restaurant.getOpeningHours());
+        if (restaurant.getOpeningHours().equals("Open")) ((TextView) v.findViewById(R.id.item_restaurant_desc2)).setTextColor(ctx.getResources().getColor(R.color.quantum_googgreen));
+        else ((TextView) v.findViewById(R.id.item_restaurant_desc2)).setTextColor(ctx.getResources().getColor(R.color.red_dark));
+
+
         ((TextView) v.findViewById(R.id.item_restaurant_distance)).setText(restaurant.getDistance());
+        ((TextView) v.findViewById(R.id.item_restaurant_num_workmates)).setText(ctx.getString(R.string.num_workmates, restaurant.getWorkmatesCount()));
+
+
 
         if (restaurant.getStarsCount() == null) {
             v.findViewById(R.id.item_restaurant_num_stars1).setVisibility(View.GONE);

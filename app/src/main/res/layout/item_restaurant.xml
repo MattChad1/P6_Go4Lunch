@@ -27,16 +27,25 @@
         app:layout_constraintTop_toTopOf="parent"
         android:text="270 m" />
 
+    <ImageView
+        android:id="@+id/icon_person"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@id/item_restaurant_num_workmates"
+        app:layout_constraintTop_toBottomOf="@id/item_restaurant_distance"
+        android:src="@drawable/ic_person_outline_24"
+        />
+
 
     <TextView
         android:id="@+id/item_restaurant_num_workmates"
         style="item_restaurant"
-        android:layout_width="60dp"
+        android:layout_width="25dp"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
+        android:gravity="left"
         app:layout_constraintEnd_toStartOf="@id/item_restaurant_image"
         app:layout_constraintTop_toBottomOf="@id/item_restaurant_distance"
-        android:text="2" />
+        android:text="(2)" />
 
 
     <androidx.appcompat.widget.AppCompatImageView

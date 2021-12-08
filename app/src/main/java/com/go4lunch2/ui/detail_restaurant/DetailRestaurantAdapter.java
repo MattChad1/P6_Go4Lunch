@@ -50,12 +50,8 @@ public class DetailRestaurantAdapter extends RecyclerView.Adapter<DetailRestaura
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         User user = listUsers.get(position);
         viewHolder.tvName.setText(ctx.getString(R.string.restaurant_chosen2, user.getName())); //TODO:  mettre les fonctions du repo
-        //TODO : remplacer par adresse avatar
-        String name = user.getAvatar().substring(0 , user.getAvatar().indexOf('.'));
-        int resourceId = ctx.getResources().getIdentifier(name, "drawable",
-                ctx.getPackageName());
         Glide.with(viewHolder.ivAvatar.getContext())
-                .load(resourceId)
+                .load(user.getAvatar())
                 .apply(RequestOptions.circleCropTransform())
                 .into(viewHolder.ivAvatar);
         Log.i("Glide", user.getAvatar().substring(0 , user.getAvatar().indexOf('.')));
