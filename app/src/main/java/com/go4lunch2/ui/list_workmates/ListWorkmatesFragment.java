@@ -14,11 +14,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.go4lunch2.ViewModelFactory;
 import com.go4lunch2.databinding.FragmentListWorkmatesBinding;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ListWorkmatesFragment extends Fragment {
 
 
     FragmentListWorkmatesBinding binding;
     RecyclerView rv;
+    List<WorkmateViewStateItem> workmates = new ArrayList<>();
     ListWorkmatesViewModel vm;
 
     public ListWorkmatesFragment() {
@@ -47,12 +51,14 @@ public class ListWorkmatesFragment extends Fragment {
         rv = binding.rvListWorkmates;
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
         rv.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-
-        vm.getWorkmatesWithChoisesLiveData().observe(getViewLifecycleOwner(), workmateViewStateItems -> {
-            WorkmatesAdapter adapter = new WorkmatesAdapter(getActivity(), workmateViewStateItems);
-            rv.setAdapter(adapter);
+        WorkmatesAdapter adapter = new WorkmatesAdapter(getActivity(), workmates);
+        rv.setAdapter(adapter);
 
 
+        vm.getWorkmatesViewStateItemsLiveData().observe(getViewLifecycleOwner(), workmateViewStateItems -> {
+           workmates.clear();
+           workmates.addAll(workmateViewStateItems);
+           adapter.notifyDataSetChanged();
         });
 
 

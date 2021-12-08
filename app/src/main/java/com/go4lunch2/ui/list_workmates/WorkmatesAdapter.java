@@ -49,13 +49,7 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.View
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         if (listWorkmates!=null && !listWorkmates.isEmpty()) {
             WorkmateViewStateItem workmate = listWorkmates.get(position);
-//            viewHolder.tvName.setText(ctx.getString(R.string.restaurant_chosen, workmate.getNameWorkmate(), workmate.getTypeFood(),
-//                                                    workmate.getNameRestaurant())); //TODO:  mettre les fonctions du repo
-            viewHolder.tvName.setText(workmate.getNameWorkmate());
-            //TODO : remplacer par adresse avatar
-//            String name = workmate.getAvatar().substring(0, workmate.getAvatar().indexOf('.'));
-//            int resourceId = ctx.getResources().getIdentifier(name, "drawable",
-//                                                              ctx.getPackageName());
+            viewHolder.tvName.setText(ctx.getString(R.string.restaurant_chosen, workmate.getNameWorkmate(), workmate.getNameRestaurant()));
             Glide.with(viewHolder.ivAvatar.getContext())
                     .load(workmate.getAvatar())
                     .apply(RequestOptions.circleCropTransform())
@@ -63,7 +57,6 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.View
         }
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         return listWorkmates.size();

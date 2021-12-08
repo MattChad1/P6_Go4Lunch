@@ -5,6 +5,7 @@ import android.content.res.AssetManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.annimon.stream.IntStream;
@@ -53,7 +54,7 @@ public class RestaurantRepository {
     String TAG = "MyLog Repository";
 
     private final MutableLiveData<List<Restaurant>> restaurantsLiveData = new MutableLiveData<>();
-
+    private final MutableLiveData<Map<String, String>> restaurantsNamesLiveData = new MutableLiveData<>();
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -61,6 +62,7 @@ public class RestaurantRepository {
     List<Restaurant> allRestaurants = new ArrayList<>();
     //TODO : change for Firebase
     List<User> allUsers = fakeListUsers;
+    Map<String, String> names = new HashMap<>();
 
     public RestaurantRepository() {
         getPlacesAPI(48.856614, 2.3522219);
@@ -69,9 +71,6 @@ public class RestaurantRepository {
     public MutableLiveData<List<Restaurant>> getRestaurantsLiveData() {
         return restaurantsLiveData;
     }
-
-
-
 
     private void getPlacesAPI(Double latitude, Double longitude) {
         Log.i(TAG, "Appel getPlacesAPI");
@@ -85,7 +84,6 @@ public class RestaurantRepository {
                 Place place = gson.fromJson(reader, Place.class);
                 results.addAll(place.getResults());
                 getCustomFields(results);
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -104,7 +102,6 @@ public class RestaurantRepository {
                     .client(client)
                     .build();
 
-
             PlacesAPI service = retrofit.create(PlacesAPI.class);
             Call<Place> callAsync = service.getResults(latitude.toString() + "," + longitude.toString(), "1500", "restaurant",
                                                        ctx.getString(R.string.google_maps_key22));
@@ -115,7 +112,6 @@ public class RestaurantRepository {
 
                     results.addAll(response.body().getResults());
                     getCustomFields(results);
-
                 }
 
                 @Override
@@ -125,11 +121,9 @@ public class RestaurantRepository {
                 }
             });
         }
-
     }
 
-
-    private void getCustomFields (List<Result> results) {
+    private void getCustomFields(List<Result> results) {
         for (Result result : results) {
 
             String image;
@@ -139,7 +133,7 @@ public class RestaurantRepository {
                                 + "&photo_reference=" + result.getPhotos().get(0).getPhotoReference()
                                 + "&key=" + ctx.getString(R.string.google_maps_key22);
             }
-            else image ="";
+            else image = "";
 
             DocumentReference docRef = db.collection("restaurants").document(result.getPlaceId());
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -154,7 +148,7 @@ public class RestaurantRepository {
 
                         // Si document n'existe pas dans la base, création
                         else {
-                            insertNewRestaurantDB (result.getPlaceId());
+                            insertNewRestaurantDB(result.getPlaceId(), result.getName());
                             rcf = new RestaurantCustomFields();
                         }
 
@@ -175,7 +169,6 @@ public class RestaurantRepository {
                                 .filter(i -> allRestaurants.get(i).getId().equals(result.getPlaceId()))
                                 .findFirst();
 
-
                         if (!num.isEmpty()) {
                             allRestaurants.set(num.getAsInt(), newRestaurant);
                         }
@@ -193,48 +186,35 @@ public class RestaurantRepository {
                 }
             });
         }
- }
+    }
 
+    // Insert un nouveau restaurant dans la table "custom fields" si son id n'existe pas
+    private void insertNewRestaurantDB(String idRestaurant, String name) {
+        db.collection("restaurants")
+                .document(idRestaurant)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (!document.exists()) {
+                                Map<String, Object> data = new HashMap<>();
+                                data.put("idRestaurant", idRestaurant);
+                                data.put("name", name);
+                                data.put("averageRate", null);
+                                data.put("workmatesInterestedIds", new ArrayList<String>());
 
- // Insert un nouveau restaurant dans la table "custom fields" si son id n'existe pas
- private void insertNewRestaurantDB (String idRestaurant) {
-     db.collection("restaurants")
-             .document(idRestaurant)
-             .get()
-             .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                 @Override
-                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                     if (task.isSuccessful()) {
-                         DocumentSnapshot document = task.getResult();
-                         if (!document.exists()) {
-                             Map<String, Object> data = new HashMap<>();
-                             data.put("idRestaurant", idRestaurant);
-                             data.put("averageRate", null);
-                             data.put("workmatesInterestedIds", new ArrayList<String>());
-
-                             db.collection("restaurants").document(idRestaurant)
-                                     .set(data);
-                         }
-                     }
-                     else {
-                         Log.d(TAG, "get failed with ", task.getException());
-                     }
-                 }
-             });
- }
-
-
-
-
-
-
-
-
-
-
-
-
-
+                                db.collection("restaurants").document(idRestaurant)
+                                        .set(data);
+                            }
+                        }
+                        else {
+                            Log.d(TAG, "get failed with ", task.getException());
+                        }
+                    }
+                });
+    }
 
     public void addGrade(Rating rating) {// Create a new user with a first, middle, and last name
 
@@ -300,6 +280,27 @@ public class RestaurantRepository {
                 });
     }
 
+    public LiveData<Map<String, String>> getRestaurantsNamesLiveData() {
+
+        db.collection("restaurants")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot snapshot : task.getResult()) {
+                                if (names.containsKey(snapshot.getId())) {
+                                    names.put(snapshot.getId(), snapshot.getString("name"));
+                                    restaurantsNamesLiveData.setValue(names);
+                                }
+                            }
+                        }
+                    }
+                });
+
+        return restaurantsNamesLiveData;
+    }
+
 
     public Restaurant getRestaurantById(String idRestaurant) {
         return Stream.of(allRestaurants)
@@ -307,10 +308,6 @@ public class RestaurantRepository {
                 .findFirst()
                 .get();
     }
-
-
-
-
 
     static public List<User> fakeListUsers = new ArrayList<>(Arrays.asList(
             new User("w1", "Bob", "a1.png", "ChIJ8znTVS5u5kcREq8TmzOICFs"),

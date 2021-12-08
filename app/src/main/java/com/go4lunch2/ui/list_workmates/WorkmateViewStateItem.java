@@ -36,4 +36,8 @@ public class WorkmateViewStateItem {
     public String getNameRestaurant() {
         return nameRestaurant;
     }
+
+    public void setNameRestaurant(String nameRestaurant) {
+        this.nameRestaurant = nameRestaurant;
+    }
 }

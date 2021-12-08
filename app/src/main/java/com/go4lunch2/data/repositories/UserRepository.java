@@ -1,7 +1,6 @@
 package com.go4lunch2.data.repositories;
 
 import android.content.Context;
-import android.transition.Explode;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -21,7 +20,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UserRepository {
 
@@ -30,55 +31,50 @@ public class UserRepository {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     Context ctx = MyApplication.getInstance();
 
-    private final MutableLiveData<List<User>> workmatesWithRestaurantsLiveData = new MutableLiveData<>();
-
+    private final MutableLiveData<Map<User, String>> workmatesWithRestaurantsLiveData = new MutableLiveData<>();
     List<User> allUsers;
+    Map<User, String> usersWithRestaurant = new HashMap<>();
 
     public UserRepository() {
         Log.i(TAG, "Appel UserRepository()");
         allUsers = new ArrayList<>();
-        db.collection("users")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                allUsers.add(document.toObject(User.class));
-                            }
-                        }
-                        else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-        getWorkmatesWithRestaurantsLiveData();
     }
 
-    public LiveData<List<User>> getWorkmatesWithRestaurantsLiveData() {
+    public LiveData<Map<User, String>> getWorkmatesWithRestaurantsLiveData() {
+
         Log.i(TAG, "Appel getWorkmatesWithRestaurantsLiveData ");
+        usersWithRestaurant.clear();
         db.collection("users")
+                .whereNotEqualTo("idRestaurantChosen", null)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                allUsers.add(document.toObject(User.class));
-                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                User user = document.toObject(User.class);
+
+                                    db.collection("restaurants")
+                                            .document(user.getIdRestaurantChosen())
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> task2) {
+                                                    DocumentSnapshot document2 = task2.getResult();
+                                                    if (task2.isSuccessful()) {
+                                                            usersWithRestaurant.put(user, document2.getString("name"));
+                                                            workmatesWithRestaurantsLiveData.setValue(usersWithRestaurant);
+                                                    }
+                                                }
+                                            });
                             }
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
-        workmatesWithRestaurantsLiveData.setValue(allUsers);
-
         return workmatesWithRestaurantsLiveData;
     }
 
     public void createUser(String id, String name, String avatar) {
-
         db.collection("users")
                 .document(id)
                 .get()
