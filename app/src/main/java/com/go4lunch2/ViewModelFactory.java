@@ -10,6 +10,7 @@ import com.go4lunch2.ui.detail_restaurant.DetailRestaurantViewModel;
 import com.go4lunch2.ui.list_restaurants.ListRestaurantsViewModel;
 import com.go4lunch2.ui.list_workmates.ListWorkmatesViewModel;
 import com.go4lunch2.ui.login.LogInViewModel;
+import com.go4lunch2.ui.main_activity.SearchViewModel;
 import com.go4lunch2.ui.map.MapsViewModel;
 
 public class ViewModelFactory implements ViewModelProvider.Factory {
@@ -42,7 +43,10 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
-        if (modelClass.isAssignableFrom(ListRestaurantsViewModel.class)) {
+        if (modelClass.isAssignableFrom(SearchViewModel.class)) {
+            return (T) new SearchViewModel();
+        }
+        else if (modelClass.isAssignableFrom(ListRestaurantsViewModel.class)) {
             return (T) new ListRestaurantsViewModel(restaurantRepository);
         }
         else if (modelClass.isAssignableFrom(LogInViewModel.class)) {

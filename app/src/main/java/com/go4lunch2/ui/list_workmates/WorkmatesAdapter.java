@@ -21,6 +21,11 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.View
     Context ctx;
     private List<WorkmateViewStateItem> listWorkmates;
 
+    public WorkmatesAdapter(Context ctx, List<WorkmateViewStateItem> listWorkmates) {
+        this.ctx = ctx;
+        this.listWorkmates = listWorkmates;
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvName;
         ImageView ivAvatar;
@@ -32,10 +37,7 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.View
         }
     }
 
-    public WorkmatesAdapter(Context ctx, List<WorkmateViewStateItem> listWorkmates) {
-        this.ctx = ctx;
-        this.listWorkmates = listWorkmates;
-    }
+
 
     // Create new views (invoked by the layout manager)
     @Override

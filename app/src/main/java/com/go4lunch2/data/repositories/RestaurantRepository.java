@@ -60,8 +60,6 @@ public class RestaurantRepository {
 
     Context ctx = MyApplication.getInstance();
     List<Restaurant> allRestaurants = new ArrayList<>();
-    //TODO : change for Firebase
-    List<User> allUsers = fakeListUsers;
     Map<String, String> names = new HashMap<>();
 
     public RestaurantRepository() {
@@ -306,28 +304,8 @@ public class RestaurantRepository {
         return Stream.of(allRestaurants)
                 .filter(restaurant -> restaurant.getId().equals(idRestaurant))
                 .findFirst()
-                .get();
+                .orElse(null);
+
     }
 
-    static public List<User> fakeListUsers = new ArrayList<>(Arrays.asList(
-            new User("w1", "Bob", "a1.png", "ChIJ8znTVS5u5kcREq8TmzOICFs"),
-            new User("w2", "Léa", "a1.png", "ChIJ_Ze3ZjBu5kcRiCRPWLatnSg"),
-            new User("w3", "Joe", "a1.png", "ChIJ8znTVS5u5kcREq8TmzOICFs"),
-            new User("w4", "Yasmine", "a1.png", null),
-            new User("w5", "Pierre-Jean", "a1.png", "ChIJ8znTVS5u5kcREq8TmzOICFs"))
-    );
-
-//    static public List<Rating> FAKE_RATES = new ArrayList<>(Arrays.asList(
-//            new Rating("r1", "w1", 1),
-//            new Rating("r2", "w1", 2),
-//            new Rating("r1", "w2", 3),
-//            new Rating("r2", "w3", 2)
-//                                                                         )
-//    );
-//
-//    static public List<Restaurant> FAKE_LIST_RESTAURANTS = new ArrayList<>(Arrays.asList(
-//            new Restaurant("r1", "Chez Lulu", "r1.png", "Français", "Open until 7 pm",
-//                           "8 rue du général Bol", 45.12, 2.0, 2.0, Collections.emptyList()),
-//            new Restaurant("r2", "Rajpoot", "r2.png", "Indien", "Open 24h/7", "175 avenue des Perdrix", 45.23, 2.12, 2.0, Collections.emptyList()))
-//    );
 }

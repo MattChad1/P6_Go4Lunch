@@ -6,9 +6,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,19 +14,24 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.firebase.ui.auth.AuthUI;
 import com.go4lunch2.BaseActivity;
 import com.go4lunch2.R;
-import com.go4lunch2.data.api.PlaceAutocompleteAPI;
-import com.go4lunch2.data.model.model_gmap.place_autocomplete.Prediction;
-import com.go4lunch2.data.model.model_gmap.place_autocomplete.Root;
+import com.go4lunch2.ViewModelFactory;
 import com.go4lunch2.databinding.ActivityMainBinding;
 import com.go4lunch2.ui.list_restaurants.ListRestaurantsFragment;
 import com.go4lunch2.ui.list_workmates.ListWorkmatesFragment;
 import com.go4lunch2.ui.login.LogInActivity;
+import com.go4lunch2.ui.main_activity.SearchAdapter;
+import com.go4lunch2.ui.main_activity.SearchViewModel;
+import com.go4lunch2.ui.main_activity.SearchViewStateItem;
 import com.go4lunch2.ui.map.MapsFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -42,30 +45,23 @@ import com.google.firebase.auth.UserInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 public class MainActivity extends BaseActivity {
 
     String TAG = "MyLog MainActivity";
-    //int AUTOCOMPLETE_REQUEST_CODE = 1221;
     private ActivityMainBinding binding;
     DrawerLayout drawer;
     FirebaseUser user;
 
-    ListView listView;
-    List<String> searchResults = new ArrayList<>();
-    ArrayAdapter<String> arrayAdapter;
+    RecyclerView rv;
+    List<SearchViewStateItem> searchResults = new ArrayList<>();
+    SearchAdapter adapter;
+    SearchViewModel vm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
+        vm = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(SearchViewModel.class);
         View view = binding.getRoot();
         setContentView(view);
 
@@ -153,12 +149,18 @@ public class MainActivity extends BaseActivity {
             return true;
         });
 
-        listView = binding.lvSearchResults;
-        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, searchResults);
-        listView.setAdapter(arrayAdapter);
+        rv = binding.lvSearchResults;
+        rv.setLayoutManager(new LinearLayoutManager(this));
+        rv.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        adapter = new SearchAdapter(this, searchResults);
+        rv.setAdapter(adapter);
 
-        //listView.setOnItemClickListener();
-
+        vm.getSearchResultsLiveData().observe(this, values -> {
+            Log.i(TAG, "observer: " + values.get(0).getName());
+            searchResults.clear();
+            searchResults.addAll(values);
+            adapter.notifyDataSetChanged();
+        });
     }
 
     public void signOut() {
@@ -177,7 +179,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_toolbar, menu);
         MenuItem menuItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) menuItem.getActionView();
@@ -192,64 +193,27 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                if (s.length() > 2) {
+                if (s.length() == 0) {
+                    rv.setVisibility(View.GONE);
+                    binding.mainFragment.setVisibility(View.VISIBLE);
                     Log.i(TAG, "onQueryTextChange: " + s);
+                }
 
-                    if (s.length() == 3) {
-                        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-                        logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
-                        OkHttpClient client = new OkHttpClient.Builder()
-                                .addInterceptor(logging)
-                                .build();
-
-                        Retrofit retrofit = new Retrofit.Builder()
-                                .baseUrl("https://maps.googleapis.com/")
-                                .addConverterFactory(GsonConverterFactory.create())
-                                .client(client)
-                                .build();
-
-                        PlaceAutocompleteAPI service = retrofit.create(PlaceAutocompleteAPI.class);
-                        Call<Root> callAsync = service.getResults("restaurant+" + s, "48.856614, 2.3522219", "1500", "establishment",
-                                                                  getString(R.string.google_maps_key22));
-
-                        callAsync.enqueue(new Callback<Root>() {
-                            @Override
-                            public void onResponse(Call<Root> call, Response<Root> response) {
-
-                                for (Prediction p : response.body().getPredictions()) {
-                                    updateSearch(p.getDescription());
-                                }
-
-                                Log.i(TAG, "onResponse: " + searchResults.toString());
-                            }
-
-                            @Override
-                            public void onFailure(Call<Root> call, Throwable t) {
-                                Log.i(TAG, "onFailure: " + t);
-                                System.out.println(t);
-                            }
-                        });
-                    }
-
-                    else {
-                        arrayAdapter.getFilter().filter(s);
-                    }
-
-                    listView.setVisibility(View.VISIBLE);
+                else if (s.length() > 2) {
+                    Log.i(TAG, "onQueryTextChange: " +s);
+                    rv.setVisibility(View.VISIBLE);
                     binding.mainFragment.setVisibility(View.GONE);
+                    if (s.length() == 3) {
+                        vm.getSearchResults(s);
+                        Log.i(TAG, "onQueryTextChange: " +s);
+                    }
+                    else adapter.getFilter().filter(s);
                 }
 
                 return false;
             }
         });
-
         return true;
-    }
-
-    public void updateSearch(String str) {
-        searchResults.add(str);
-        Log.i(TAG, "updateSearch: " + searchResults.toString());
-        arrayAdapter.notifyDataSetChanged();
     }
 
     @Override

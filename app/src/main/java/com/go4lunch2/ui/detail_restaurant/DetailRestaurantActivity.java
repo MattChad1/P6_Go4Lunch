@@ -51,10 +51,10 @@ public class DetailRestaurantActivity extends BaseActivity {
         binding = ActivityDetailRestaurantBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-
+        Log.i(TAG, "onCreate DetailActivity: ");
         Intent intent = getIntent();
         String idRestaurant = intent.getStringExtra(RESTAURANT_SELECTED);
-
+        Log.i(TAG, "onCreate DetailActivity: " + idRestaurant);
         vm = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(DetailRestaurantViewModel.class);
         vm.getDetailRestaurantLiveData(idRestaurant).observe(this, restaurant -> {
             restaurantSelected = restaurant;

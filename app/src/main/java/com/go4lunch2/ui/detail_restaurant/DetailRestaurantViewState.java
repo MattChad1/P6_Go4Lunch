@@ -8,24 +8,17 @@ public class DetailRestaurantViewState {
 
     String id;
     String name;
-    String type;
     String adress;
-    String openingHours;
-    String distance;
     Double starsCount;
     List<User> workmatesInterested;
     String image;
     String phone;
     String website;
 
-    public DetailRestaurantViewState(String id, String name, String type, String adress, String openingHours, String distance,
-                                     Double starsCount, List<User> workmatesInterested, String image, String phone, String website) {
+    public DetailRestaurantViewState(String id, String name, String adress, Double starsCount, List<User> workmatesInterested, String image, String phone, String website) {
         this.id = id;
         this.name = name;
-        this.type = type;
         this.adress = adress;
-        this.openingHours = openingHours;
-        this.distance = distance;
         this.starsCount = starsCount;
         this.workmatesInterested = workmatesInterested;
         this.image = image;
@@ -41,20 +34,8 @@ public class DetailRestaurantViewState {
         return name;
     }
 
-    public String getType() {
-        return type;
-    }
-
     public String getAdress() {
         return adress;
-    }
-
-    public String getOpeningHours() {
-        return openingHours;
-    }
-
-    public String getDistance() {
-        return distance;
     }
 
     public Double getStarsCount() {
@@ -75,5 +56,13 @@ public class DetailRestaurantViewState {
 
     public String getWebsite() {
         return website;
+    }
+
+    public void setStarsCount(Double starsCount) {
+        this.starsCount = starsCount;
+    }
+
+    public void setWorkmatesInterested(List<User> workmatesInterested) {
+        this.workmatesInterested = workmatesInterested;
     }
 }
