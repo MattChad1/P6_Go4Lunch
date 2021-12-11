@@ -1,5 +1,7 @@
 package com.go4lunch2.data.repositories;
 
+import static com.go4lunch2.data.api.APIClient.placesAPI;
+
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.util.Log;
@@ -17,7 +19,6 @@ import com.go4lunch2.data.api.PlacesAPI;
 import com.go4lunch2.data.model.Rating;
 import com.go4lunch2.data.model.Restaurant;
 import com.go4lunch2.data.model.RestaurantCustomFields;
-import com.go4lunch2.data.model.User;
 import com.go4lunch2.data.model.model_gmap.Place;
 import com.go4lunch2.data.model.model_gmap.Result;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,7 +37,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +57,6 @@ public class RestaurantRepository {
     private final MutableLiveData<Map<String, String>> restaurantsNamesLiveData = new MutableLiveData<>();
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-
     Context ctx = MyApplication.getInstance();
     List<Restaurant> allRestaurants = new ArrayList<>();
     Map<String, String> names = new HashMap<>();
@@ -88,19 +87,7 @@ public class RestaurantRepository {
         }
 
         else {
-            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-            logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
-            OkHttpClient client = new OkHttpClient.Builder()
-                    .addInterceptor(logging)
-                    .build();
-
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("https://maps.googleapis.com/")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .client(client)
-                    .build();
-
-            PlacesAPI service = retrofit.create(PlacesAPI.class);
+            PlacesAPI service = placesAPI();
             Call<Place> callAsync = service.getResults(latitude.toString() + "," + longitude.toString(), "1500", "restaurant",
                                                        ctx.getString(R.string.google_maps_key22));
 
@@ -120,6 +107,7 @@ public class RestaurantRepository {
             });
         }
     }
+
 
     private void getCustomFields(List<Result> results) {
         for (Result result : results) {

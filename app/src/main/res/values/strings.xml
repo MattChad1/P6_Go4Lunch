@@ -32,6 +32,9 @@
     <string name="open">Open</string>
     <string name="closed">Closed</string>
 
+    //MainActivity
+    <string name="no_restaurant">You have not picked your restaurant yet</string>
+
 
 
     //Login Activity

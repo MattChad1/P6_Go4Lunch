@@ -13,7 +13,7 @@ import static org.hamcrest.Matchers.allOf;
 import androidx.test.core.app.ActivityScenario;
 
 import com.go4lunch2.TestUtils;
-import com.go4lunch2.ui.MainActivity;
+import com.go4lunch2.ui.main_activity.MainActivity;
 import com.go4lunch2.R;
 
 import org.junit.After;

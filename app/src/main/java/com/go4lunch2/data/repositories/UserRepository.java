@@ -4,18 +4,22 @@ import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.go4lunch2.MyApplication;
-import com.go4lunch2.data.model.User;
+import com.go4lunch2.data.model.CustomUser;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -31,16 +35,17 @@ public class UserRepository {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     Context ctx = MyApplication.getInstance();
 
-    private final MutableLiveData<Map<User, String>> workmatesWithRestaurantsLiveData = new MutableLiveData<>();
-    List<User> allUsers;
-    Map<User, String> usersWithRestaurant = new HashMap<>();
+    private final MutableLiveData<Map<CustomUser, String>> workmatesWithRestaurantsLiveData = new MutableLiveData<>();
+    List<CustomUser> allCustomUsers;
+    Map<CustomUser, String> usersWithRestaurant = new HashMap<>();
+    MutableLiveData<CustomUser> currentCustomUserLD = new MutableLiveData<>();
 
     public UserRepository() {
         Log.i(TAG, "Appel UserRepository()");
-        allUsers = new ArrayList<>();
+        allCustomUsers = new ArrayList<>();
     }
 
-    public LiveData<Map<User, String>> getWorkmatesWithRestaurantsLiveData() {
+    public LiveData<Map<CustomUser, String>> getWorkmatesWithRestaurantsLiveData() {
 
         Log.i(TAG, "Appel getWorkmatesWithRestaurantsLiveData ");
         usersWithRestaurant.clear();
@@ -52,17 +57,17 @@ public class UserRepository {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                User user = document.toObject(User.class);
+                                CustomUser customUser = document.toObject(CustomUser.class);
 
                                     db.collection("restaurants")
-                                            .document(user.getIdRestaurantChosen())
+                                            .document(customUser.getIdRestaurantChosen())
                                             .get()
                                             .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<DocumentSnapshot> task2) {
                                                     DocumentSnapshot document2 = task2.getResult();
                                                     if (task2.isSuccessful()) {
-                                                            usersWithRestaurant.put(user, document2.getString("name"));
+                                                            usersWithRestaurant.put(customUser, document2.getString("name"));
                                                             workmatesWithRestaurantsLiveData.setValue(usersWithRestaurant);
                                                     }
                                                 }
@@ -84,10 +89,10 @@ public class UserRepository {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (!document.exists()) {
-                                User newUser = new User(id, name, avatar, null);
+                                CustomUser newCustomUser = new CustomUser(id, name, avatar, null);
                                 db.collection("users").document(id)
-                                        .set(newUser);
-                                allUsers.add(newUser);
+                                        .set(newCustomUser);
+                                allCustomUsers.add(newCustomUser);
                             }
                         }
                         else {
@@ -104,9 +109,59 @@ public class UserRepository {
                                      );
     }
 
+    public MutableLiveData<CustomUser> getCurrentCustomUserLD(String id) {
+        getUserCustomFromFB(id);
+        return currentCustomUserLD;
+    }
+
+
+    public void getUserCustomFromFB(String id) {
+        db.collection("users")
+                .document(id)
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w(TAG, "Listen failed.", e);
+                            return;
+                        }
+
+                        if (snapshot != null && snapshot.exists()) {
+                            currentCustomUserLD.setValue(snapshot.toObject(CustomUser.class));
+                        } else {
+                            currentCustomUserLD.setValue(new CustomUser(id));
+                        }
+                    }
+                });
+
+    }
+
     public void updateRestaurantChosen(String idUser, String idRestaurant) {
-        db.collection("users").document(idUser)
-                .update("idRestaurantChosen", idRestaurant)
+        // If there was a restaurant, we update the restaurants table to remove this user from the list of workmates interested
+        DocumentReference docRef = db.collection("users").document(idUser);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+
+                        String oldRestaurant = document.getString("idRestaurantChosen");
+
+                        if (oldRestaurant!= null) {
+                            db.collection("restaurants").document(oldRestaurant)
+                                    .update("workmatesInterestedIds", FieldValue.arrayRemove(idUser));
+                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                        }
+
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+
+
+        docRef.update("idRestaurantChosen", idRestaurant)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -116,10 +171,9 @@ public class UserRepository {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error updating document", e);
+                        Log.w(TAG, "Error updating Restaurant chosen", e);
                     }
                 });
-        ;
 
         db.collection("restaurants").document(idRestaurant)
                 .update("workmatesInterestedIds", FieldValue.arrayUnion(idUser))
@@ -135,13 +189,12 @@ public class UserRepository {
                         Log.w(TAG, "Error updating document", e);
                     }
                 });
-        ;
     }
 
-    public List<User> getListWorkmatesByIds(List<String> ids) {
+    public List<CustomUser> getListWorkmatesByIds(List<String> ids) {
         if (ids == null) return null;
         else {
-            List<User> users = new ArrayList<>();
+            List<CustomUser> customUsers = new ArrayList<>();
             for (String id : ids) {
                 db.collection("users")
                         .document(id)
@@ -149,11 +202,11 @@ public class UserRepository {
                         .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                             @Override
                             public void onSuccess(DocumentSnapshot document) {
-                                users.add(document.toObject(User.class));
+                                customUsers.add(document.toObject(CustomUser.class));
                             }
                         });
             }
-            return users;
+            return customUsers;
         }
     }
 }

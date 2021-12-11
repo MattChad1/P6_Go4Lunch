@@ -7,7 +7,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface PlaceDetailsAPI {
-    String placeId = null;
 
     @GET("maps/api/place/details/json")
     Call<RestaurantDetailsJson> getResults(@Query("place_id") String placeId, @Query("key") String key);

@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.go4lunch2.data.model.User;
+import com.go4lunch2.data.model.CustomUser;
 import com.go4lunch2.R;
 
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.List;
 public class DetailRestaurantAdapter extends RecyclerView.Adapter<DetailRestaurantAdapter.ViewHolder> {
 
     Context ctx;
-    private List<User> listUsers;
+    private List<CustomUser> listCustomUsers;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvName;
@@ -33,9 +33,9 @@ public class DetailRestaurantAdapter extends RecyclerView.Adapter<DetailRestaura
         }
     }
 
-    public DetailRestaurantAdapter(Context ctx, List<User> listUsers) {
+    public DetailRestaurantAdapter(Context ctx, List<CustomUser> listCustomUsers) {
         this.ctx = ctx;
-        this.listUsers = listUsers;
+        this.listCustomUsers = listCustomUsers;
     }
 
     // Create new views (invoked by the layout manager)
@@ -48,19 +48,19 @@ public class DetailRestaurantAdapter extends RecyclerView.Adapter<DetailRestaura
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        User user = listUsers.get(position);
-        viewHolder.tvName.setText(ctx.getString(R.string.restaurant_chosen2, user.getName())); //TODO:  mettre les fonctions du repo
+        CustomUser customUser = listCustomUsers.get(position);
+        viewHolder.tvName.setText(ctx.getString(R.string.restaurant_chosen2, customUser.getName())); //TODO:  mettre les fonctions du repo
         Glide.with(viewHolder.ivAvatar.getContext())
-                .load(user.getAvatar())
+                .load(customUser.getAvatar())
                 .apply(RequestOptions.circleCropTransform())
                 .into(viewHolder.ivAvatar);
-        Log.i("Glide", user.getAvatar().substring(0 , user.getAvatar().indexOf('.')));
+        Log.i("Glide", customUser.getAvatar().substring(0 , customUser.getAvatar().indexOf('.')));
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return listUsers.size();
+        return listCustomUsers.size();
     }
 }
 

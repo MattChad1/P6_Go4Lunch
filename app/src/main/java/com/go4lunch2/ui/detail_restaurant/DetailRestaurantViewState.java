@@ -1,6 +1,6 @@
 package com.go4lunch2.ui.detail_restaurant;
 
-import com.go4lunch2.data.model.User;
+import com.go4lunch2.data.model.CustomUser;
 
 import java.util.List;
 
@@ -10,12 +10,12 @@ public class DetailRestaurantViewState {
     String name;
     String adress;
     Double starsCount;
-    List<User> workmatesInterested;
+    List<CustomUser> workmatesInterested;
     String image;
     String phone;
     String website;
 
-    public DetailRestaurantViewState(String id, String name, String adress, Double starsCount, List<User> workmatesInterested, String image, String phone, String website) {
+    public DetailRestaurantViewState(String id, String name, String adress, Double starsCount, List<CustomUser> workmatesInterested, String image, String phone, String website) {
         this.id = id;
         this.name = name;
         this.adress = adress;
@@ -42,7 +42,7 @@ public class DetailRestaurantViewState {
         return starsCount;
     }
 
-    public List<User> getWorkmatesInterested() {
+    public List<CustomUser> getWorkmatesInterested() {
         return workmatesInterested;
     }
 
@@ -62,7 +62,7 @@ public class DetailRestaurantViewState {
         this.starsCount = starsCount;
     }
 
-    public void setWorkmatesInterested(List<User> workmatesInterested) {
+    public void setWorkmatesInterested(List<CustomUser> workmatesInterested) {
         this.workmatesInterested = workmatesInterested;
     }
 }

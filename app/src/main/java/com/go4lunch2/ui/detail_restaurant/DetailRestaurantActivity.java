@@ -30,7 +30,10 @@ import com.bumptech.glide.Glide;
 import com.go4lunch2.BaseActivity;
 import com.go4lunch2.R;
 import com.go4lunch2.ViewModelFactory;
+import com.go4lunch2.data.model.CustomUser;
 import com.go4lunch2.databinding.ActivityDetailRestaurantBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -38,24 +41,40 @@ import java.net.URL;
 public class DetailRestaurantActivity extends BaseActivity {
 
     private String TAG = "MyLog DetailRestaurantA";
-    private ActivityDetailRestaurantBinding binding;
+
     DetailRestaurantViewModel vm;
-    RecyclerView rv;
-    //List<Workmate> workmatesInterested = Repository.FAKE_LIST_WORKMATES; // TODO : à remplacer
+    FirebaseUser user;
+    CustomUser currentCustomUser;
     DetailRestaurantViewState restaurantSelected;
+
+    private ActivityDetailRestaurantBinding binding;
+    RecyclerView rv;
+
     static public final String RESTAURANT_SELECTED = "restaurant_selected";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent intent = getIntent();
+        String idRestaurant = intent.getStringExtra(RESTAURANT_SELECTED);
+
+
+        vm = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(DetailRestaurantViewModel.class);
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        vm.getCurrentCustomUser(user.getUid()).observe(this, value -> {
+            currentCustomUser = value;
+            if (currentCustomUser.getIdRestaurantChosen().equals(idRestaurant)) {
+                binding.fabRestaurantChosen.setColorFilter(this.getResources().getColor(R.color.green_select_fab));
+            }
+        });
+
         binding = ActivityDetailRestaurantBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-        Log.i(TAG, "onCreate DetailActivity: ");
-        Intent intent = getIntent();
-        String idRestaurant = intent.getStringExtra(RESTAURANT_SELECTED);
+
         Log.i(TAG, "onCreate DetailActivity: " + idRestaurant);
-        vm = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(DetailRestaurantViewModel.class);
         vm.getDetailRestaurantLiveData(idRestaurant).observe(this, restaurant -> {
             restaurantSelected = restaurant;
 
@@ -73,7 +92,6 @@ public class DetailRestaurantActivity extends BaseActivity {
 
             binding.fabRestaurantChosen.setOnClickListener(v-> {
                 vm.updateRestaurantChosen(currentUser.getUid(), idRestaurant);
-                binding.fabRestaurantChosen.setColorFilter(this.getResources().getColor(R.color.green_select_fab));
             });
 
 

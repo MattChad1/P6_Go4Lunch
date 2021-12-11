@@ -1,13 +1,12 @@
 package com.go4lunch2.ui.list_workmates;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import com.go4lunch2.data.repositories.RestaurantRepository;
 import com.go4lunch2.data.repositories.UserRepository;
-import com.go4lunch2.data.model.User;
+import com.go4lunch2.data.model.CustomUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,7 @@ public class ListWorkmatesViewModel extends ViewModel {
     public LiveData<List<WorkmateViewStateItem>> getWorkmatesViewStateItemsLiveData() {
         return Transformations.map(userRepository.getWorkmatesWithRestaurantsLiveData(), users -> {
             List<WorkmateViewStateItem> workmateViewStateItems = new ArrayList<>();
-            for (Map.Entry<User, String> entry : users.entrySet()) {
+            for (Map.Entry<CustomUser, String> entry : users.entrySet()) {
                     WorkmateViewStateItem w = new WorkmateViewStateItem(entry.getKey().getId(), entry.getKey().getAvatar(), entry.getKey().getName(), "",
                                                                                             entry.getValue());
                     if (!workmateViewStateItems.contains(w)) workmateViewStateItems.add(w);

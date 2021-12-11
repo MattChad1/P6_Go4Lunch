@@ -5,13 +5,16 @@ import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import com.go4lunch2.MyApplication;
 import com.go4lunch2.R;
 import com.go4lunch2.data.api.PlaceAutocompleteAPI;
+import com.go4lunch2.data.model.CustomUser;
 import com.go4lunch2.data.model.model_gmap.place_autocomplete.Prediction;
 import com.go4lunch2.data.model.model_gmap.place_autocomplete.Root;
+import com.go4lunch2.data.repositories.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,19 +27,29 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class SearchViewModel extends ViewModel {
+public class MainActivityViewModel extends ViewModel {
 
     String TAG = "MyLog SearchViewModel";
     private Context ctx = MyApplication.getInstance();
     private MutableLiveData<List<SearchViewStateItem>> searchResultsLiveData;
+    UserRepository userRepository;
 
-    public SearchViewModel() {
+    public MainActivityViewModel(UserRepository userRepository) {
+        this.userRepository = userRepository;
         searchResultsLiveData = new MutableLiveData<>();
     }
 
     public MutableLiveData<List<SearchViewStateItem>> getSearchResultsLiveData() {
         return searchResultsLiveData;
     }
+
+    public LiveData<CustomUser> getCurrentCustomUser (String id) {
+        return Transformations.map(userRepository.getCurrentCustomUserLD(id), currentUser -> {
+            if (currentUser == null) return new CustomUser(id);
+            else return currentUser;
+        });
+    }
+
 
     public void getSearchResults(String s) {
 

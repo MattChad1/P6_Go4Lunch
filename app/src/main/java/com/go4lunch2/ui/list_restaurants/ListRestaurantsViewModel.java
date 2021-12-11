@@ -1,5 +1,7 @@
 package com.go4lunch2.ui.list_restaurants;
 
+import static com.go4lunch2.data.api.APIClient.distancesAPI;
+
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.util.Log;
@@ -103,19 +105,8 @@ public class ListRestaurantsViewModel extends ViewModel {
                 destinationsURLParameter += d;
             }
 
-            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-            logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
-            OkHttpClient client = new OkHttpClient.Builder()
-                    .addInterceptor(logging)
-                    .build();
 
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("https://maps.googleapis.com/")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .client(client)
-                    .build();
-
-            DistancesAPI service = retrofit.create(DistancesAPI.class);
+            DistancesAPI service = distancesAPI();
             Call<Matrix> callAsync = service.getResults(latitudeOrigin.toString() + "," + longitudeOrigin.toString(), destinationsURLParameter,
                                                         "walking", ctx.getString(
                             R.string.google_maps_key22));
@@ -123,7 +114,6 @@ public class ListRestaurantsViewModel extends ViewModel {
             callAsync.enqueue(new Callback<Matrix>() {
                 @Override
                 public void onResponse(Call<Matrix> call, Response<Matrix> response) {
-                    Log.i("Test retrofit", "onResponse: " + response.body());
                     Matrix matrix = response.body();
                     for (Row r : matrix.getRows()) elements.addAll(r.getElements());
                 }

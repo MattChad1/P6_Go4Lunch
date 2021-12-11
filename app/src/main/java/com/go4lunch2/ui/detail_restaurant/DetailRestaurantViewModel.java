@@ -1,16 +1,20 @@
 package com.go4lunch2.ui.detail_restaurant;
 
+import static com.go4lunch2.data.api.APIClient.placeDetailsAPI;
+
 import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import com.go4lunch2.MyApplication;
 import com.go4lunch2.R;
 import com.go4lunch2.Utils.Utils;
 import com.go4lunch2.data.api.PlaceDetailsAPI;
+import com.go4lunch2.data.model.CustomUser;
 import com.go4lunch2.data.model.Rating;
 import com.go4lunch2.data.model.Restaurant;
 import com.go4lunch2.data.model.model_gmap.restaurant_details.RestaurantDetailsJson;
@@ -39,6 +43,13 @@ public class DetailRestaurantViewModel extends ViewModel {
         this.userRepository = userRepository;
     }
 
+    public LiveData<CustomUser> getCurrentCustomUser(String id) {
+        return Transformations.map(userRepository.getCurrentCustomUserLD(id), currentUser -> {
+            if (currentUser == null) return new CustomUser(id);
+            else return currentUser;
+        });
+    }
+
     public LiveData<DetailRestaurantViewState> getDetailRestaurantLiveData(String idRestaurant) {
         getDetailsFromAPI(idRestaurant);
         return restaurantSelectedLiveData;
@@ -47,19 +58,7 @@ public class DetailRestaurantViewModel extends ViewModel {
     public void getDetailsFromAPI(String idRestaurant) {
         DetailRestaurantViewState detailRestaurantViewState = null;
 
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(logging)
-                .build();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://maps.googleapis.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .build();
-
-        PlaceDetailsAPI service = retrofit.create(PlaceDetailsAPI.class);
+        PlaceDetailsAPI service = placeDetailsAPI();
         Call<RestaurantDetailsJson> callAsync = service.getResults(idRestaurant, ctx.getString(R.string.google_maps_key22));
 
         callAsync.enqueue(new Callback<RestaurantDetailsJson>() {
