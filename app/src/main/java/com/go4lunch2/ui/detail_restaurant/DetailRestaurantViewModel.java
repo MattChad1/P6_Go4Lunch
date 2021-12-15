@@ -32,11 +32,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DetailRestaurantViewModel extends ViewModel {
 
-    String TAG = "MyLog DetailRestaurantViewModel";
-    RestaurantRepository restaurantRepository;
-    UserRepository userRepository;
-    MutableLiveData<DetailRestaurantViewState> restaurantSelectedLiveData = new MutableLiveData<>();
-    Context ctx = MyApplication.getInstance();
+    private String TAG = "MyLog DetailRestaurantViewModel";
+    private RestaurantRepository restaurantRepository;
+    private UserRepository userRepository;
+    private MutableLiveData<DetailRestaurantViewState> restaurantSelectedLiveData = new MutableLiveData<>();
+    private Context ctx = MyApplication.getInstance();
 
     public DetailRestaurantViewModel(RestaurantRepository restaurantRepository, UserRepository userRepository) {
         this.restaurantRepository = restaurantRepository;

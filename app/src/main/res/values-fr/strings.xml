@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Go4Lunch</string>
+    <string name="google_maps_key" translatable="false">AIzaSyDUgzpnzy73hWZYbH24UO0_Pkfoks3bdBE</string>
+    <string name="app_subtitle">Trouvez un restaurant sympa et invitez vos collègues à déjeuner</string>
+    <string name="facebook_app_id">311473977462820</string>
+    <string name="fb_login_protocol_scheme">fb311473977462820</string>
+    <string name="google_maps_key22">AIzaSyDUgzpnzy73hWZYbH24UO0_Pkfoks3bdBE</string>
+    <string name="map_view_link">Carte</string>
+    <string name="list_restaurants_link">Liste</string>
+    <string name="list_workmates_link">Collègues</string>
+    <string name="map_view_desc">Carte des restaurants</string>
+    <string name="list_restaurants_desc">Liste des restaurants</string>
+    <string name="list_workmates_desc">Collègues disponibles</string>
+    <string name="your_lunch">Votre restaurant</string>
+    <string name="settings">Paramètres</string>
+    <string name="logout">Déconnexion</string>
+    <string name="navigation_drawer_open">Ouvrir le menu</string>
+    <string name="navigation_drawer_close">Fermer le menu</string>
+    <string name="num_workmates">(%d)</string>
+    <string name="open">Ouvert</string>
+    <string name="closed">Fermé</string>
+    <string name="no_restaurant">Vous n\'avez pas encore choisi votre restaurant</string>
+    <string name="restaurant_chosen">%1$s mange à %2$s</string>
+    <string name="restaurant_chosen2">%s sera là !</string>
+    <string name="give_rate">Que pensez-vous de ce restaurant?</string>
+    <string name="no_phone">Il n\'y a pas de numéro enregistré</string>
+    <string name="no_website">Il n\'y a pas de site web pour ce lieu</string>
+    <string name="rate_registered">Votre note a été enregistrée</string>
+    <string name="permission_rationale_location">"L'accès au GPS est requis pour que l'application puisse afficher votre position "</string>
+    <string name="location_permission_denied">L\'accès au GPS est requis. Merci d\'essayer à nouveau après avoir activé la localisation.</string>
+    <string name="permission_required_toast">L\'accès à la localisation est requis pour cette démo.</string>
+</resources>

@@ -13,6 +13,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.annimon.stream.IntStream;
 import com.annimon.stream.OptionalInt;
 import com.annimon.stream.Stream;
+import com.go4lunch2.DI.DI;
 import com.go4lunch2.MyApplication;
 import com.go4lunch2.R;
 import com.go4lunch2.data.api.PlacesAPI;
@@ -56,12 +57,13 @@ public class RestaurantRepository {
     private final MutableLiveData<List<Restaurant>> restaurantsLiveData = new MutableLiveData<>();
     private final MutableLiveData<Map<String, String>> restaurantsNamesLiveData = new MutableLiveData<>();
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseFirestore db;
     Context ctx = MyApplication.getInstance();
     List<Restaurant> allRestaurants = new ArrayList<>();
     Map<String, String> names = new HashMap<>();
 
     public RestaurantRepository() {
+        db = DI.getDatabase();
         getPlacesAPI(48.856614, 2.3522219);
     }
 
@@ -266,26 +268,6 @@ public class RestaurantRepository {
                 });
     }
 
-    public LiveData<Map<String, String>> getRestaurantsNamesLiveData() {
-
-        db.collection("restaurants")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot snapshot : task.getResult()) {
-                                if (names.containsKey(snapshot.getId())) {
-                                    names.put(snapshot.getId(), snapshot.getString("name"));
-                                    restaurantsNamesLiveData.setValue(names);
-                                }
-                            }
-                        }
-                    }
-                });
-
-        return restaurantsNamesLiveData;
-    }
 
 
     public Restaurant getRestaurantById(String idRestaurant) {

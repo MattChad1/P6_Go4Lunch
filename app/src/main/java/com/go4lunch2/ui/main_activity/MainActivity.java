@@ -106,7 +106,7 @@ public class MainActivity extends BaseActivity {
 
         binding.navigationDrawer.setNavigationItemSelectedListener(menuItem -> {
             // Handle menu item selected
-            //menuItem.isChecked = true;
+            // menuItem.isChecked = true;
             if (menuItem.getItemId() == R.id.menu_drawer_connexion) {
                 startActivity(new Intent(this, LogInActivity.class));
             }
@@ -135,19 +135,19 @@ public class MainActivity extends BaseActivity {
             switch (view1.getItemId()) {
                 case R.id.menu_bb_mapview:
                     toolbar.setTitle(getString(R.string.map_view_desc));
-                    //toolbar.getMenu().clear();
-                    //toolbar.inflateMenu(R.menu.menu_toolbar);
+                    toolbar.getMenu().clear();
+                    toolbar.inflateMenu(R.menu.menu_toolbar);
                     linkTo = MapsFragment.class;
                     break;
                 case R.id.menu_bb_listview:
                     toolbar.setTitle(getString(R.string.list_restaurants_desc));
-//                    toolbar.getMenu().clear();
-//                    toolbar.inflateMenu(R.menu.menu_toolbar);
+                    toolbar.getMenu().clear();
+                    toolbar.inflateMenu(R.menu.menu_toolbar);
                     linkTo = ListRestaurantsFragment.class;
                     break;
                 case R.id.menu_bb_workmates:
                     toolbar.setTitle(getString(R.string.list_workmates_desc));
-//                    toolbar.getMenu().clear();
+                    toolbar.getMenu().clear();
                     linkTo = ListWorkmatesFragment.class;
                     break;
                 default:

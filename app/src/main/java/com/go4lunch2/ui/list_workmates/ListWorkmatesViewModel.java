@@ -29,7 +29,7 @@ public class ListWorkmatesViewModel extends ViewModel {
         return Transformations.map(userRepository.getWorkmatesWithRestaurantsLiveData(), users -> {
             List<WorkmateViewStateItem> workmateViewStateItems = new ArrayList<>();
             for (Map.Entry<CustomUser, String> entry : users.entrySet()) {
-                    WorkmateViewStateItem w = new WorkmateViewStateItem(entry.getKey().getId(), entry.getKey().getAvatar(), entry.getKey().getName(), "",
+                    WorkmateViewStateItem w = new WorkmateViewStateItem(entry.getKey().getId(), entry.getKey().getAvatar(), entry.getKey().getName(), entry.getKey().getIdRestaurantChosen(),
                                                                                             entry.getValue());
                     if (!workmateViewStateItems.contains(w)) workmateViewStateItems.add(w);
             }

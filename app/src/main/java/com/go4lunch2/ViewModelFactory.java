@@ -1,5 +1,7 @@
 package com.go4lunch2;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
@@ -32,11 +34,15 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     private final RestaurantRepository restaurantRepository;
 
     @NonNull
+    private final Context ctx;
+
+    @NonNull
     private final UserRepository userRepository;
 
     private ViewModelFactory(@NonNull RestaurantRepository restaurantRepository, @NonNull UserRepository userRepository) {
         this.restaurantRepository = restaurantRepository;
         this.userRepository = userRepository;
+        this.ctx = MyApplication.getInstance();
     }
 
     @SuppressWarnings("unchecked")
@@ -47,7 +53,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             return (T) new MainActivityViewModel(userRepository);
         }
         else if (modelClass.isAssignableFrom(ListRestaurantsViewModel.class)) {
-            return (T) new ListRestaurantsViewModel(restaurantRepository);
+            return (T) new ListRestaurantsViewModel(restaurantRepository, ctx);
         }
         else if (modelClass.isAssignableFrom(LogInViewModel.class)) {
             return (T) new LogInViewModel(userRepository);

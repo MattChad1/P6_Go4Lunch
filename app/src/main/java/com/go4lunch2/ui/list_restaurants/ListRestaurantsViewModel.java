@@ -1,5 +1,7 @@
 package com.go4lunch2.ui.list_restaurants;
 
+import static com.go4lunch2.DI.DI.getAppContext;
+import static com.go4lunch2.DI.DI.getReader;
 import static com.go4lunch2.data.api.APIClient.distancesAPI;
 
 import android.content.Context;
@@ -11,6 +13,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
+import com.go4lunch2.BuildConfig;
+import com.go4lunch2.DI.DI;
 import com.go4lunch2.MyApplication;
 import com.go4lunch2.R;
 import com.go4lunch2.Utils.Utils;
@@ -46,10 +50,13 @@ public class ListRestaurantsViewModel extends ViewModel {
     private RestaurantRepository restaurantRepository;
     private MutableLiveData<List<RestaurantViewState>> allRestaurantsLiveData = new MutableLiveData<>();
 
-    Context ctx = MyApplication.getInstance();
+    Context ctx;
+    BufferedReader reader;
 
-    public ListRestaurantsViewModel(RestaurantRepository restaurantRepository) {
+    public ListRestaurantsViewModel(RestaurantRepository restaurantRepository, Context ctx) {
+        this.ctx = ctx;
         this.restaurantRepository = restaurantRepository;
+//        reader = DI.getReader()
     }
 
     public LiveData<List<RestaurantViewState>> getAllRestaurantsViewStateLiveData() {
@@ -84,12 +91,10 @@ public class ListRestaurantsViewModel extends ViewModel {
         List<Element> elements = new ArrayList<>();
         Map<String, String> mapResult = new HashMap<>();
 
-        if (MyApplication.getDebug()) {
+        if (BuildConfig.DEBUG) {
             try {
-                AssetManager am = ctx.getAssets();
-                InputStream is = am.open("distances_matrix.json");
+                final BufferedReader reader = getReader(ctx, "distances_matrix.json");
                 final Gson gson = new Gson();
-                final BufferedReader reader = new BufferedReader(new InputStreamReader(is));
                 Matrix matrix = gson.fromJson(reader, Matrix.class);
                 for (Row r : matrix.getRows()) elements.addAll(r.getElements());
             } catch (IOException e) {

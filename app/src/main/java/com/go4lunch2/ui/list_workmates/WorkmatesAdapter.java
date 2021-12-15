@@ -1,6 +1,7 @@
 package com.go4lunch2.ui.list_workmates;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.go4lunch2.R;
+import com.go4lunch2.ui.detail_restaurant.DetailRestaurantActivity;
 
 import java.util.List;
 
@@ -29,11 +31,13 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.View
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvName;
         ImageView ivAvatar;
+        View itemView;
 
         public ViewHolder(View view) {
             super(view);
             tvName = view.findViewById(R.id.tv_workmate_choise);
             ivAvatar = view.findViewById(R.id.iv_workmate_avatar);
+            itemView = view;
         }
     }
 
@@ -56,6 +60,12 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.View
                     .load(workmate.getAvatar())
                     .apply(RequestOptions.circleCropTransform())
                     .into(viewHolder.ivAvatar);
+            viewHolder.itemView.setOnClickListener(v -> {
+                Intent i = new Intent(ctx, DetailRestaurantActivity.class);
+                i.putExtra(DetailRestaurantActivity.RESTAURANT_SELECTED, listWorkmates.get(position).getIdRestaurant());
+                ctx.startActivity(i);
+            });
+
         }
     }
 

@@ -5,17 +5,16 @@ public class WorkmateViewStateItem {
     String idWorkmate;
     String avatar;
     String nameWorkmate;
-    String typeFood;
+    String idRestaurant;
     String nameRestaurant;
 
-    public WorkmateViewStateItem(String idWorkmate, String avatar, String nameWorkmate, String typeFood, String nameRestaurant) {
+    public WorkmateViewStateItem(String idWorkmate, String avatar, String nameWorkmate, String idRestaurant, String nameRestaurant) {
         this.idWorkmate = idWorkmate;
         this.avatar = avatar;
         this.nameWorkmate = nameWorkmate;
-        this.typeFood = typeFood;
+        this.idRestaurant = idRestaurant;
         this.nameRestaurant = nameRestaurant;
     }
-
 
     public String getIdWorkmate() {
         return idWorkmate;
@@ -29,8 +28,8 @@ public class WorkmateViewStateItem {
         return nameWorkmate;
     }
 
-    public String getTypeFood() {
-        return typeFood;
+    public String getIdRestaurant() {
+        return idRestaurant;
     }
 
     public String getNameRestaurant() {
