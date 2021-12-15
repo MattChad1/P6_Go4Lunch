@@ -78,13 +78,13 @@ public class MainActivity extends BaseActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
-                    .add(R.id.main_fragment, ListRestaurantsFragment.class, null)
+                    .add(R.id.main_fragment, MapsFragment.class, null)
                     .commit();
         }
 
 
 
-
+        // Navigation drawer
         if (user != null) { //TODO : supprimer le if car user ne peut pas être null ici (connecté)
             NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_drawer);
             View headerView = navigationView.getHeaderView(0);
@@ -128,6 +128,8 @@ public class MainActivity extends BaseActivity {
             return true;
         });
 
+
+        // Bottom Navigation
         BottomNavigationView bottombar = binding.bottomNavigation;
         bottombar.setSelectedItemId(R.id.menu_bb_listview);
         bottombar.setOnItemSelectedListener(view1 -> {

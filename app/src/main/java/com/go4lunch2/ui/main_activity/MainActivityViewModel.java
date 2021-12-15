@@ -1,5 +1,7 @@
 package com.go4lunch2.ui.main_activity;
 
+import static com.go4lunch2.data.api.APIClient.placeAutocompleteAPI;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -19,13 +21,9 @@ import com.go4lunch2.data.repositories.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivityViewModel extends ViewModel {
 
@@ -52,22 +50,9 @@ public class MainActivityViewModel extends ViewModel {
 
 
     public void getSearchResults(String s) {
-
         List<SearchViewStateItem> searchResults = new ArrayList<>();
 
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(logging)
-                .build();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://maps.googleapis.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .build();
-
-        PlaceAutocompleteAPI service = retrofit.create(PlaceAutocompleteAPI.class);
+        PlaceAutocompleteAPI service = placeAutocompleteAPI();
         Call<Root> callAsync = service.getResults("restaurant+" + s, "48.856614, 2.3522219", "1500", "establishment",
                                                   ctx.getString(R.string.google_maps_key22));
 

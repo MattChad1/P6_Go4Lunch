@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +20,11 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.go4lunch2.R;
 import com.go4lunch2.ViewModelFactory;
 import com.go4lunch2.databinding.FragmentMapsBinding;
@@ -109,9 +115,9 @@ public class MapsFragment extends Fragment implements GoogleMap.InfoWindowAdapte
     public View getInfoContents(@NonNull Marker marker) {
         int position = (int) marker.getTag();
         MapsStateItem item = allMarkers.get(position);
-
+        Log.i("Image window", item.getImage());
         InfoWindowBinding bindingWindow = InfoWindowBinding.inflate(MapsFragment.this.getLayoutInflater());
-        bindingWindow.tvMapwindowTitle.setText(item.name);
+        bindingWindow.tvMapwindowTitle.setText(item.getName());
         bindingWindow.tvMapwindowSubtitle.setText(""); //TODO : mettre type de cuisine?
 
         if (item.getStarsCount() == null) {
@@ -133,17 +139,31 @@ public class MapsFragment extends Fragment implements GoogleMap.InfoWindowAdapte
 
         bindingWindow.tvMapwindowWorkmates.setText(getString(R.string.num_workmates, item.workmatesCount));
 
-        if (item.image != null && item.image != "") {
-            try {
-                InputStream ims = getResources().getAssets().open(item.getImage());
-                bindingWindow.ivMapwindow.setImageDrawable(Drawable.createFromStream(ims, null));
-                ims.close();
-            } catch (IOException ex) {
-                Log.i("MapsFragment", "Image not found : " + item.getImage());
-            }
+
+        if (item.getImage() != null && !item.getImage().isEmpty()) {
+String url = item.getImage().replace("maxwidth=150", "maxwidth=90");
+            Glide.with(getActivity()).load(url)
+                    .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                        .placeholder(R.drawable.ic_downloading_24)
+                        .error(R.drawable.ic_search)
+                        .centerCrop()
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            if (!dataSource.equals(DataSource.MEMORY_CACHE)) marker.showInfoWindow();
+                            return false;
+                        }
+                    })
+                        .into((ImageView) bindingWindow.ivMapwindow);
         }
 
         View view = bindingWindow.getRoot();
+
         return view;
     }
 

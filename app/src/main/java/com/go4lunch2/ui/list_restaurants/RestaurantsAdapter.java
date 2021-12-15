@@ -76,7 +76,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
 
         if (restaurant.getImage()!= null && !restaurant.getImage().isEmpty()) {
             Glide.with(v.getContext()).load(restaurant.getImage())
-                    .placeholder(R.drawable.r2)
+                    .placeholder(R.drawable.ic_downloading_24)
                     .error(R.drawable.ic_search)
                     .centerCrop()
                     .into((ImageView) v.findViewById(R.id.item_restaurant_image));

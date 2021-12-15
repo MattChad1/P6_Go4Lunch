@@ -37,10 +37,9 @@ public class MapsViewModel extends ViewModel {
                         Utils.ratingToStars(r.getRcf().getAverageRate()),
                         r.getRcf().getWorkmatesInterestedIds() == null ? 0 : r.getRcf().getWorkmatesInterestedIds().size()
                 ));
+                Log.i(TAG, "Image View model : "+ r.getImage());
             }
-            for (MapsStateItem r : mapsStateItems) {
-                Log.i(TAG, r.getName() + "=>" + r.getWorkmatesCount());
-            }
+
 
             return mapsStateItems;
         });

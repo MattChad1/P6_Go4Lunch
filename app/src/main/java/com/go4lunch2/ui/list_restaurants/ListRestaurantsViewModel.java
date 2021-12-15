@@ -1,11 +1,9 @@
 package com.go4lunch2.ui.list_restaurants;
 
-import static com.go4lunch2.DI.DI.getAppContext;
 import static com.go4lunch2.DI.DI.getReader;
 import static com.go4lunch2.data.api.APIClient.distancesAPI;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -14,34 +12,26 @@ import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import com.go4lunch2.BuildConfig;
-import com.go4lunch2.DI.DI;
-import com.go4lunch2.MyApplication;
 import com.go4lunch2.R;
 import com.go4lunch2.Utils.Utils;
 import com.go4lunch2.data.api.DistancesAPI;
-import com.go4lunch2.data.repositories.RestaurantRepository;
 import com.go4lunch2.data.model.Restaurant;
 import com.go4lunch2.data.model.model_gmap.Element;
 import com.go4lunch2.data.model.model_gmap.Matrix;
 import com.go4lunch2.data.model.model_gmap.Row;
+import com.go4lunch2.data.repositories.RestaurantRepository;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ListRestaurantsViewModel extends ViewModel {
 
@@ -68,19 +58,19 @@ public class ListRestaurantsViewModel extends ViewModel {
             Map<String, String> mapDistance = getDistancesAPI(48.856614, 2.3522219, ids);
             for (Restaurant r : restaurantsList) {
 
-                    restaurantViewStates.add(new RestaurantViewState(
-                                                     r.getId(),
-                                                     r.getName(),
-                                                     r.getType(),
-                                                     r.getAdress(),
-                                                     (r.getOpeningTime() == "true") ? ctx.getString(R.string.open) : ctx.getString(R.string.closed),
-                                                     mapDistance.get(r.getId()),
-                                                     Utils.ratingToStars(r.getRcf().getAverageRate()),
-                                                     r.getRcf().getWorkmatesInterestedIds() == null ? 0 : r.getRcf().getWorkmatesInterestedIds().size(),
-                                                     r.getImage()
-                                             )
-                                            );
-                }
+                restaurantViewStates.add(new RestaurantViewState(
+                                                 r.getId(),
+                                                 r.getName(),
+                                                 r.getType(),
+                                                 r.getAdress(),
+                                                 (r.getOpeningTime() == "true") ? ctx.getString(R.string.open) : ctx.getString(R.string.closed),
+                                                 mapDistance.get(r.getId()),
+                                                 Utils.ratingToStars(r.getRcf().getAverageRate()),
+                                                 r.getRcf().getWorkmatesInterestedIds() == null ? 0 : r.getRcf().getWorkmatesInterestedIds().size(),
+                                                 r.getImage()
+                                         )
+                                        );
+            }
 
             return restaurantViewStates;
         });
@@ -110,7 +100,6 @@ public class ListRestaurantsViewModel extends ViewModel {
                 destinationsURLParameter += d;
             }
 
-
             DistancesAPI service = distancesAPI();
             Call<Matrix> callAsync = service.getResults(latitudeOrigin.toString() + "," + longitudeOrigin.toString(), destinationsURLParameter,
                                                         "walking", ctx.getString(
@@ -136,10 +125,8 @@ public class ListRestaurantsViewModel extends ViewModel {
             } catch (NullPointerException e) {
                 Log.i(TAG, "Erreur : " + destinations.get(i));
                 mapResult.put(destinations.get(i), "");
-            }
-            catch (IndexOutOfBoundsException e) {
+            } catch (IndexOutOfBoundsException e) {
                 Log.i(TAG, "Erreur getDistancesAPI: " + destinations.get(i));
-
             }
         }
 
