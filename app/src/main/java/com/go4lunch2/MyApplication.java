@@ -14,6 +14,7 @@ public class MyApplication extends Application {
         sApplication = this;
         if (BuildConfig.DEBUG) debug = true;
         else debug = false;
+//        debug = false;
     }
 
     public static Application getInstance() {

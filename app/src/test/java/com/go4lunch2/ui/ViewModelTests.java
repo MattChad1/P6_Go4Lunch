@@ -1,4 +1,4 @@
-package com.go4lunch2;
+package com.go4lunch2.ui;
 
 import static com.TestUtils.LiveDataTestUtils.getOrAwaitValue;
 import static org.junit.Assert.assertEquals;
@@ -16,10 +16,12 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.MutableLiveData;
 
 import com.go4lunch2.DI.DI;
+import com.go4lunch2.MyApplication;
 import com.go4lunch2.Utils.Utils;
 import com.go4lunch2.data.model.Restaurant;
 import com.go4lunch2.data.model.RestaurantCustomFields;
 import com.go4lunch2.data.repositories.RestaurantRepository;
+import com.go4lunch2.data.repositories.SortRepository;
 import com.go4lunch2.data.repositories.UserRepository;
 import com.go4lunch2.ui.list_restaurants.ListRestaurantsViewModel;
 import com.go4lunch2.ui.main_activity.MainActivityViewModel;
@@ -60,6 +62,9 @@ public class ViewModelTests {
 
     @Mock
     RestaurantRepository restaurantRepository;
+
+    @Mock
+    SortRepository sortRepository;
 
     @Mock
     private Application application;
@@ -110,7 +115,7 @@ public class ViewModelTests {
 //        Mockito.when(ff.getInstance()).thenReturn(/* null ?? */);
 //        restaurantRepository = new RestaurantRepository();
 //        userRepository = new UserRepository();
-        viewModel = new ListRestaurantsViewModel(restaurantRepository, ctx);
+        viewModel = new ListRestaurantsViewModel(restaurantRepository, sortRepository, ctx);
 
         Mockito.when(restaurantRepository.getRestaurantsLiveData()).thenReturn(fakeRestaurantsLiveData);
 //        Mockito.when(DI.getAppContext()).thenReturn(ctx);
@@ -122,7 +127,7 @@ public class ViewModelTests {
     @Test
     public void checkItemsCount() throws InterruptedException {
         int numRepository = allRestaurants.size();
-        int numLD = getOrAwaitValue(viewModel.getAllRestaurantsViewStateLiveData()).size();
+        int numLD = getOrAwaitValue(viewModel.getAllRestaurantsViewStateLD()).size();
         assertEquals(numLD, numRepository);
         assertTrue(numRepository ==1);
         assertTrue(numLD ==1);

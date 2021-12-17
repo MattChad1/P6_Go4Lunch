@@ -5,11 +5,26 @@
 
     <item
         android:id="@+id/action_search"
-        android:title="Search"
+        android:title="@string/item_search"
         android:icon="@drawable/ic_search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="always|collapseActionView" />
 
+        <item android:id="@+id/btn_filter"
+            android:icon="@drawable/ic_filter_list_24"
+            android:title="@string/item_order"
+            app:showAsAction="always">
+            <menu>
+                <item
+                    android:id="@+id/menu_order_distance"
+                    android:orderInCategory="1"
+                    android:title="@string/order_distance" />
+                <item
+                    android:id="@+id/menu_order_rating"
+                    android:orderInCategory="2"
+                    android:title="@string/order_rating" />
+            </menu>
 
+        </item>
+    </menu>
 
-</menu>

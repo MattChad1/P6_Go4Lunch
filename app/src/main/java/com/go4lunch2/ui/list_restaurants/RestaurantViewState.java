@@ -8,12 +8,12 @@ public class RestaurantViewState {
     String type;
     String adress;
     String openingHours;
-    String distance;
+    int distance;
     Double starsCount;
     int workmatesCount;
     String image;
 
-    public RestaurantViewState(String id, String name, String type, String adress, String openingHours, String distance, Double starsCount,
+    public RestaurantViewState(String id, String name, String type, String adress, String openingHours, int distance, Double starsCount,
                                int workmatesCount,
                                String image) {
         this.id = id;
@@ -47,7 +47,7 @@ public class RestaurantViewState {
         return openingHours;
     }
 
-    public String getDistance() {
+    public int getDistance() {
         return distance;
     }
 

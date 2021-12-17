@@ -6,6 +6,7 @@ import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
@@ -16,7 +17,9 @@ import com.go4lunch2.data.api.PlaceAutocompleteAPI;
 import com.go4lunch2.data.model.CustomUser;
 import com.go4lunch2.data.model.model_gmap.place_autocomplete.Prediction;
 import com.go4lunch2.data.model.model_gmap.place_autocomplete.Root;
+import com.go4lunch2.data.repositories.SortRepository;
 import com.go4lunch2.data.repositories.UserRepository;
+import com.google.firebase.firestore.core.OrderBy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,11 +34,21 @@ public class MainActivityViewModel extends ViewModel {
     private Context ctx = MyApplication.getInstance();
     private MutableLiveData<List<SearchViewStateItem>> searchResultsLiveData;
     UserRepository userRepository;
+    SortRepository sortRepository;
 
-    public MainActivityViewModel(UserRepository userRepository) {
+
+    public MainActivityViewModel(UserRepository userRepository, SortRepository sortRepository) {
         this.userRepository = userRepository;
+        this.sortRepository = sortRepository;
         searchResultsLiveData = new MutableLiveData<>();
     }
+
+    public void updateOrderLiveData(SortRepository.OrderBy order) {
+        sortRepository.updateOrderLiveData(order);
+    }
+
+
+
 
     public MutableLiveData<List<SearchViewStateItem>> getSearchResultsLiveData() {
         return searchResultsLiveData;
@@ -81,12 +94,6 @@ public class MainActivityViewModel extends ViewModel {
         });
 
     }
-
-
-
-
-
-
 
 
 }

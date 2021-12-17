@@ -4,8 +4,8 @@
 
     <string name="facebook_app_id">311473977462820</string>
     <string name="fb_login_protocol_scheme">fb311473977462820</string>
-    <string name="google_maps_key">AIzaSyDUgzpnzy73hWZYbH24UO0_Pkfoks3bdBE</string>
-    <string name="google_maps_key22">AIzaSyDUgzpnzy73hWZYbH24UO0_Pkfoks3bdBE</string>
+    <string name="google_maps_key" translatable="false">AIzaSyDUgzpnzy73hWZYbH24UO0_Pkfoks3bdBE</string>
+    <string name="google_maps_key22" translatable="false">AIzaSyDUgzpnzy73hWZYbH24UO0_Pkfoks3bdBE</string>
 
 
     // Navigation
@@ -18,6 +18,13 @@
     <string name="map_view_desc">Restaurants map</string>
     <string name="list_restaurants_desc">Restaurants list</string>
     <string name="list_workmates_desc">Available workmates</string>
+
+    // Toolbar
+    <string name="item_search">Search</string>
+    <string name="item_order">Order list</string>
+    <string name="search_restaurant">Search restaurant</string>
+    <string name="order_distance">Order by distance</string>
+    <string name="order_rating">Order by rates</string>
 
     // Nav drawer
     <string name="your_lunch">Your lunch</string>

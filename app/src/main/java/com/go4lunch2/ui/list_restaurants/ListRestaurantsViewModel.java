@@ -7,10 +7,12 @@ import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
+import com.annimon.stream.Stream;
 import com.go4lunch2.BuildConfig;
 import com.go4lunch2.R;
 import com.go4lunch2.Utils.Utils;
@@ -20,6 +22,7 @@ import com.go4lunch2.data.model.model_gmap.Element;
 import com.go4lunch2.data.model.model_gmap.Matrix;
 import com.go4lunch2.data.model.model_gmap.Row;
 import com.go4lunch2.data.repositories.RestaurantRepository;
+import com.go4lunch2.data.repositories.SortRepository;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -37,25 +40,61 @@ public class ListRestaurantsViewModel extends ViewModel {
 
     String TAG = "MyLog RestaurantsViewModel";
 
-    private RestaurantRepository restaurantRepository;
-    private MutableLiveData<List<RestaurantViewState>> allRestaurantsLiveData = new MutableLiveData<>();
+    private final RestaurantRepository restaurantRepository;
+    private final SortRepository sortRepository;
+    private final MutableLiveData<List<RestaurantViewState>> allRestaurantsViewStateLD = new MutableLiveData<>();
+    private final MutableLiveData<SortRepository.OrderBy> orderLiveData = new MutableLiveData<>();
+    private final MediatorLiveData<List<RestaurantViewState>> allRestaurantsWithOrderMediatorLD;
 
     Context ctx;
     BufferedReader reader;
 
-    public ListRestaurantsViewModel(RestaurantRepository restaurantRepository, Context ctx) {
-        this.ctx = ctx;
-        this.restaurantRepository = restaurantRepository;
-//        reader = DI.getReader()
+    public MediatorLiveData<List<RestaurantViewState>> getAllRestaurantsWithOrderMediatorLD() {
+        return allRestaurantsWithOrderMediatorLD;
     }
 
-    public LiveData<List<RestaurantViewState>> getAllRestaurantsViewStateLiveData() {
+    public ListRestaurantsViewModel(RestaurantRepository restaurantRepository, SortRepository sortRepository, Context ctx) {
+        this.ctx = ctx;
+        this.restaurantRepository = restaurantRepository;
+        this.sortRepository = sortRepository;
+
+        allRestaurantsWithOrderMediatorLD = new MediatorLiveData<>();
+        allRestaurantsWithOrderMediatorLD.addSource(getAllRestaurantsViewStateLD(), value -> {
+            Log.i(TAG, "ListRestaurantsViewModel: source1");
+            allRestaurantsWithOrderMediatorLD.setValue(value);
+        });
+        allRestaurantsWithOrderMediatorLD.addSource(getOrderLiveData(), order -> {
+                                                        Log.i(TAG, "ListRestaurantsViewModel: source2");
+                                                        List<RestaurantViewState> restaurants = getAllRestaurantsViewStateLD().getValue();
+                                                        if (restaurants != null && !restaurants.isEmpty()) {
+                                                            List<RestaurantViewState> newList = new ArrayList<>();
+                                                            if (order == SortRepository.OrderBy.DISTANCE)
+                                                                newList =
+                                                                        Stream.of(restaurants).sorted((a, b) -> a.getDistance() - b.getDistance()).toList();
+                                                            else if (order == SortRepository.OrderBy.NAME) newList = restaurants;
+                                                            else if (order == SortRepository.OrderBy.RATING)
+                                                                newList = Stream.of(restaurants).sorted((a, b) -> Double.compare(a.getStarsCount(),
+                                                                                                                                 b.getStarsCount())).toList();
+
+                                                            allRestaurantsWithOrderMediatorLD.setValue(newList);
+                                                        }
+                                                    }
+                                                   );
+    }
+
+
+
+    public LiveData<SortRepository.OrderBy> getOrderLiveData() {
+        return sortRepository.getOrderLiveData();
+    }
+
+    public LiveData<List<RestaurantViewState>> getAllRestaurantsViewStateLD() {
         return Transformations.map(restaurantRepository.getRestaurantsLiveData(), restaurantsList -> {
             List<RestaurantViewState> restaurantViewStates = new ArrayList<>();
             Log.i(TAG, "Appel getAllRestaurantsViewStateLiveData");
             List<String> ids = new ArrayList<>();
             for (Restaurant r : restaurantsList) ids.add(r.getId());
-            Map<String, String> mapDistance = getDistancesAPI(48.856614, 2.3522219, ids);
+            Map<String, Integer> mapDistance = getDistancesAPI(48.856614, 2.3522219, ids);
             for (Restaurant r : restaurantsList) {
 
                 restaurantViewStates.add(new RestaurantViewState(
@@ -71,15 +110,14 @@ public class ListRestaurantsViewModel extends ViewModel {
                                          )
                                         );
             }
-
             return restaurantViewStates;
         });
     }
 
-    private Map<String, String> getDistancesAPI(Double latitudeOrigin, Double longitudeOrigin, List<String> destinations) {
+    private Map<String, Integer> getDistancesAPI(Double latitudeOrigin, Double longitudeOrigin, List<String> destinations) {
 
         List<Element> elements = new ArrayList<>();
-        Map<String, String> mapResult = new HashMap<>();
+        Map<String, Integer> mapResult = new HashMap<>();
 
         if (BuildConfig.DEBUG) {
             try {
@@ -121,10 +159,10 @@ public class ListRestaurantsViewModel extends ViewModel {
         }
         for (int i = 0; i < destinations.size(); i++) {
             try {
-                mapResult.put(destinations.get(i), ((Element) elements.get(i)).getDistance().getText());
+                mapResult.put(destinations.get(i), ((Element) elements.get(i)).getDistance().getValue());
             } catch (NullPointerException e) {
                 Log.i(TAG, "Erreur : " + destinations.get(i));
-                mapResult.put(destinations.get(i), "");
+                mapResult.put(destinations.get(i), 0);
             } catch (IndexOutOfBoundsException e) {
                 Log.i(TAG, "Erreur getDistancesAPI: " + destinations.get(i));
             }

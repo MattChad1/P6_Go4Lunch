@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Go4Lunch</string>
-    <string name="google_maps_key" translatable="false">AIzaSyDUgzpnzy73hWZYbH24UO0_Pkfoks3bdBE</string>
     <string name="app_subtitle">Trouvez un restaurant sympa et invitez vos collègues à déjeuner</string>
     <string name="facebook_app_id">311473977462820</string>
     <string name="fb_login_protocol_scheme">fb311473977462820</string>
-    <string name="google_maps_key22">AIzaSyDUgzpnzy73hWZYbH24UO0_Pkfoks3bdBE</string>
     <string name="map_view_link">Carte</string>
     <string name="list_restaurants_link">Liste</string>
     <string name="list_workmates_link">Collègues</string>
@@ -30,4 +28,9 @@
     <string name="permission_rationale_location">"L'accès au GPS est requis pour que l'application puisse afficher votre position "</string>
     <string name="location_permission_denied">L\'accès au GPS est requis. Merci d\'essayer à nouveau après avoir activé la localisation.</string>
     <string name="permission_required_toast">L\'accès à la localisation est requis pour cette démo.</string>
+    <string name="item_search">Rechercher</string>
+    <string name="item_order">Trier</string>
+    <string name="search_restaurant">Rechercher un restaurant</string>
+    <string name="order_distance">Trier par distance</string>
+    <string name="order_rating">Trier par note</string>
 </resources>

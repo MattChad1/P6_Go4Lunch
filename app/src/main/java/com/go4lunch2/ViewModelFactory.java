@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.go4lunch2.data.repositories.RestaurantRepository;
+import com.go4lunch2.data.repositories.SortRepository;
 import com.go4lunch2.data.repositories.UserRepository;
 import com.go4lunch2.ui.detail_restaurant.DetailRestaurantViewModel;
 import com.go4lunch2.ui.list_restaurants.ListRestaurantsViewModel;
@@ -23,7 +24,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
         if (factory == null) {
             synchronized (ViewModelFactory.class) {
                 if (factory == null) {
-                    factory = new ViewModelFactory(new RestaurantRepository(), new UserRepository());
+                    factory = new ViewModelFactory(new RestaurantRepository(), MyApplication.getInstance(), new UserRepository(), new SortRepository());
                 }
             }
         }
@@ -39,10 +40,15 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     private final UserRepository userRepository;
 
-    private ViewModelFactory(@NonNull RestaurantRepository restaurantRepository, @NonNull UserRepository userRepository) {
+    @NonNull
+    private final SortRepository sortRepository;
+
+    public ViewModelFactory(@NonNull RestaurantRepository restaurantRepository, @NonNull Context ctx,
+                            @NonNull UserRepository userRepository, @NonNull SortRepository sortRepository) {
         this.restaurantRepository = restaurantRepository;
+        this.ctx = ctx;
         this.userRepository = userRepository;
-        this.ctx = MyApplication.getInstance();
+        this.sortRepository = sortRepository;
     }
 
     @SuppressWarnings("unchecked")
@@ -50,10 +56,10 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
         if (modelClass.isAssignableFrom(MainActivityViewModel.class)) {
-            return (T) new MainActivityViewModel(userRepository);
+            return (T) new MainActivityViewModel(userRepository, sortRepository);
         }
         else if (modelClass.isAssignableFrom(ListRestaurantsViewModel.class)) {
-            return (T) new ListRestaurantsViewModel(restaurantRepository, ctx);
+            return (T) new ListRestaurantsViewModel(restaurantRepository, sortRepository, ctx);
         }
         else if (modelClass.isAssignableFrom(LogInViewModel.class)) {
             return (T) new LogInViewModel(userRepository);

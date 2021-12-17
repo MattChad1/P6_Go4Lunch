@@ -24,9 +24,11 @@ import com.go4lunch2.BaseActivity;
 import com.go4lunch2.R;
 import com.go4lunch2.ViewModelFactory;
 import com.go4lunch2.data.model.CustomUser;
+import com.go4lunch2.data.repositories.SortRepository;
 import com.go4lunch2.databinding.ActivityMainBinding;
 import com.go4lunch2.ui.detail_restaurant.DetailRestaurantActivity;
 import com.go4lunch2.ui.list_restaurants.ListRestaurantsFragment;
+import com.go4lunch2.ui.list_restaurants.ListRestaurantsViewModel;
 import com.go4lunch2.ui.list_workmates.ListWorkmatesFragment;
 import com.go4lunch2.ui.login.LogInActivity;
 import com.go4lunch2.ui.map.MapsFragment;
@@ -40,7 +42,7 @@ import com.google.firebase.auth.UserInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     String TAG = "MyLog MainActivity";
     private ActivityMainBinding binding;
@@ -78,7 +80,7 @@ public class MainActivity extends BaseActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
-                    .add(R.id.main_fragment, MapsFragment.class, null)
+                    .add(R.id.main_fragment, ListRestaurantsFragment.class, null)
                     .commit();
         }
 
@@ -137,19 +139,20 @@ public class MainActivity extends BaseActivity {
             switch (view1.getItemId()) {
                 case R.id.menu_bb_mapview:
                     toolbar.setTitle(getString(R.string.map_view_desc));
-                    toolbar.getMenu().clear();
-                    toolbar.inflateMenu(R.menu.menu_toolbar);
+                    toolbar.getMenu().getItem(0).setVisible(true);
+                    toolbar.getMenu().getItem(1).setVisible(false);
                     linkTo = MapsFragment.class;
                     break;
                 case R.id.menu_bb_listview:
                     toolbar.setTitle(getString(R.string.list_restaurants_desc));
-                    toolbar.getMenu().clear();
-                    toolbar.inflateMenu(R.menu.menu_toolbar);
+                    toolbar.getMenu().getItem(0).setVisible(true);
+                    toolbar.getMenu().getItem(1).setVisible(true);
                     linkTo = ListRestaurantsFragment.class;
                     break;
                 case R.id.menu_bb_workmates:
                     toolbar.setTitle(getString(R.string.list_workmates_desc));
-                    toolbar.getMenu().clear();
+                    toolbar.getMenu().getItem(0).setVisible(false);
+                    toolbar.getMenu().getItem(1).setVisible(false);
                     linkTo = ListWorkmatesFragment.class;
                     break;
                 default:
@@ -186,7 +189,7 @@ public class MainActivity extends BaseActivity {
         MenuItem menuItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) menuItem.getActionView();
 
-        searchView.setQueryHint("Search restaurants");
+        searchView.setQueryHint(getString(R.string.search_restaurant));
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -228,4 +231,22 @@ public class MainActivity extends BaseActivity {
             super.onBackPressed();
         }
     }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.menu_order_distance:
+                vm.updateOrderLiveData(SortRepository.OrderBy.DISTANCE);
+                break;
+            case R.id.menu_order_rating:
+                vm.updateOrderLiveData(SortRepository.OrderBy.RATING);
+                break;
+
+            default:
+                throw new IllegalStateException("Unexpected value: " + view.getId());
+        }
+
+    }
+
+
 }

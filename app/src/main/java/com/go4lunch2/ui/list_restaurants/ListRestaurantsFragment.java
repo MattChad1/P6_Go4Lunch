@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.go4lunch2.ViewModelFactory;
 import com.go4lunch2.databinding.FragmentListRestaurantsBinding;
+import com.go4lunch2.ui.main_activity.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,19 +57,20 @@ public class ListRestaurantsFragment extends Fragment {
         RestaurantsAdapter adapter = new RestaurantsAdapter(getActivity(), datas);
         rv.setAdapter(adapter);
 
-        vm.getAllRestaurantsViewStateLiveData().observe(getViewLifecycleOwner(), listRestaurants -> {
+//        vm.getAllRestaurantsWithOrderMediatorLD().observe(getViewLifecycleOwner(), listRestaurants -> {
+        vm.getAllRestaurantsViewStateLD().observe(getViewLifecycleOwner(), listRestaurants -> {
+            Log.i(TAG, "onCreateView: getAllRestaurantsWithOrderMediatorLD()");
             datas.clear();
             datas.addAll(listRestaurants);
             adapter.notifyDataSetChanged();
         });
 
-        initList();
+
+
         View view = binding.getRoot();
         return view;
     }
 
-    public void initList() {
 
 
-    }
 }
