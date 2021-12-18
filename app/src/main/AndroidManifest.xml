@@ -79,12 +79,14 @@
 
 
         <service
-            android:name="com.google.firebase.messaging.FirebaseMessagingService"
+            android:name=".service.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <receiver android:name=".service.ReminderBroadcast"/>
 
 
     </application>

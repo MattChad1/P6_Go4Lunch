@@ -1,5 +1,9 @@
 package com.go4lunch2.ui.detail_restaurant;
 
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -32,11 +36,15 @@ import com.go4lunch2.R;
 import com.go4lunch2.ViewModelFactory;
 import com.go4lunch2.data.model.CustomUser;
 import com.go4lunch2.databinding.ActivityDetailRestaurantBinding;
+import com.go4lunch2.service.NotificationHelper;
+import com.go4lunch2.service.ReminderBroadcast;
+import com.go4lunch2.ui.main_activity.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Calendar;
 
 public class DetailRestaurantActivity extends BaseActivity {
 
@@ -55,6 +63,7 @@ public class DetailRestaurantActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        NotificationHelper.createNotificationChannel(this, "Noon", "Reminder for the restaurant chosen");
 
         Intent intent = getIntent();
         String idRestaurant = intent.getStringExtra(RESTAURANT_SELECTED);
@@ -92,6 +101,22 @@ public class DetailRestaurantActivity extends BaseActivity {
 
             binding.fabRestaurantChosen.setOnClickListener(v-> {
                 vm.updateRestaurantChosen(currentUser.getUid(), idRestaurant);
+                Intent intentNotif = new Intent (this, ReminderBroadcast.class);
+                intentNotif.putExtra("nameRestaurant", restaurant.getName());
+                intentNotif.putExtra("idRestaurant", restaurant.getId());
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intentNotif, 0);
+
+                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                Calendar currentCal = Calendar.getInstance();
+                Calendar firingCal = Calendar.getInstance();
+                firingCal.set(Calendar.HOUR_OF_DAY, 18);
+                firingCal.set(Calendar.MINUTE, 28);
+                firingCal.set(Calendar.SECOND, 30);
+                if (firingCal.getTimeInMillis() < currentCal.getTimeInMillis()) firingCal.add(Calendar.DAY_OF_MONTH, 1);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, firingCal.getTimeInMillis(), pendingIntent);
+
+                Log.i(TAG, "onCreate: onClickListener");
+
             });
 
 
@@ -156,6 +181,7 @@ public class DetailRestaurantActivity extends BaseActivity {
 
     }
 
+
     protected void createAlertGrade() {
         View viewDialog = LayoutInflater.from(this).inflate(R.layout.alertdialog_rates_layout, null);
         Integer[] icons = {R.drawable.ic_star_empty, R.drawable.ic_star_half, R.drawable.ic_star_filled};
@@ -176,6 +202,8 @@ public class DetailRestaurantActivity extends BaseActivity {
                 .create();
         dialog.show();
     }
+
+
 
 
 

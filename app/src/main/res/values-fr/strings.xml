@@ -33,4 +33,7 @@
     <string name="search_restaurant">Rechercher un restaurant</string>
     <string name="order_distance">Trier par distance</string>
     <string name="order_rating">Trier par note</string>
+    <string name="notification_channel_id">MyCanal</string>
+    <string name="notification_channel_title">MyTitle</string>
+    <string name="notification_channel_desc">MyDesc</string>
 </resources>
