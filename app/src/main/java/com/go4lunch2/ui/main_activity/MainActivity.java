@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -42,7 +43,7 @@ import com.google.firebase.auth.UserInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener {
+public class MainActivity extends BaseActivity {
 
     String TAG = "MyLog MainActivity";
     private ActivityMainBinding binding;
@@ -63,7 +64,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         user = FirebaseAuth.getInstance().getCurrentUser();
         vm.getCurrentCustomUser(user.getUid()).observe(this, value -> currentCustomUser = value);
 
-
         binding = ActivityMainBinding.inflate(getLayoutInflater());
 
         View view = binding.getRoot();
@@ -77,14 +77,28 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             drawer.openDrawer(GravityCompat.START);
         });
 
+//        findViewById(R.id.btn_filter).setOnMenuItemClickListener(v -> {
+//            switch (v.getItemId()) {
+//                case R.id.menu_order_distance:
+//                    vm.updateOrderLiveData(SortRepository.OrderBy.DISTANCE);
+//                    break;
+//                case R.id.menu_order_rating:
+//                    vm.updateOrderLiveData(SortRepository.OrderBy.RATING);
+//                    break;
+//
+//                default:
+//                    Log.i(TAG, "Clic " + v.getItemId());;
+//            }
+//
+//            return false;
+//        });
+
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
                     .add(R.id.main_fragment, ListRestaurantsFragment.class, null)
                     .commit();
         }
-
-
 
         // Navigation drawer
         if (user != null) { //TODO : supprimer le if car user ne peut pas être null ici (connecté)
@@ -104,8 +118,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             Toast.makeText(this, "Vous êtes connecté !!!!", Toast.LENGTH_SHORT).show();
         }
 
-
-
         binding.navigationDrawer.setNavigationItemSelectedListener(menuItem -> {
             // Handle menu item selected
             // menuItem.isChecked = true;
@@ -118,7 +130,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
 
             else if (menuItem.getItemId() == R.id.menu_drawer_yourlunch) {
-                if (currentCustomUser.getIdRestaurantChosen()!=null) {
+                if (currentCustomUser.getIdRestaurantChosen() != null) {
                     Intent i = new Intent(this, DetailRestaurantActivity.class);
                     i.putExtra(DetailRestaurantActivity.RESTAURANT_SELECTED, currentCustomUser.getIdRestaurantChosen());
                     startActivity(i);
@@ -129,7 +141,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             drawer.closeDrawer(GravityCompat.START);
             return true;
         });
-
 
         // Bottom Navigation
         BottomNavigationView bottombar = binding.bottomNavigation;
@@ -181,8 +192,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         });
     }
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_toolbar, menu);
@@ -206,12 +215,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 }
 
                 else if (s.length() > 2) {
-                    Log.i(TAG, "onQueryTextChange: " +s);
+                    Log.i(TAG, "onQueryTextChange: " + s);
                     rv.setVisibility(View.VISIBLE);
                     binding.mainFragment.setVisibility(View.GONE);
                     if (s.length() == 3) {
                         vm.getSearchResults(s);
-                        Log.i(TAG, "onQueryTextChange: " +s);
+                        Log.i(TAG, "onQueryTextChange: " + s);
                     }
                     else adapter.getFilter().filter(s);
                 }
@@ -219,8 +228,29 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 return false;
             }
         });
+
         return true;
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.i(TAG, "onOptionsItemSelected1: ");
+        // Handle item selection
+        switch (item.getItemId()) {
+                case R.id.menu_order_distance:
+                    Log.i(TAG, "onOptionsItemSelected2: ");
+                    vm.updateOrderLiveData(SortRepository.OrderBy.DISTANCE);
+                    break;
+                case R.id.menu_order_rating:
+                    Log.i(TAG, "onOptionsItemSelected3: ");
+                    vm.updateOrderLiveData(SortRepository.OrderBy.RATING);
+                    break;
+
+                default:
+                    Log.i(TAG, "Clic " + item.getItemId());;
+            }
+            return true;
+        }
 
     @Override
     public void onBackPressed() {
@@ -230,22 +260,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         else {
             super.onBackPressed();
         }
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.menu_order_distance:
-                vm.updateOrderLiveData(SortRepository.OrderBy.DISTANCE);
-                break;
-            case R.id.menu_order_rating:
-                vm.updateOrderLiveData(SortRepository.OrderBy.RATING);
-                break;
-
-            default:
-                throw new IllegalStateException("Unexpected value: " + view.getId());
-        }
-
     }
 
 

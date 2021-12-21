@@ -4,8 +4,10 @@ import static com.go4lunch2.DI.DI.getReader;
 import static com.go4lunch2.data.api.APIClient.distancesAPI;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -28,6 +30,7 @@ import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,9 +55,7 @@ public class ListRestaurantsViewModel extends ViewModel {
 
 
 
-    public LiveData<List<RestaurantViewState>> getAllRestaurantsWithOrderMediatorLD() {
-        return allRestaurantsWithOrderMediatorLD;
-    }
+
 
     public ListRestaurantsViewModel(RestaurantRepository restaurantRepository, SortRepository sortRepository, Context ctx) {
         this.ctx = ctx;
@@ -66,17 +67,21 @@ public class ListRestaurantsViewModel extends ViewModel {
             allRestaurantsWithOrderMediatorLD.postValue(value);
         });
         allRestaurantsWithOrderMediatorLD.addSource(getOrderLiveData(), order -> {
-            Log.i(TAG, "ListRestaurantsViewModel: source2");
-            List<RestaurantViewState> restaurants = getAllRestaurantsViewStateLD().getValue();
+            Log.i(TAG, "ListRestaurantsViewModel: source2" + order.toString());
+            List<RestaurantViewState> restaurants = allRestaurantsViewStateLD.getValue();
             if (restaurants != null && !restaurants.isEmpty()) {
                 List<RestaurantViewState> newList = new ArrayList<>();
-                if (order == SortRepository.OrderBy.DISTANCE)
-                    newList =
-                            Stream.of(restaurants).sorted((a, b) -> a.getDistance() - b.getDistance()).toList();
-                else if (order == SortRepository.OrderBy.NAME) newList = restaurants;
-                else if (order == SortRepository.OrderBy.RATING)
-                    newList = Stream.of(restaurants).sorted((a, b) -> Double.compare(a.getStarsCount(),
-                                                                                     b.getStarsCount())).toList();
+                if (order.equals(SortRepository.OrderBy.DISTANCE)) {
+                    newList = Stream.of(restaurants).filter(r -> r.getDistance()!= null).sorted((a, b) -> a.getDistance() - b.getDistance()).toList();
+                    Log.i(TAG, "ListRestaurantsViewModel: Tri distance");
+                }
+                else if (order == SortRepository.OrderBy.NAME) {
+                    newList = Stream.of(restaurants).sortBy(RestaurantViewState::getName).toList();
+            }
+                else if (order == SortRepository.OrderBy.RATING) {
+                    newList = Stream.of(restaurants).filter(r -> r.getStarsCount()!= null).sortBy(RestaurantViewState::getStarsCount).toList();
+                    newList.addAll(Stream.of(restaurants).filter(r -> r.getStarsCount()== null).toList());
+                }
 
                 allRestaurantsWithOrderMediatorLD.setValue(newList);
             }
@@ -85,11 +90,14 @@ public class ListRestaurantsViewModel extends ViewModel {
 
     }
 
-
+    public LiveData<List<RestaurantViewState>> getAllRestaurantsWithOrderMediatorLD() {
+        return allRestaurantsWithOrderMediatorLD;
+    }
 
     public LiveData<SortRepository.OrderBy> getOrderLiveData() {
         return sortRepository.getOrderLiveData();
     }
+
 
     public LiveData<List<RestaurantViewState>> getAllRestaurantsViewStateLD() {
         return Transformations.map(restaurantRepository.getRestaurantsLiveData(), restaurantsList -> {

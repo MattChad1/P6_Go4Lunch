@@ -1,5 +1,7 @@
 package com.go4lunch2.ui.list_restaurants;
 
+import java.util.Comparator;
+import java.util.Locale;
 
 public class RestaurantViewState {
 
@@ -62,4 +64,15 @@ public class RestaurantViewState {
     public String getImage() {
         return image;
     }
+
+    public static class NameZAComparator implements Comparator<RestaurantViewState> {
+
+        @Override
+        public int compare(RestaurantViewState left, RestaurantViewState right) {
+            return right.getName().toLowerCase(Locale.ROOT).compareTo(left.getName().toLowerCase(Locale.ROOT));
+        }
+    }
+
+
+
 }

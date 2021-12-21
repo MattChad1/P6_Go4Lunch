@@ -57,8 +57,8 @@ public class ListRestaurantsFragment extends Fragment {
         RestaurantsAdapter adapter = new RestaurantsAdapter(getActivity(), datas);
         rv.setAdapter(adapter);
 
-//        vm.getAllRestaurantsWithOrderMediatorLD().observe(getViewLifecycleOwner(), listRestaurants -> {
-        vm.getAllRestaurantsViewStateLD().observe(getViewLifecycleOwner(), listRestaurants -> {
+        vm.getAllRestaurantsWithOrderMediatorLD().observe(getViewLifecycleOwner(), listRestaurants -> {
+//        vm.getAllRestaurantsViewStateLD().observe(getViewLifecycleOwner(), listRestaurants -> {
             if (listRestaurants!=null) {
                 Log.i(TAG, "onCreateView: getAllRestaurantsWithOrderMediatorLD()");
                 datas.clear();

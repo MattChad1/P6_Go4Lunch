@@ -57,12 +57,10 @@ public class RestaurantRepository {
     String TAG = "MyLog Repository";
 
     private final MutableLiveData<List<Restaurant>> restaurantsLiveData = new MutableLiveData<>();
-    private final MutableLiveData<Map<String, String>> restaurantsNamesLiveData = new MutableLiveData<>();
 
     FirebaseFirestore db;
     Context ctx = MyApplication.getInstance();
     List<Restaurant> allRestaurants = new ArrayList<>();
-    Map<String, String> names = new HashMap<>();
 
     public RestaurantRepository() {
         db = DI.getDatabase();
@@ -72,7 +70,6 @@ public class RestaurantRepository {
     public MutableLiveData<List<Restaurant>> getRestaurantsLiveData() {
         return restaurantsLiveData;
     }
-
 
 
     private void getPlacesAPI(Double latitude, Double longitude) {
@@ -108,7 +105,6 @@ public class RestaurantRepository {
                 @Override
                 public void onFailure(Call<Place> call, Throwable t) {
                     Log.i(TAG, "Repository - onFailure: " + t);
-                    System.out.println(t);
                 }
             });
         }

@@ -7,10 +7,12 @@ import androidx.lifecycle.MutableLiveData;
 public class SortRepository {
 
     private OrderBy order;
-    private MutableLiveData<OrderBy> orderLiveData;
+    private MutableLiveData<OrderBy> orderLiveData = new MutableLiveData<>();
 
     public SortRepository() {
+
         this.order = OrderBy.NAME;
+        orderLiveData.setValue(order);
     }
 
     public LiveData<OrderBy> getOrderLiveData() {
