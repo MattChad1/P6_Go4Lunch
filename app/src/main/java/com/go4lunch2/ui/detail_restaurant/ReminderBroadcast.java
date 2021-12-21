@@ -1,4 +1,4 @@
-package com.go4lunch2.service;
+package com.go4lunch2.ui.detail_restaurant;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -11,8 +11,10 @@ import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.go4lunch2.R;
+import com.go4lunch2.ViewModelFactory;
 import com.go4lunch2.ui.detail_restaurant.DetailRestaurantActivity;
 import com.go4lunch2.ui.main_activity.MainActivity;
 
@@ -49,6 +51,8 @@ public class ReminderBroadcast extends BroadcastReceiver {
 //        }
         notificationManager.notify(1, notificationBuilder.build());
 
+        }
 
-    }
+
+
 }

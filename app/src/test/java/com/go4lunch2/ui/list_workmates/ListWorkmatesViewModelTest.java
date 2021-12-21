@@ -29,9 +29,6 @@ import java.util.Map;
 public class ListWorkmatesViewModelTest {
 
     private Map<CustomUser, String> map = new HashMap<>();
-
-
-
     private final MutableLiveData<Map<CustomUser, String>> workmatesWithRestaurantsLiveData = new MutableLiveData<>();
 
     @Mock
@@ -56,7 +53,7 @@ public class ListWorkmatesViewModelTest {
         initMocks(this);
         viewModel = new ListWorkmatesViewModel(restaurantRepository, userRepository);
 
-        map.put(new CustomUser(test1, "Mr test", "", "r1"), test2);
+        map.put(new CustomUser(test1, "Mr test", "", "r1", null), test2);
         workmatesWithRestaurantsLiveData.setValue(map);
 
         when(userRepository.getWorkmatesWithRestaurantsLiveData()).thenReturn(workmatesWithRestaurantsLiveData);

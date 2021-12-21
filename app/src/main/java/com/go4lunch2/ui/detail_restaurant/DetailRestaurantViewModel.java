@@ -64,7 +64,6 @@ public class DetailRestaurantViewModel extends ViewModel {
         callAsync.enqueue(new Callback<RestaurantDetailsJson>() {
             @Override
             public void onResponse(Call<RestaurantDetailsJson> call, Response<RestaurantDetailsJson> response) {
-                Log.i(TAG, "onResponse: " + response.body().toString());
                 Result resultAPI = response.body().getResult();
 
                 String image =
@@ -72,7 +71,6 @@ public class DetailRestaurantViewModel extends ViewModel {
                                 + "&photo_reference=" + response.body().getResult().getPhotos().get(0).getPhotoReference()
                                 + "&key=" + ctx.getString(R.string.google_maps_key22);
 
-                Log.i(TAG, "onResponse: " + image);
 
                 DetailRestaurantViewState detailRestaurantViewState = new DetailRestaurantViewState(
                         idRestaurant,

@@ -59,10 +59,12 @@ public class ListRestaurantsFragment extends Fragment {
 
 //        vm.getAllRestaurantsWithOrderMediatorLD().observe(getViewLifecycleOwner(), listRestaurants -> {
         vm.getAllRestaurantsViewStateLD().observe(getViewLifecycleOwner(), listRestaurants -> {
-            Log.i(TAG, "onCreateView: getAllRestaurantsWithOrderMediatorLD()");
-            datas.clear();
-            datas.addAll(listRestaurants);
-            adapter.notifyDataSetChanged();
+            if (listRestaurants!=null) {
+                Log.i(TAG, "onCreateView: getAllRestaurantsWithOrderMediatorLD()");
+                datas.clear();
+                datas.addAll(listRestaurants);
+                adapter.notifyDataSetChanged();
+            }
         });
 
 

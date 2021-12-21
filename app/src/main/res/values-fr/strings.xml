@@ -36,4 +36,5 @@
     <string name="notification_channel_id">MyCanal</string>
     <string name="notification_channel_title">MyTitle</string>
     <string name="notification_channel_desc">MyDesc</string>
+    <string name="receive_notifications">Recevoir une notification à midi</string>
 </resources>

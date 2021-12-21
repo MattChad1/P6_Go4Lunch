@@ -1,15 +1,9 @@
 package com.go4lunch2.ui.detail_restaurant;
 
 import android.app.AlarmManager;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,13 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -37,13 +28,9 @@ import com.go4lunch2.ViewModelFactory;
 import com.go4lunch2.data.model.CustomUser;
 import com.go4lunch2.databinding.ActivityDetailRestaurantBinding;
 import com.go4lunch2.service.NotificationHelper;
-import com.go4lunch2.service.ReminderBroadcast;
-import com.go4lunch2.ui.main_activity.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.util.Calendar;
 
 public class DetailRestaurantActivity extends BaseActivity {
@@ -83,7 +70,6 @@ public class DetailRestaurantActivity extends BaseActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        Log.i(TAG, "onCreate DetailActivity: " + idRestaurant);
         vm.getDetailRestaurantLiveData(idRestaurant).observe(this, restaurant -> {
             restaurantSelected = restaurant;
 
@@ -109,13 +95,11 @@ public class DetailRestaurantActivity extends BaseActivity {
                 AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
                 Calendar currentCal = Calendar.getInstance();
                 Calendar firingCal = Calendar.getInstance();
-                firingCal.set(Calendar.HOUR_OF_DAY, 18);
-                firingCal.set(Calendar.MINUTE, 28);
-                firingCal.set(Calendar.SECOND, 30);
+                firingCal.set(Calendar.HOUR_OF_DAY, 12);
+                firingCal.set(Calendar.MINUTE, 0);
+                firingCal.set(Calendar.SECOND, 0);
                 if (firingCal.getTimeInMillis() < currentCal.getTimeInMillis()) firingCal.add(Calendar.DAY_OF_MONTH, 1);
                 alarmManager.set(AlarmManager.RTC_WAKEUP, firingCal.getTimeInMillis(), pendingIntent);
-
-                Log.i(TAG, "onCreate: onClickListener");
 
             });
 

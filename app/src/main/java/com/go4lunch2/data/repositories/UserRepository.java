@@ -9,11 +9,13 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.go4lunch2.MyApplication;
+import com.go4lunch2.Utils.Utils;
 import com.go4lunch2.data.model.CustomUser;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -22,8 +24,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +50,6 @@ public class UserRepository {
     }
 
     public LiveData<Map<CustomUser, String>> getWorkmatesWithRestaurantsLiveData() {
-
         Log.i(TAG, "Appel getWorkmatesWithRestaurantsLiveData ");
         usersWithRestaurant.clear();
         db.collection("users")
@@ -67,8 +70,10 @@ public class UserRepository {
                                                 public void onComplete(@NonNull Task<DocumentSnapshot> task2) {
                                                     DocumentSnapshot document2 = task2.getResult();
                                                     if (task2.isSuccessful()) {
+                                                        if (Utils.ValidForToday((Timestamp) document2.get("lastUpdate"))) {
                                                             usersWithRestaurant.put(customUser, document2.getString("name"));
                                                             workmatesWithRestaurantsLiveData.setValue(usersWithRestaurant);
+                                                        }
                                                     }
                                                 }
                                             });
@@ -89,7 +94,7 @@ public class UserRepository {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (!document.exists()) {
-                                CustomUser newCustomUser = new CustomUser(id, name, avatar, null);
+                                CustomUser newCustomUser = new CustomUser(id, name, avatar, null, null);
                                 db.collection("users").document(id)
                                         .set(newCustomUser);
                                 allCustomUsers.add(newCustomUser);
@@ -134,20 +139,18 @@ public class UserRepository {
                         }
                     }
                 });
-
     }
 
     public void updateRestaurantChosen(String idUser, String idRestaurant) {
         // If there was a restaurant, we update the restaurants table to remove this user from the list of workmates interested
         DocumentReference docRef = db.collection("users").document(idUser);
+
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
-
                         String oldRestaurant = document.getString("idRestaurantChosen");
-
                         if (oldRestaurant!= null) {
                             db.collection("restaurants").document(oldRestaurant)
                                     .update("workmatesInterestedIds", FieldValue.arrayRemove(idUser));
@@ -160,35 +163,48 @@ public class UserRepository {
             }
         });
 
+        //  update table users
 
-        docRef.update("idRestaurantChosen", idRestaurant)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot successfully updated!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error updating Restaurant chosen", e);
-                    }
-                });
+            docRef.update("idRestaurantChosen", idRestaurant)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            docRef.update("lastUpdate", FieldValue.serverTimestamp());
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG, "Error updating Restaurant chosen", e);
+                        }
+                    });
 
-        db.collection("restaurants").document(idRestaurant)
-                .update("workmatesInterestedIds", FieldValue.arrayUnion(idUser))
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot successfully updated!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error updating document", e);
-                    }
-                });
+            // update document of the restaurant
+            //  idRestaurant== null when the notification is sent. In this case, there is nothing to do here
+        if (idRestaurant != null) {
+            DocumentReference docRef2 = db.collection("restaurants").document(idRestaurant);
+            docRef2.get()
+                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            if (Utils.ValidForToday((Timestamp) documentSnapshot.get("lastUpdate"))) {
+                                docRef2.update("workmatesInterestedIds", FieldValue.arrayUnion(idUser));
+                            }
+                            else {
+                                docRef2.update("workmatesInterestedIds", new ArrayList<String>(Arrays.asList(idUser)));
+                            }
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG, "Error updating document", e);
+                        }
+                    });
+
+            db.collection("restaurants").document(idRestaurant)
+                    .update("lastUpdate", FieldValue.serverTimestamp());
+        }
     }
 
     public List<CustomUser> getListWorkmatesByIds(List<String> ids) {

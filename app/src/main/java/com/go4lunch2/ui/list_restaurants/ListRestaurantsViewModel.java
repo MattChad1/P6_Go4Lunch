@@ -44,12 +44,15 @@ public class ListRestaurantsViewModel extends ViewModel {
     private final SortRepository sortRepository;
     private final MutableLiveData<List<RestaurantViewState>> allRestaurantsViewStateLD = new MutableLiveData<>();
     private final MutableLiveData<SortRepository.OrderBy> orderLiveData = new MutableLiveData<>();
-    private final MediatorLiveData<List<RestaurantViewState>> allRestaurantsWithOrderMediatorLD;
+    private final MediatorLiveData<List<RestaurantViewState>> allRestaurantsWithOrderMediatorLD = new MediatorLiveData<>();
 
     Context ctx;
-    BufferedReader reader;
+//    BufferedReader reader;
 
-    public MediatorLiveData<List<RestaurantViewState>> getAllRestaurantsWithOrderMediatorLD() {
+
+
+
+    public LiveData<List<RestaurantViewState>> getAllRestaurantsWithOrderMediatorLD() {
         return allRestaurantsWithOrderMediatorLD;
     }
 
@@ -58,28 +61,28 @@ public class ListRestaurantsViewModel extends ViewModel {
         this.restaurantRepository = restaurantRepository;
         this.sortRepository = sortRepository;
 
-        allRestaurantsWithOrderMediatorLD = new MediatorLiveData<>();
         allRestaurantsWithOrderMediatorLD.addSource(getAllRestaurantsViewStateLD(), value -> {
             Log.i(TAG, "ListRestaurantsViewModel: source1");
-            allRestaurantsWithOrderMediatorLD.setValue(value);
+            allRestaurantsWithOrderMediatorLD.postValue(value);
         });
         allRestaurantsWithOrderMediatorLD.addSource(getOrderLiveData(), order -> {
-                                                        Log.i(TAG, "ListRestaurantsViewModel: source2");
-                                                        List<RestaurantViewState> restaurants = getAllRestaurantsViewStateLD().getValue();
-                                                        if (restaurants != null && !restaurants.isEmpty()) {
-                                                            List<RestaurantViewState> newList = new ArrayList<>();
-                                                            if (order == SortRepository.OrderBy.DISTANCE)
-                                                                newList =
-                                                                        Stream.of(restaurants).sorted((a, b) -> a.getDistance() - b.getDistance()).toList();
-                                                            else if (order == SortRepository.OrderBy.NAME) newList = restaurants;
-                                                            else if (order == SortRepository.OrderBy.RATING)
-                                                                newList = Stream.of(restaurants).sorted((a, b) -> Double.compare(a.getStarsCount(),
-                                                                                                                                 b.getStarsCount())).toList();
+            Log.i(TAG, "ListRestaurantsViewModel: source2");
+            List<RestaurantViewState> restaurants = getAllRestaurantsViewStateLD().getValue();
+            if (restaurants != null && !restaurants.isEmpty()) {
+                List<RestaurantViewState> newList = new ArrayList<>();
+                if (order == SortRepository.OrderBy.DISTANCE)
+                    newList =
+                            Stream.of(restaurants).sorted((a, b) -> a.getDistance() - b.getDistance()).toList();
+                else if (order == SortRepository.OrderBy.NAME) newList = restaurants;
+                else if (order == SortRepository.OrderBy.RATING)
+                    newList = Stream.of(restaurants).sorted((a, b) -> Double.compare(a.getStarsCount(),
+                                                                                     b.getStarsCount())).toList();
 
-                                                            allRestaurantsWithOrderMediatorLD.setValue(newList);
-                                                        }
-                                                    }
-                                                   );
+                allRestaurantsWithOrderMediatorLD.setValue(newList);
+            }
+        } );
+
+
     }
 
 
@@ -91,11 +94,17 @@ public class ListRestaurantsViewModel extends ViewModel {
     public LiveData<List<RestaurantViewState>> getAllRestaurantsViewStateLD() {
         return Transformations.map(restaurantRepository.getRestaurantsLiveData(), restaurantsList -> {
             List<RestaurantViewState> restaurantViewStates = new ArrayList<>();
-            Log.i(TAG, "Appel getAllRestaurantsViewStateLiveData");
             List<String> ids = new ArrayList<>();
             for (Restaurant r : restaurantsList) ids.add(r.getId());
             Map<String, Integer> mapDistance = getDistancesAPI(48.856614, 2.3522219, ids);
             for (Restaurant r : restaurantsList) {
+
+                int workmatesInterested = 0;
+                if (r.getRcf().getWorkmatesInterestedIds()!= null) {
+                    if (Utils.ValidForToday(r.getRcf().getLastUpdate())) {
+                        workmatesInterested = r.getRcf().getWorkmatesInterestedIds().size();
+                    }
+                }
 
                 restaurantViewStates.add(new RestaurantViewState(
                                                  r.getId(),
@@ -103,18 +112,20 @@ public class ListRestaurantsViewModel extends ViewModel {
                                                  r.getType(),
                                                  r.getAdress(),
                                                  (r.getOpeningTime() == "true") ? ctx.getString(R.string.open) : ctx.getString(R.string.closed),
-                                                 mapDistance.get(r.getId()),
+                                                 mapDistance == null ? null : mapDistance.get(r.getId()),
                                                  Utils.ratingToStars(r.getRcf().getAverageRate()),
-                                                 r.getRcf().getWorkmatesInterestedIds() == null ? 0 : r.getRcf().getWorkmatesInterestedIds().size(),
+                                                 workmatesInterested,
                                                  r.getImage()
                                          )
                                         );
             }
+            allRestaurantsViewStateLD.setValue(restaurantViewStates);
             return restaurantViewStates;
         });
+
     }
 
-    private Map<String, Integer> getDistancesAPI(Double latitudeOrigin, Double longitudeOrigin, List<String> destinations) {
+    protected Map<String, Integer> getDistancesAPI(Double latitudeOrigin, Double longitudeOrigin, List<String> destinations) {
 
         List<Element> elements = new ArrayList<>();
         Map<String, Integer> mapResult = new HashMap<>();

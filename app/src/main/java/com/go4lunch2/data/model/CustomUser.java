@@ -3,6 +3,9 @@ package com.go4lunch2.data.model;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.ServerTimestamp;
+
 public class CustomUser {
     @NonNull
     String id;
@@ -13,11 +16,15 @@ public class CustomUser {
     @Nullable
     String idRestaurantChosen;
 
-    public CustomUser(@NonNull String id, @NonNull String name, @Nullable String avatar, String idRestaurantChosen) {
+    @ServerTimestamp
+    Timestamp lastUpdate;
+
+    public CustomUser(@NonNull String id, @NonNull String name, @Nullable String avatar, String idRestaurantChosen, Timestamp lastUpdate) {
         this.id = id;
         this.name = name;
         this.avatar = avatar;
         this.idRestaurantChosen = idRestaurantChosen;
+        this.lastUpdate = lastUpdate;
     }
 
     public CustomUser(@NonNull String id) {
@@ -67,5 +74,9 @@ public class CustomUser {
 
     public void setIdRestaurantChosen(String idRestaurantChosen) {
         this.idRestaurantChosen = idRestaurantChosen;
+    }
+
+    public Timestamp getLastUpdate() {
+        return lastUpdate;
     }
 }

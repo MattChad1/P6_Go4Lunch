@@ -2,6 +2,10 @@ package com.go4lunch2.ui.list_restaurants;
 
 import static com.TestUtils.LiveDataTestUtils.getOrAwaitValue;
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.anyDouble;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -26,7 +30,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ListRestaurantsViewModelTest {
 
@@ -46,8 +52,6 @@ public class ListRestaurantsViewModelTest {
     Context ctx;
 
 
-
-
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
@@ -58,17 +62,20 @@ public class ListRestaurantsViewModelTest {
         allRestaurants.add(new Restaurant(testId, testName, "", "", "", "", 0.0, 0.0, new RestaurantCustomFields()));
         fakeRestaurantsLiveData.setValue(allRestaurants);
         ctx = Mockito.mock(Context.class);
-        viewModel = new ListRestaurantsViewModel(restaurantRepository, sortRepository, ctx);
+        viewModel = Mockito.spy(new ListRestaurantsViewModel(restaurantRepository, sortRepository, ctx));
+
+        Map<String, Integer> mockMapDistance = new HashMap<>();
+        doReturn(mockMapDistance).when(viewModel).getDistancesAPI(anyDouble(), anyDouble(), anyList());
 
         when(restaurantRepository.getRestaurantsLiveData()).thenReturn(fakeRestaurantsLiveData);
+
 
     }
 
     @Test
     public void getAllRestaurantsViewStateLD() throws InterruptedException {
         List<RestaurantViewState> listTest =  getOrAwaitValue(viewModel.getAllRestaurantsViewStateLD());
-        assertTrue(listTest.get(0).getName().equals(testName));
-        assertTrue(listTest.get(0).getId().equals(testId));
-
+        assertEquals(listTest.get(0).getName(), testName);
+        assertEquals(listTest.get(0).getId(), testId);
     }
 }

@@ -1,5 +1,8 @@
 package com.go4lunch2.data.model;
 
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.ServerTimestamp;
+
 import java.util.List;
 
 public class RestaurantCustomFields {
@@ -9,11 +12,15 @@ public class RestaurantCustomFields {
     Double averageRate;
     List<String> workmatesInterestedIds;
 
-    public RestaurantCustomFields(String idRestaurant, String name, Double averageRate, List<String> workmatesInterestedIds) {
+    @ServerTimestamp
+    Timestamp lastUpdate;
+
+    public RestaurantCustomFields(String idRestaurant, String name, Double averageRate, List<String> workmatesInterestedIds, Timestamp lastUpdate) {
         this.idRestaurant = idRestaurant;
         this.name = name;
         this.averageRate = averageRate;
         this.workmatesInterestedIds = workmatesInterestedIds;
+        this.lastUpdate = lastUpdate;
     }
 
     public RestaurantCustomFields() {
@@ -35,6 +42,10 @@ public class RestaurantCustomFields {
         return workmatesInterestedIds;
     }
 
+    public Timestamp getLastUpdate() {
+        return lastUpdate;
+    }
+
     @Override
     public String toString() {
         return "RestaurantCustomFields{" +
@@ -42,6 +53,7 @@ public class RestaurantCustomFields {
                 ", name='" + name + '\'' +
                 ", averageRate=" + averageRate +
                 ", workmatesInterestedIds=" + workmatesInterestedIds +
+                ", lastUpdate=" + lastUpdate +
                 '}';
     }
 }

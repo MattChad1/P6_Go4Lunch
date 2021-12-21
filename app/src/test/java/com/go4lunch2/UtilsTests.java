@@ -1,10 +1,13 @@
 package com.go4lunch2;
 
-import org.junit.Test;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import com.go4lunch2.Utils.Utils;
+import com.google.firebase.Timestamp;
+
+import org.junit.Test;
+
+import java.util.Calendar;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -25,6 +28,17 @@ public class UtilsTests {
         assertEquals(Utils.ratingToStars(testValues[2]), expectedValues[2]);
         assertEquals(Utils.ratingToStars(testValues[3]), expectedValues[3]);
     }
+
+//    @Test
+//    public void ValidForTodayTest() {
+//        Calendar base = new Calendar.Builder().        Calendar
+//        Timestamp now = Timestamp.now();
+//        Timestamp test = new Timestamp(
+//
+//        )
+//        Timestamp j3 = Timestamp.now().getSeconds() - 3*24*3600;
+//
+//    }
 
 
 }
