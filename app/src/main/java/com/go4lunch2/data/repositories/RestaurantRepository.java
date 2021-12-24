@@ -4,6 +4,7 @@ import static com.go4lunch2.data.api.APIClient.placesAPI;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.location.Location;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -61,10 +62,14 @@ public class RestaurantRepository {
     FirebaseFirestore db;
     Context ctx = MyApplication.getInstance();
     List<Restaurant> allRestaurants = new ArrayList<>();
+    Double centerLatitude;
+    Double centerLongitude;
 
     public RestaurantRepository() {
         db = DI.getDatabase();
-        getPlacesAPI(48.856614, 2.3522219);
+        centerLatitude = 48.856614;
+        centerLongitude = 2.3522219;
+        getPlacesAPI(centerLatitude, centerLongitude);
     }
 
     public MutableLiveData<List<Restaurant>> getRestaurantsLiveData() {
@@ -74,6 +79,7 @@ public class RestaurantRepository {
 
     private void getPlacesAPI(Double latitude, Double longitude) {
         Log.i(TAG, "Appel getPlacesAPI");
+        allRestaurants.clear();
         List<Result> results = new ArrayList<>();
         if (MyApplication.getDebug()) {
             try {
@@ -115,15 +121,22 @@ public class RestaurantRepository {
         for (Result result : results) {
 
             String image;
+            image ="";
             if (!MyApplication.getDebug()) {
-                image =
-                        "https://maps.googleapis.com/maps/api/place/photo?maxwidth=150"
-                                + "&photo_reference=" + result.getPhotos().get(0).getPhotoReference()
-                                + "&key=" + ctx.getString(R.string.google_maps_key22);
+                try {
+                    image =
+                            "https://maps.googleapis.com/maps/api/place/photo?maxwidth=150"
+                                    + "&photo_reference=" + result.getPhotos().get(0).getPhotoReference()
+                                    + "&key=" + ctx.getString(R.string.google_maps_key22);
+                }
+                catch (Exception e) {
+                    Log.w(TAG, "No image found for this restaurant");
+                }
             }
             else image = "";
 
             DocumentReference docRef = db.collection("restaurants").document(result.getPlaceId());
+            String finalImage = image;
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -143,7 +156,7 @@ public class RestaurantRepository {
                         Restaurant newRestaurant = new Restaurant(
                                 result.getPlaceId(),
                                 result.getName(),
-                                image, //TODO : image from Places.API?
+                                finalImage, //TODO : image from Places.API?
                                 "", //TODO : type from Places.API?
                                 result.getOpeningHours() != null ? result.getOpeningHours().getOpenNow() : "",
                                 //TODO : voir comment récupérer la chaîne avec les horaires
@@ -277,6 +290,12 @@ public class RestaurantRepository {
                 .findFirst()
                 .orElse(null);
 
+    }
+
+    public void updateCenter(Location location) {
+        centerLatitude = location.getLatitude();
+        centerLongitude = location.getLongitude();
+        getPlacesAPI(centerLatitude, centerLongitude);
     }
 
 }

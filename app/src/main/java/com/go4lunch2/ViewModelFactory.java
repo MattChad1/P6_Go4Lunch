@@ -56,7 +56,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
         if (modelClass.isAssignableFrom(MainActivityViewModel.class)) {
-            return (T) new MainActivityViewModel(userRepository, sortRepository);
+            return (T) new MainActivityViewModel(userRepository, sortRepository, restaurantRepository);
         }
         else if (modelClass.isAssignableFrom(ListRestaurantsViewModel.class)) {
             return (T) new ListRestaurantsViewModel(restaurantRepository, sortRepository, ctx);

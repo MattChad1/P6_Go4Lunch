@@ -1,6 +1,18 @@
 package com.go4lunch2.ui.main_activity;
 
+import static com.go4lunch2.MyApplication.PREFS_CENTER;
+import static com.go4lunch2.MyApplication.PREFS_CENTER_GPS;
+import static com.go4lunch2.MyApplication.PREFS_NOTIFS;
+
+import static java.lang.Math.abs;
+
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -11,7 +23,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
@@ -22,6 +36,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.go4lunch2.BaseActivity;
+import com.go4lunch2.MyApplication;
 import com.go4lunch2.R;
 import com.go4lunch2.ViewModelFactory;
 import com.go4lunch2.data.model.CustomUser;
@@ -45,7 +60,7 @@ import com.google.firebase.auth.UserInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseActivity  {
+public class MainActivity extends BaseActivity implements LocationListener {
 
     String TAG = "MyLog MainActivity";
     private ActivityMainBinding binding;
@@ -58,14 +73,21 @@ public class MainActivity extends BaseActivity  {
     SearchAdapter adapter;
     MainActivityViewModel vm;
 
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-
-    private boolean permissionDenied = false;
-    private GoogleMap map;
+    LocationManager locationManager;
+    Location userLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (MyApplication.settings.getString(PREFS_CENTER, "").equals(PREFS_CENTER_GPS)) {
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 100);
+            }
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, this);
+        }
+
         vm = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(MainActivityViewModel.class);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -239,6 +261,42 @@ public class MainActivity extends BaseActivity  {
             super.onBackPressed();
         }
     }
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        if (userLocation== null || abs(userLocation.getLatitude() - location.getLatitude()) > 0.01  || abs(userLocation.getLongitude()- location.getLongitude()) > 0.01) {
+            vm.updateCenter(location);
+            Log.i(TAG, "onLocationChanged: update center");
+        }
+        userLocation = location;
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull List<Location> locations) {
+
+    }
+
+    @Override
+    public void onFlushComplete(int requestCode) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(@NonNull String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(@NonNull String provider) {
+
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
+
 
 
 }

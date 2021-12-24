@@ -4,10 +4,9 @@ import static com.go4lunch2.DI.DI.getReader;
 import static com.go4lunch2.data.api.APIClient.distancesAPI;
 
 import android.content.Context;
-import android.os.Build;
+import android.location.Location;
 import android.util.Log;
 
-import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -30,7 +29,6 @@ import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +41,8 @@ public class ListRestaurantsViewModel extends ViewModel {
 
     String TAG = "MyLog RestaurantsViewModel";
 
+    Double centerLocationLatitude;
+    Double centerLocationLongitude;
     private final RestaurantRepository restaurantRepository;
     private final SortRepository sortRepository;
     private final MutableLiveData<List<RestaurantViewState>> allRestaurantsViewStateLD = new MutableLiveData<>();
@@ -50,7 +50,7 @@ public class ListRestaurantsViewModel extends ViewModel {
     private final MediatorLiveData<List<RestaurantViewState>> allRestaurantsWithOrderMediatorLD = new MediatorLiveData<>();
 
     Context ctx;
-//    BufferedReader reader;
+
 
 
 
@@ -61,6 +61,8 @@ public class ListRestaurantsViewModel extends ViewModel {
         this.ctx = ctx;
         this.restaurantRepository = restaurantRepository;
         this.sortRepository = sortRepository;
+        centerLocationLatitude = 48.856614;
+        centerLocationLongitude = 2.3522219;
 
         allRestaurantsWithOrderMediatorLD.addSource(getAllRestaurantsViewStateLD(), value -> {
             Log.i(TAG, "ListRestaurantsViewModel: source1");
@@ -71,13 +73,8 @@ public class ListRestaurantsViewModel extends ViewModel {
             List<RestaurantViewState> restaurants = allRestaurantsViewStateLD.getValue();
             if (restaurants != null && !restaurants.isEmpty()) {
                 List<RestaurantViewState> newList = new ArrayList<>();
-                if (order.equals(SortRepository.OrderBy.DISTANCE)) {
-                    newList = Stream.of(restaurants).filter(r -> r.getDistance()!= null).sorted((a, b) -> a.getDistance() - b.getDistance()).toList();
-                    Log.i(TAG, "ListRestaurantsViewModel: Tri distance");
-                }
-                else if (order == SortRepository.OrderBy.NAME) {
-                    newList = Stream.of(restaurants).sortBy(RestaurantViewState::getName).toList();
-            }
+                if (order.equals(SortRepository.OrderBy.DISTANCE)) newList = Stream.of(restaurants).filter(r -> r.getDistance()!= null).sorted((a, b) -> a.getDistance() - b.getDistance()).toList();
+                else if (order == SortRepository.OrderBy.NAME) newList = Stream.of(restaurants).sortBy(RestaurantViewState::getName).toList();
                 else if (order == SortRepository.OrderBy.RATING) {
                     newList = Stream.of(restaurants).filter(r -> r.getStarsCount()!= null).sortBy(RestaurantViewState::getStarsCount).toList();
                     newList.addAll(Stream.of(restaurants).filter(r -> r.getStarsCount()== null).toList());
@@ -104,7 +101,8 @@ public class ListRestaurantsViewModel extends ViewModel {
             List<RestaurantViewState> restaurantViewStates = new ArrayList<>();
             List<String> ids = new ArrayList<>();
             for (Restaurant r : restaurantsList) ids.add(r.getId());
-            Map<String, Integer> mapDistance = getDistancesAPI(48.856614, 2.3522219, ids);
+            Map<String, Integer> mapDistance = getDistancesAPI(
+                    centerLocationLatitude, centerLocationLongitude, ids);
             for (Restaurant r : restaurantsList) {
 
                 int workmatesInterested = 0;
@@ -119,7 +117,7 @@ public class ListRestaurantsViewModel extends ViewModel {
                                                  r.getName(),
                                                  r.getType(),
                                                  r.getAdress(),
-                                                 (r.getOpeningTime() == "true") ? ctx.getString(R.string.open) : ctx.getString(R.string.closed),
+                                                 (r.getOpeningTime().equals("true")) ? ctx.getString(R.string.open) : ctx.getString(R.string.closed),
                                                  mapDistance == null ? null : mapDistance.get(r.getId()),
                                                  Utils.ratingToStars(r.getRcf().getAverageRate()),
                                                  workmatesInterested,
@@ -189,4 +187,8 @@ public class ListRestaurantsViewModel extends ViewModel {
 
         return mapResult;
     }
+
+
+
+
 }

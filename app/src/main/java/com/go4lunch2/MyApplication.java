@@ -22,7 +22,7 @@ public class MyApplication extends Application {
         sApplication = this;
         if (BuildConfig.DEBUG) debug = true;
         else debug = false;
-//        debug = false;
+        debug = false;
 
         settings = getSharedPreferences(PREFS_NAME, 0);
 

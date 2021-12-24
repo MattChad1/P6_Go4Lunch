@@ -1,11 +1,12 @@
 package com.go4lunch2.ui.list_restaurants;
 
+import android.location.Location;
+import android.location.LocationListener;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -44,11 +45,11 @@ public class ListRestaurantsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         MaterialToolbar toolbar = (MaterialToolbar) getActivity().findViewById(R.id.topAppBar);
         toolbar.setTitle(getString(R.string.list_restaurants_desc));
         toolbar.getMenu().getItem(0).setVisible(true);
@@ -66,7 +67,7 @@ public class ListRestaurantsFragment extends Fragment {
 
         vm.getAllRestaurantsWithOrderMediatorLD().observe(getViewLifecycleOwner(), listRestaurants -> {
 //        vm.getAllRestaurantsViewStateLD().observe(getViewLifecycleOwner(), listRestaurants -> {
-            if (listRestaurants!=null) {
+            if (listRestaurants != null) {
                 Log.i(TAG, "onCreateView: getAllRestaurantsWithOrderMediatorLD()");
                 datas.clear();
                 datas.addAll(listRestaurants);
@@ -74,12 +75,9 @@ public class ListRestaurantsFragment extends Fragment {
             }
         });
 
-
-
         View view = binding.getRoot();
         return view;
     }
-
 
 
 }

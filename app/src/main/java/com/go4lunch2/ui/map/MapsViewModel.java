@@ -19,9 +19,14 @@ public class MapsViewModel extends ViewModel {
     String TAG = "MyLog MapsViewModel";
     RestaurantRepository restaurantRepository;
     MutableLiveData<List<MapsStateItem>> markersLiveData = new MutableLiveData<>();
+    Double centerLocationLatitude;
+    Double centerLocationLongitude;
 
     public MapsViewModel(RestaurantRepository restaurantRepository) {
+
         this.restaurantRepository = restaurantRepository;
+        centerLocationLatitude = 48.856614;
+        centerLocationLongitude = 2.3522219;
     }
 
     public LiveData<List<MapsStateItem>> getMarkersLiveData() {

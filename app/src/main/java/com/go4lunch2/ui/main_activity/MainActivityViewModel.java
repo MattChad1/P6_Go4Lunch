@@ -3,6 +3,7 @@ package com.go4lunch2.ui.main_activity;
 import static com.go4lunch2.data.api.APIClient.placeAutocompleteAPI;
 
 import android.content.Context;
+import android.location.Location;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -17,6 +18,7 @@ import com.go4lunch2.data.api.PlaceAutocompleteAPI;
 import com.go4lunch2.data.model.CustomUser;
 import com.go4lunch2.data.model.model_gmap.place_autocomplete.Prediction;
 import com.go4lunch2.data.model.model_gmap.place_autocomplete.Root;
+import com.go4lunch2.data.repositories.RestaurantRepository;
 import com.go4lunch2.data.repositories.SortRepository;
 import com.go4lunch2.data.repositories.UserRepository;
 import com.google.firebase.firestore.core.OrderBy;
@@ -33,13 +35,15 @@ public class MainActivityViewModel extends ViewModel {
     String TAG = "MyLog SearchViewModel";
     private Context ctx = MyApplication.getInstance();
     private MutableLiveData<List<SearchViewStateItem>> searchResultsLiveData;
+    RestaurantRepository restaurantRepository;
     UserRepository userRepository;
     SortRepository sortRepository;
 
 
-    public MainActivityViewModel(UserRepository userRepository, SortRepository sortRepository) {
+    public MainActivityViewModel(UserRepository userRepository, SortRepository sortRepository, RestaurantRepository restaurantRepository) {
         this.userRepository = userRepository;
         this.sortRepository = sortRepository;
+        this.restaurantRepository = restaurantRepository;
         searchResultsLiveData = new MutableLiveData<>();
     }
 
@@ -93,6 +97,10 @@ public class MainActivityViewModel extends ViewModel {
             }
         });
 
+    }
+
+    public void updateCenter(Location location) {
+        restaurantRepository.updateCenter(location);
     }
 
 
