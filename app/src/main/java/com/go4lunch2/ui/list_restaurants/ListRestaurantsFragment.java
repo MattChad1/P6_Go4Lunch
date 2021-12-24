@@ -13,9 +13,11 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.go4lunch2.R;
 import com.go4lunch2.ViewModelFactory;
 import com.go4lunch2.databinding.FragmentListRestaurantsBinding;
 import com.go4lunch2.ui.main_activity.MainActivity;
+import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +49,11 @@ public class ListRestaurantsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        MaterialToolbar toolbar = (MaterialToolbar) getActivity().findViewById(R.id.topAppBar);
+        toolbar.setTitle(getString(R.string.list_restaurants_desc));
+        toolbar.getMenu().getItem(0).setVisible(true);
+        toolbar.getMenu().getItem(1).setVisible(true);
+
         binding = FragmentListRestaurantsBinding.inflate(inflater, container, false);
 
         vm = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(ListRestaurantsViewModel.class);

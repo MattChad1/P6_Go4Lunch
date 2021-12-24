@@ -23,6 +23,7 @@
     <string name="item_search">Search</string>
     <string name="item_order">Order list</string>
     <string name="search_restaurant">Search restaurant</string>
+    <string name="order_name">Order by name</string>
     <string name="order_distance">Order by distance</string>
     <string name="order_rating">Order by rates</string>
 
@@ -38,6 +39,9 @@
     <string name="num_workmates">(%d)</string>
     <string name="open">Open</string>
     <string name="closed">Closed</string>
+    <string name="distance_meters" translatable="false">%d m</string>
+    <string name="distance_kms" translatable="false">%.2f km</string>
+    <string name="back_to_main">Go back to the list of restaurants</string>
 
     //MainActivity
     <string name="no_restaurant">You have not picked your restaurant yet</string>

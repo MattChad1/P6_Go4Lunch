@@ -11,8 +11,10 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.go4lunch2.R;
 import com.go4lunch2.ViewModelFactory;
 import com.go4lunch2.databinding.FragmentListWorkmatesBinding;
+import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +45,12 @@ public class ListWorkmatesFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        MaterialToolbar toolbar = (MaterialToolbar) getActivity().findViewById(R.id.topAppBar);
+        toolbar.setTitle(getString(R.string.list_workmates_desc));
+        toolbar.getMenu().getItem(0).setVisible(false);
+        toolbar.getMenu().getItem(1).setVisible(false);
+
+
         binding = FragmentListWorkmatesBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 

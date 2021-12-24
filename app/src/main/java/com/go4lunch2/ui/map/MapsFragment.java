@@ -38,6 +38,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.appbar.MaterialToolbar;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -93,6 +94,11 @@ public class MapsFragment extends Fragment implements GoogleMap.InfoWindowAdapte
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        MaterialToolbar toolbar = (MaterialToolbar) getActivity().findViewById(R.id.topAppBar);
+        toolbar.setTitle(getString(R.string.map_view_desc));
+        toolbar.getMenu().getItem(0).setVisible(true);
+        toolbar.getMenu().getItem(1).setVisible(false);
+
         binding = FragmentMapsBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 

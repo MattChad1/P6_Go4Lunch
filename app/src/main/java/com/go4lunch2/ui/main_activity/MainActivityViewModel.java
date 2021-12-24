@@ -66,7 +66,7 @@ public class MainActivityViewModel extends ViewModel {
         List<SearchViewStateItem> searchResults = new ArrayList<>();
 
         PlaceAutocompleteAPI service = placeAutocompleteAPI();
-        Call<Root> callAsync = service.getResults("restaurant+" + s, "48.856614, 2.3522219", "1500", "establishment",
+        Call<Root> callAsync = service.getResults("restaurant+" + s, "48.856614, 2.3522219", "5000", "establishment",
                                                   ctx.getString(R.string.google_maps_key22));
 
         callAsync.enqueue(new Callback<Root>() {

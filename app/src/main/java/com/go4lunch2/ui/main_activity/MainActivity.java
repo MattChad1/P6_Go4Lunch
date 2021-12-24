@@ -33,6 +33,8 @@ import com.go4lunch2.ui.list_restaurants.ListRestaurantsViewModel;
 import com.go4lunch2.ui.list_workmates.ListWorkmatesFragment;
 import com.go4lunch2.ui.login.LogInActivity;
 import com.go4lunch2.ui.map.MapsFragment;
+import com.go4lunch2.ui.settings.SettingsFragment;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -43,7 +45,7 @@ import com.google.firebase.auth.UserInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity  {
 
     String TAG = "MyLog MainActivity";
     private ActivityMainBinding binding;
@@ -55,6 +57,11 @@ public class MainActivity extends BaseActivity {
     List<SearchViewStateItem> searchResults = new ArrayList<>();
     SearchAdapter adapter;
     MainActivityViewModel vm;
+
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+
+    private boolean permissionDenied = false;
+    private GoogleMap map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,22 +83,6 @@ public class MainActivity extends BaseActivity {
         toolbar.setNavigationOnClickListener(v -> {
             drawer.openDrawer(GravityCompat.START);
         });
-
-//        findViewById(R.id.btn_filter).setOnMenuItemClickListener(v -> {
-//            switch (v.getItemId()) {
-//                case R.id.menu_order_distance:
-//                    vm.updateOrderLiveData(SortRepository.OrderBy.DISTANCE);
-//                    break;
-//                case R.id.menu_order_rating:
-//                    vm.updateOrderLiveData(SortRepository.OrderBy.RATING);
-//                    break;
-//
-//                default:
-//                    Log.i(TAG, "Clic " + v.getItemId());;
-//            }
-//
-//            return false;
-//        });
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -119,13 +110,7 @@ public class MainActivity extends BaseActivity {
         }
 
         binding.navigationDrawer.setNavigationItemSelectedListener(menuItem -> {
-            // Handle menu item selected
-            // menuItem.isChecked = true;
-            if (menuItem.getItemId() == R.id.menu_drawer_connexion) {
-                startActivity(new Intent(this, LogInActivity.class));
-            }
-
-            else if (menuItem.getItemId() == R.id.menu_drawer_logout) {
+           if (menuItem.getItemId() == R.id.menu_drawer_logout) {
                 signOut();
             }
 
@@ -135,7 +120,14 @@ public class MainActivity extends BaseActivity {
                     i.putExtra(DetailRestaurantActivity.RESTAURANT_SELECTED, currentCustomUser.getIdRestaurantChosen());
                     startActivity(i);
                 }
-                else Toast.makeText(this, R.string.no_restaurant, Toast.LENGTH_SHORT);
+                else Toast.makeText(this, R.string.no_restaurant, Toast.LENGTH_SHORT).show();
+            }
+
+            else if (menuItem.getItemId() == R.id.menu_drawer_settings) {
+                getSupportFragmentManager().beginTransaction()
+                        .setReorderingAllowed(true)
+                        .replace(R.id.main_fragment, SettingsFragment.class, null)
+                        .commit();
             }
 
             drawer.closeDrawer(GravityCompat.START);
@@ -149,21 +141,12 @@ public class MainActivity extends BaseActivity {
             Class linkTo;
             switch (view1.getItemId()) {
                 case R.id.menu_bb_mapview:
-                    toolbar.setTitle(getString(R.string.map_view_desc));
-                    toolbar.getMenu().getItem(0).setVisible(true);
-                    toolbar.getMenu().getItem(1).setVisible(false);
                     linkTo = MapsFragment.class;
                     break;
                 case R.id.menu_bb_listview:
-                    toolbar.setTitle(getString(R.string.list_restaurants_desc));
-                    toolbar.getMenu().getItem(0).setVisible(true);
-                    toolbar.getMenu().getItem(1).setVisible(true);
                     linkTo = ListRestaurantsFragment.class;
                     break;
                 case R.id.menu_bb_workmates:
-                    toolbar.setTitle(getString(R.string.list_workmates_desc));
-                    toolbar.getMenu().getItem(0).setVisible(false);
-                    toolbar.getMenu().getItem(1).setVisible(false);
                     linkTo = ListWorkmatesFragment.class;
                     break;
                 default:
@@ -185,7 +168,6 @@ public class MainActivity extends BaseActivity {
         rv.setAdapter(adapter);
 
         vm.getSearchResultsLiveData().observe(this, values -> {
-            Log.i(TAG, "observer: " + values.get(0).getName());
             searchResults.clear();
             searchResults.addAll(values);
             adapter.notifyDataSetChanged();
@@ -211,43 +193,39 @@ public class MainActivity extends BaseActivity {
                 if (s.length() == 0) {
                     rv.setVisibility(View.GONE);
                     binding.mainFragment.setVisibility(View.VISIBLE);
-                    Log.i(TAG, "onQueryTextChange: " + s);
                 }
 
                 else if (s.length() > 2) {
-                    Log.i(TAG, "onQueryTextChange: " + s);
                     rv.setVisibility(View.VISIBLE);
                     binding.mainFragment.setVisibility(View.GONE);
-                    if (s.length() == 3) {
-                        vm.getSearchResults(s);
-                        Log.i(TAG, "onQueryTextChange: " + s);
-                    }
-                    else adapter.getFilter().filter(s);
+                    vm.getSearchResults(s);
+//                    if (s.length() >= 3) {
+//                        vm.getSearchResults(s);
+//                    }
+//                    else adapter.getFilter().filter(s);
                 }
 
                 return false;
             }
         });
-
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.i(TAG, "onOptionsItemSelected1: ");
-        // Handle item selection
         switch (item.getItemId()) {
+                case R.id.menu_order_name:
+                vm.updateOrderLiveData(SortRepository.OrderBy.NAME);
+                break;
                 case R.id.menu_order_distance:
-                    Log.i(TAG, "onOptionsItemSelected2: ");
                     vm.updateOrderLiveData(SortRepository.OrderBy.DISTANCE);
                     break;
                 case R.id.menu_order_rating:
-                    Log.i(TAG, "onOptionsItemSelected3: ");
                     vm.updateOrderLiveData(SortRepository.OrderBy.RATING);
                     break;
 
                 default:
-                    Log.i(TAG, "Clic " + item.getItemId());;
+                    Log.i(TAG, "Clic error on toolbar menu : id " + item.getItemId());;
             }
             return true;
         }

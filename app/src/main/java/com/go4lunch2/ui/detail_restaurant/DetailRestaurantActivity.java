@@ -1,5 +1,8 @@
 package com.go4lunch2.ui.detail_restaurant;
 
+import static com.go4lunch2.MyApplication.PREFS_CENTER;
+import static com.go4lunch2.MyApplication.PREFS_NOTIFS;
+
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
@@ -23,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.go4lunch2.BaseActivity;
+import com.go4lunch2.MyApplication;
 import com.go4lunch2.R;
 import com.go4lunch2.ViewModelFactory;
 import com.go4lunch2.data.model.CustomUser;
@@ -38,7 +42,7 @@ public class DetailRestaurantActivity extends BaseActivity {
     private String TAG = "MyLog DetailRestaurantA";
 
     DetailRestaurantViewModel vm;
-    FirebaseUser user;
+
     CustomUser currentCustomUser;
     DetailRestaurantViewState restaurantSelected;
 
@@ -58,10 +62,10 @@ public class DetailRestaurantActivity extends BaseActivity {
 
         vm = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(DetailRestaurantViewModel.class);
 
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        vm.getCurrentCustomUser(user.getUid()).observe(this, value -> {
+
+        vm.getCurrentCustomUser(BaseActivity.user.getUid()).observe(this, value -> {
             currentCustomUser = value;
-            if (currentCustomUser.getIdRestaurantChosen().equals(idRestaurant)) {
+            if (currentCustomUser.getIdRestaurantChosen() != null && currentCustomUser.getIdRestaurantChosen().equals(idRestaurant)) {
                 binding.fabRestaurantChosen.setColorFilter(this.getResources().getColor(R.color.green_select_fab));
             }
         });
@@ -69,6 +73,8 @@ public class DetailRestaurantActivity extends BaseActivity {
         binding = ActivityDetailRestaurantBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        binding.backToMain.setOnClickListener(v->onBackPressed());
 
         vm.getDetailRestaurantLiveData(idRestaurant).observe(this, restaurant -> {
             restaurantSelected = restaurant;
@@ -87,20 +93,24 @@ public class DetailRestaurantActivity extends BaseActivity {
 
             binding.fabRestaurantChosen.setOnClickListener(v-> {
                 vm.updateRestaurantChosen(currentUser.getUid(), idRestaurant);
-                Intent intentNotif = new Intent (this, ReminderBroadcast.class);
-                intentNotif.putExtra("nameRestaurant", restaurant.getName());
-                intentNotif.putExtra("idRestaurant", restaurant.getId());
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intentNotif, 0);
+                Log.i(TAG, "Test prefs: " +  MyApplication.settings.getBoolean(PREFS_NOTIFS, false));
+                if (MyApplication.settings.getBoolean(PREFS_NOTIFS, true)) {
 
-                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-                Calendar currentCal = Calendar.getInstance();
-                Calendar firingCal = Calendar.getInstance();
-                firingCal.set(Calendar.HOUR_OF_DAY, 12);
-                firingCal.set(Calendar.MINUTE, 0);
-                firingCal.set(Calendar.SECOND, 0);
-                if (firingCal.getTimeInMillis() < currentCal.getTimeInMillis()) firingCal.add(Calendar.DAY_OF_MONTH, 1);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, firingCal.getTimeInMillis(), pendingIntent);
+                    Log.i(TAG, "Test prefs: " +  MyApplication.settings.getString(PREFS_CENTER, ""));
+                    Intent intentNotif = new Intent(this, ReminderBroadcast.class);
+                    intentNotif.putExtra("nameRestaurant", restaurant.getName());
+                    intentNotif.putExtra("idRestaurant", restaurant.getId());
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intentNotif, 0);
 
+                    AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                    Calendar currentCal = Calendar.getInstance();
+                    Calendar firingCal = Calendar.getInstance();
+                    firingCal.set(Calendar.HOUR_OF_DAY, 12);
+                    firingCal.set(Calendar.MINUTE, 0);
+                    firingCal.set(Calendar.SECOND, 0);
+                    if (firingCal.getTimeInMillis() < currentCal.getTimeInMillis()) firingCal.add(Calendar.DAY_OF_MONTH, 1);
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, firingCal.getTimeInMillis(), pendingIntent);
+                }
             });
 
 

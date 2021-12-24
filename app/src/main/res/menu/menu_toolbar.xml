@@ -16,12 +16,16 @@
             app:showAsAction="always">
             <menu>
                 <item
-                    android:id="@+id/menu_order_distance"
+                    android:id="@+id/menu_order_name"
                     android:orderInCategory="1"
+                    android:title="@string/order_name" />
+                <item
+                    android:id="@+id/menu_order_distance"
+                    android:orderInCategory="2"
                     android:title="@string/order_distance" />
                 <item
                     android:id="@+id/menu_order_rating"
-                    android:orderInCategory="2"
+                    android:orderInCategory="3"
                     android:title="@string/order_rating" />
             </menu>
 

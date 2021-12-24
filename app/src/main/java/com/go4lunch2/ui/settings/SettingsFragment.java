@@ -1,39 +1,42 @@
 package com.go4lunch2.ui.settings;
 
+import static com.go4lunch2.MyApplication.PREFS_CENTER;
+import static com.go4lunch2.MyApplication.PREFS_CENTER_COMPANY;
+import static com.go4lunch2.MyApplication.PREFS_CENTER_GPS;
+import static com.go4lunch2.MyApplication.PREFS_NAME;
+import static com.go4lunch2.MyApplication.PREFS_NOTIFS;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.go4lunch2.R;
+import com.go4lunch2.databinding.FragmentSettingsBinding;
 import com.go4lunch2.ui.main_activity.MainActivity;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SettingsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SettingsFragment extends Fragment {
+
+    String TAG = "MyLog SettingsFragment";
+    SharedPreferences settings;
+    SharedPreferences.Editor editor;
+    FragmentSettingsBinding binding;
 
 
     public SettingsFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SettingsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SettingsFragment newInstance(String param1, String param2) {
+    public static SettingsFragment newInstance() {
         SettingsFragment fragment = new SettingsFragment();
 
 
@@ -48,12 +51,39 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.appbar);
-        toolbar.setTitle("title");
+        MaterialToolbar toolbar = (MaterialToolbar) getActivity().findViewById(R.id.topAppBar);
+        toolbar.setTitle(getString(R.string.settings));
         toolbar.getMenu().getItem(0).setVisible(false);
         toolbar.getMenu().getItem(1).setVisible(false);
 
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+        settings = getContext().getSharedPreferences(PREFS_NAME, 0);
+        Log.i(TAG, "onCreateView: " + settings.getString(PREFS_CENTER, ""));
+
+        binding = FragmentSettingsBinding.inflate(inflater, container, false);
+
+        if (settings.getBoolean(PREFS_NOTIFS, true)) binding.switchNotif.setChecked(true);
+        if (settings.getString(PREFS_CENTER, "").equals(PREFS_CENTER_GPS)) binding.btnRadioCentermap2.setChecked(true);
+        else binding.btnRadioCentermap1.setChecked(true);
+
+        editor = settings.edit();
+        binding.switchNotif.setOnClickListener(v -> {
+            editor.putBoolean(PREFS_NOTIFS, ((SwitchCompat) v).isChecked());
+            editor.commit();
+        });
+        binding.btnRadioCentermap1.setOnClickListener(v -> {
+            editor.putString(PREFS_CENTER, PREFS_CENTER_COMPANY);
+            editor.commit();
+        });
+        binding.btnRadioCentermap2.setOnClickListener(v -> {
+            editor.putString(PREFS_CENTER, PREFS_CENTER_GPS);
+            editor.commit();
+        });
+
+        BottomNavigationView bottombar = getActivity().findViewById(R.id.bottom_navigation);
+        bottombar.setSelectedItemId(0);
+
+        View view = binding.getRoot();
+        return view;
     }
+
 }

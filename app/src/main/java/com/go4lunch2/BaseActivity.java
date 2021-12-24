@@ -2,6 +2,7 @@ package com.go4lunch2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,8 +16,10 @@ import com.google.firebase.auth.FirebaseUser;
 
 abstract public class BaseActivity extends AppCompatActivity {
 
+    private String TAG = "MyLog BaseActivity";
     public static FirebaseAuth mAuth;
     public static FirebaseUser currentUser;
+    public static FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,21 +32,20 @@ abstract public class BaseActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
          currentUser = mAuth.getCurrentUser();
+        user = FirebaseAuth.getInstance().getCurrentUser();
     }
 
 
     public void signOut() {
-        // [START auth_fui_signout]
         AuthUI.getInstance()
                 .signOut(this)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     public void onComplete(@NonNull Task<Void> task) {
-                        // ...
+                        Log.i(TAG, "onComplete: Signout");
+                        startActivity(new Intent(BaseActivity.this, LogInActivity.class));
+                        finish();
                     }
                 });
-        startActivity(new Intent(this, LogInActivity.class));
-        finish();
-        // [END auth_fui_signout]
     }
 
 

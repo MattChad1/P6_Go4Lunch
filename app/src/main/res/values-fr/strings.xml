@@ -37,4 +37,6 @@
     <string name="notification_channel_title">MyTitle</string>
     <string name="notification_channel_desc">MyDesc</string>
     <string name="receive_notifications">Recevoir une notification à midi</string>
+    <string name="order_name">Trier par nom</string>
+    <string name="back_to_main">Retour à la liste des restaurants</string>
 </resources>

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.go4lunch2.R;
+import com.go4lunch2.Utils.Utils;
 import com.go4lunch2.databinding.ItemRestaurantBinding;
 import com.go4lunch2.ui.detail_restaurant.DetailRestaurantActivity;
 
@@ -55,7 +56,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
         else ((TextView) v.findViewById(R.id.item_restaurant_desc2)).setTextColor(ctx.getResources().getColor(R.color.red_dark));
 
 
-        ((TextView) v.findViewById(R.id.item_restaurant_distance)).setText(String.valueOf(restaurant.getDistance()));
+        ((TextView) v.findViewById(R.id.item_restaurant_distance)).setText(Utils.distanceConversion(restaurant.getDistance()));
         ((TextView) v.findViewById(R.id.item_restaurant_num_workmates)).setText(ctx.getString(R.string.num_workmates, restaurant.getWorkmatesCount()));
 
 

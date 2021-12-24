@@ -3,6 +3,8 @@ package com.go4lunch2.Utils;
 import android.content.Context;
 import android.content.res.AssetManager;
 
+import com.go4lunch2.MyApplication;
+import com.go4lunch2.R;
 import com.google.firebase.Timestamp;
 
 import java.io.BufferedReader;
@@ -12,6 +14,14 @@ import java.io.InputStreamReader;
 import java.util.Calendar;
 
 public class Utils {
+
+
+
+    static public String distanceConversion (Integer meters) {
+        if (meters<1000) return MyApplication.getInstance().getString(R.string.distance_meters, meters);
+        else return MyApplication.getInstance().getString(R.string.distance_kms, ((float) meters)/1000);
+
+    }
 
 
     static public Double ratingToStars (Double rating) {

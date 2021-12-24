@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.detail_restaurant.DetailRestaurantActivity">
 
+
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/restaurant_image"
         android:layout_width="match_parent"
@@ -15,6 +16,19 @@
         tools:src="@drawable/r1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/backToMain"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/ic_arrow_circle_left"
+        android:contentDescription="@string/back_to_main"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:backgroundTint="@color/white"
+        />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_restaurant_details"
