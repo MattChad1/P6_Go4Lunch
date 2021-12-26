@@ -80,14 +80,6 @@ public class MainActivity extends BaseActivity implements LocationListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (MyApplication.settings.getString(PREFS_CENTER, "").equals(PREFS_CENTER_GPS)) {
-            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 100);
-            }
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, this);
-        }
-
         vm = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(MainActivityViewModel.class);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -113,7 +105,20 @@ public class MainActivity extends BaseActivity implements LocationListener {
                     .commit();
         }
 
-        // Navigation drawer
+
+        // Set up the location manager if user wants to use its GPS
+        if (MyApplication.settings.getString(PREFS_CENTER, "").equals(PREFS_CENTER_GPS)) {
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 100);
+            }
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, this);
+        }
+
+
+
+
+        // Set up the content of the navigation drawer
         if (user != null) { //TODO : supprimer le if car user ne peut pas être null ici (connecté)
             NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_drawer);
             View headerView = navigationView.getHeaderView(0);
@@ -128,7 +133,6 @@ public class MainActivity extends BaseActivity implements LocationListener {
                         .transform(new CircleCrop())
                         .into(ivAvatarUser);
             }
-            Toast.makeText(this, "Vous êtes connecté !!!!", Toast.LENGTH_SHORT).show();
         }
 
         binding.navigationDrawer.setNavigationItemSelectedListener(menuItem -> {
@@ -183,6 +187,8 @@ public class MainActivity extends BaseActivity implements LocationListener {
             return true;
         });
 
+
+        // Display list of restaurants in RecyclerView
         rv = binding.lvSearchResults;
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
@@ -198,10 +204,11 @@ public class MainActivity extends BaseActivity implements LocationListener {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // For searching restaurants in the toolbar
         getMenuInflater().inflate(R.menu.menu_toolbar, menu);
         MenuItem menuItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) menuItem.getActionView();
 
+        SearchView searchView = (SearchView) menuItem.getActionView();
         searchView.setQueryHint(getString(R.string.search_restaurant));
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -235,6 +242,7 @@ public class MainActivity extends BaseActivity implements LocationListener {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // function for the list to be sorted
         switch (item.getItemId()) {
                 case R.id.menu_order_name:
                 vm.updateOrderLiveData(SortRepository.OrderBy.NAME);
@@ -264,6 +272,7 @@ public class MainActivity extends BaseActivity implements LocationListener {
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
+        // if the position of the user has changed enough, we call updateCenter, so the list or map can update.
         if (userLocation== null || abs(userLocation.getLatitude() - location.getLatitude()) > 0.01  || abs(userLocation.getLongitude()- location.getLongitude()) > 0.01) {
             vm.updateCenter(location);
             Log.i(TAG, "onLocationChanged: update center");

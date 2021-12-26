@@ -65,6 +65,10 @@ public class RestaurantViewState {
         return image;
     }
 
+    public void setDistance(Integer distance) {
+        this.distance = distance;
+    }
+
     public static class NameZAComparator implements Comparator<RestaurantViewState> {
 
         @Override

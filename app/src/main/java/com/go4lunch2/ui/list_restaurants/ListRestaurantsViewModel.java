@@ -1,11 +1,6 @@
 package com.go4lunch2.ui.list_restaurants;
 
-import static com.go4lunch2.DI.DI.getReader;
-import static com.go4lunch2.data.api.APIClient.distancesAPI;
-
 import android.content.Context;
-import android.location.Location;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -14,28 +9,15 @@ import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import com.annimon.stream.Stream;
-import com.go4lunch2.BuildConfig;
 import com.go4lunch2.R;
 import com.go4lunch2.Utils.Utils;
-import com.go4lunch2.data.api.DistancesAPI;
 import com.go4lunch2.data.model.Restaurant;
-import com.go4lunch2.data.model.model_gmap.Element;
-import com.go4lunch2.data.model.model_gmap.Matrix;
-import com.go4lunch2.data.model.model_gmap.Row;
 import com.go4lunch2.data.repositories.RestaurantRepository;
 import com.go4lunch2.data.repositories.SortRepository;
-import com.google.gson.Gson;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class ListRestaurantsViewModel extends ViewModel {
 
@@ -56,7 +38,6 @@ public class ListRestaurantsViewModel extends ViewModel {
 
 
 
-
     public ListRestaurantsViewModel(RestaurantRepository restaurantRepository, SortRepository sortRepository, Context ctx) {
         this.ctx = ctx;
         this.restaurantRepository = restaurantRepository;
@@ -64,12 +45,23 @@ public class ListRestaurantsViewModel extends ViewModel {
         centerLocationLatitude = 48.856614;
         centerLocationLongitude = 2.3522219;
 
-        allRestaurantsWithOrderMediatorLD.addSource(getAllRestaurantsViewStateLD(), value -> {
-            Log.i(TAG, "ListRestaurantsViewModel: source1");
-            allRestaurantsWithOrderMediatorLD.postValue(value);
+        // 3 sources for the data
+        // Source 1 = all restaurant repository
+        allRestaurantsWithOrderMediatorLD.addSource(getAllRestaurantsViewStateLD(), value -> {allRestaurantsWithOrderMediatorLD.postValue(value);});
+
+        // Source 2 = Distances to each restaurant (from API matrix distances)
+        allRestaurantsWithOrderMediatorLD.addSource(getDistancesLiveData(), map -> {
+            List<RestaurantViewState> restaurants = allRestaurantsViewStateLD.getValue();
+            if (restaurants != null && !restaurants.isEmpty()) {
+               for (RestaurantViewState r: restaurants) {
+                   if (map.containsKey(r.getId())) r.setDistance(map.get(r.getId()));
+               }
+            }
+            allRestaurantsWithOrderMediatorLD.setValue(restaurants);
         });
+
+        // Source 3 : order in which the user wants the list of restaurants
         allRestaurantsWithOrderMediatorLD.addSource(getOrderLiveData(), order -> {
-            Log.i(TAG, "ListRestaurantsViewModel: source2" + order.toString());
             List<RestaurantViewState> restaurants = allRestaurantsViewStateLD.getValue();
             if (restaurants != null && !restaurants.isEmpty()) {
                 List<RestaurantViewState> newList = new ArrayList<>();
@@ -79,20 +71,20 @@ public class ListRestaurantsViewModel extends ViewModel {
                     newList = Stream.of(restaurants).filter(r -> r.getStarsCount()!= null).sortBy(RestaurantViewState::getStarsCount).toList();
                     newList.addAll(Stream.of(restaurants).filter(r -> r.getStarsCount()== null).toList());
                 }
-
                 allRestaurantsWithOrderMediatorLD.setValue(newList);
             }
         } );
-
-
     }
 
     public LiveData<List<RestaurantViewState>> getAllRestaurantsWithOrderMediatorLD() {
         return allRestaurantsWithOrderMediatorLD;
     }
-
     public LiveData<SortRepository.OrderBy> getOrderLiveData() {
         return sortRepository.getOrderLiveData();
+    }
+
+    public LiveData<Map<String, Integer>> getDistancesLiveData() {
+        return restaurantRepository.getRestaurantsDistancesLiveData();
     }
 
 
@@ -101,8 +93,7 @@ public class ListRestaurantsViewModel extends ViewModel {
             List<RestaurantViewState> restaurantViewStates = new ArrayList<>();
             List<String> ids = new ArrayList<>();
             for (Restaurant r : restaurantsList) ids.add(r.getId());
-            Map<String, Integer> mapDistance = getDistancesAPI(
-                    centerLocationLatitude, centerLocationLongitude, ids);
+            Map<String, Integer> mapDistance = getDistancesLiveData().getValue();
             for (Restaurant r : restaurantsList) {
 
                 int workmatesInterested = 0;
@@ -130,64 +121,6 @@ public class ListRestaurantsViewModel extends ViewModel {
         });
 
     }
-
-    protected Map<String, Integer> getDistancesAPI(Double latitudeOrigin, Double longitudeOrigin, List<String> destinations) {
-
-        List<Element> elements = new ArrayList<>();
-        Map<String, Integer> mapResult = new HashMap<>();
-
-        if (BuildConfig.DEBUG) {
-            try {
-                final BufferedReader reader = getReader(ctx, "distances_matrix.json");
-                final Gson gson = new Gson();
-                Matrix matrix = gson.fromJson(reader, Matrix.class);
-                for (Row r : matrix.getRows()) elements.addAll(r.getElements());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        else {
-            String destinationsURLParameter = "";
-            for (String d : destinations) {
-                if (!destinationsURLParameter.isEmpty()) destinationsURLParameter += "|place_id:";
-                else destinationsURLParameter += "place_id:";
-                destinationsURLParameter += d;
-            }
-
-            DistancesAPI service = distancesAPI();
-            Call<Matrix> callAsync = service.getResults(latitudeOrigin.toString() + "," + longitudeOrigin.toString(), destinationsURLParameter,
-                                                        "walking", ctx.getString(
-                            R.string.google_maps_key22));
-
-            callAsync.enqueue(new Callback<Matrix>() {
-                @Override
-                public void onResponse(Call<Matrix> call, Response<Matrix> response) {
-                    Matrix matrix = response.body();
-                    for (Row r : matrix.getRows()) elements.addAll(r.getElements());
-                }
-
-                @Override
-                public void onFailure(Call<Matrix> call, Throwable t) {
-                    Log.i("Test retrofit", "onFailure: " + t);
-                    System.out.println(t);
-                }
-            });
-        }
-        for (int i = 0; i < destinations.size(); i++) {
-            try {
-                mapResult.put(destinations.get(i), ((Element) elements.get(i)).getDistance().getValue());
-            } catch (NullPointerException e) {
-                Log.i(TAG, "Erreur : " + destinations.get(i));
-                mapResult.put(destinations.get(i), 0);
-            } catch (IndexOutOfBoundsException e) {
-                Log.i(TAG, "Erreur getDistancesAPI: " + destinations.get(i));
-            }
-        }
-
-        return mapResult;
-    }
-
 
 
 

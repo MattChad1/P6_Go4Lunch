@@ -126,6 +126,10 @@ public class Restaurant {
         return rcf;
     }
 
+    public void setRcf(@NonNull RestaurantCustomFields rcf) {
+        this.rcf = rcf;
+    }
+
     @NonNull
     public RestaurantDetails getRestaurantDetails() {
         return restaurantDetails;

@@ -25,7 +25,7 @@
         android:gravity="center_horizontal"
         app:layout_constraintEnd_toStartOf="@id/item_restaurant_image"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="270 m" />
+        tools:text="270 m" />
 
     <ImageView
         android:id="@+id/icon_person"
@@ -45,7 +45,7 @@
         android:gravity="left"
         app:layout_constraintEnd_toStartOf="@id/item_restaurant_image"
         app:layout_constraintTop_toBottomOf="@id/item_restaurant_distance"
-        android:text="(2)" />
+        tools:text="(2)" />
 
 
     <androidx.appcompat.widget.AppCompatImageView

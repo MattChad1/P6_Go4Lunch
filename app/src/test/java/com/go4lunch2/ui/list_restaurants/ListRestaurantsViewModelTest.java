@@ -65,7 +65,6 @@ public class ListRestaurantsViewModelTest {
         viewModel = Mockito.spy(new ListRestaurantsViewModel(restaurantRepository, sortRepository, ctx));
 
         Map<String, Integer> mockMapDistance = new HashMap<>();
-        doReturn(mockMapDistance).when(viewModel).getDistancesAPI(anyDouble(), anyDouble(), anyList());
 
         when(restaurantRepository.getRestaurantsLiveData()).thenReturn(fakeRestaurantsLiveData);
 

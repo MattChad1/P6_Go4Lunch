@@ -14,7 +14,7 @@ public class RestaurantDetailsJson {
     private List<Object> htmlAttributions = null;
     @SerializedName("result")
     @Expose
-    private Result result;
+    private ResultDetails result;
     @SerializedName("status")
     @Expose
     private String status;
@@ -27,11 +27,11 @@ public class RestaurantDetailsJson {
         this.htmlAttributions = htmlAttributions;
     }
 
-    public Result getResult() {
+    public ResultDetails getResult() {
         return result;
     }
 
-    public void setResult(Result result) {
+    public void setResult(ResultDetails result) {
         this.result = result;
     }
 

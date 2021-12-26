@@ -56,7 +56,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
         else ((TextView) v.findViewById(R.id.item_restaurant_desc2)).setTextColor(ctx.getResources().getColor(R.color.red_dark));
 
 
-        ((TextView) v.findViewById(R.id.item_restaurant_distance)).setText(Utils.distanceConversion(restaurant.getDistance()));
+        if (restaurant.getDistance()!=null) ((TextView) v.findViewById(R.id.item_restaurant_distance)).setText(Utils.distanceConversion(restaurant.getDistance()));
         ((TextView) v.findViewById(R.id.item_restaurant_num_workmates)).setText(ctx.getString(R.string.num_workmates, restaurant.getWorkmatesCount()));
 
 

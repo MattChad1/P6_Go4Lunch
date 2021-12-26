@@ -18,17 +18,13 @@ import com.go4lunch2.data.model.CustomUser;
 import com.go4lunch2.data.model.Rating;
 import com.go4lunch2.data.model.Restaurant;
 import com.go4lunch2.data.model.model_gmap.restaurant_details.RestaurantDetailsJson;
-import com.go4lunch2.data.model.model_gmap.restaurant_details.Result;
+import com.go4lunch2.data.model.model_gmap.restaurant_details.ResultDetails;
 import com.go4lunch2.data.repositories.RestaurantRepository;
 import com.go4lunch2.data.repositories.UserRepository;
 
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DetailRestaurantViewModel extends ViewModel {
 
@@ -51,56 +47,61 @@ public class DetailRestaurantViewModel extends ViewModel {
     }
 
     public LiveData<DetailRestaurantViewState> getDetailRestaurantLiveData(String idRestaurant) {
-        getDetailsFromAPI(idRestaurant);
-        return restaurantSelectedLiveData;
+        return Transformations.map(restaurantRepository.getRestaurantDetailsLiveData(idRestaurant), restaurant -> {
+            String image =
+                    "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400"
+                            + "&photo_reference=" + restaurant.getPhotos().get(0).getPhotoReference()
+                            + "&key=" + ctx.getString(R.string.google_maps_key22);
+
+            DetailRestaurantViewState detailRestaurantViewState = new DetailRestaurantViewState(
+                    idRestaurant,
+                    restaurant.getName(),
+                    restaurant.getFormattedAddress(),
+                    null,
+                    null,
+                    image,
+                    restaurant.getInternationalPhoneNumber(),
+                    restaurant.getWebsite()
+            );
+
+            return detailRestaurantViewState;
+        });
     }
 
-    public void getDetailsFromAPI(String idRestaurant) {
-        DetailRestaurantViewState detailRestaurantViewState = null;
-
-        PlaceDetailsAPI service = placeDetailsAPI();
-        Call<RestaurantDetailsJson> callAsync = service.getResults(idRestaurant, ctx.getString(R.string.google_maps_key22));
-
-        callAsync.enqueue(new Callback<RestaurantDetailsJson>() {
-            @Override
-            public void onResponse(Call<RestaurantDetailsJson> call, Response<RestaurantDetailsJson> response) {
-                Result resultAPI = response.body().getResult();
-
-                String image =
-                        "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400"
-                                + "&photo_reference=" + response.body().getResult().getPhotos().get(0).getPhotoReference()
-                                + "&key=" + ctx.getString(R.string.google_maps_key22);
-
-
-                DetailRestaurantViewState detailRestaurantViewState = new DetailRestaurantViewState(
-                        idRestaurant,
-                        resultAPI.getName(),
-                        resultAPI.getFormattedAddress(),
-                        null,
-                        null,
-                        image,
-                        resultAPI.getInternationalPhoneNumber(),
-                        resultAPI.getWebsite()
-                );
-
-            Restaurant r = restaurantRepository.getRestaurantById(idRestaurant);
-            if(r!=null)
-
-            {
-                detailRestaurantViewState.setStarsCount(Utils.ratingToStars(r.getRcf().getAverageRate()));
-                detailRestaurantViewState.setWorkmatesInterested(userRepository.getListWorkmatesByIds(r.getRcf().getWorkmatesInterestedIds()));
-            }
-
-
-                restaurantSelectedLiveData.setValue(detailRestaurantViewState);
-        }
-
-        @Override
-        public void onFailure (Call < RestaurantDetailsJson > call, Throwable t){
-            Log.e(TAG, "onFailure: "+ t );
-        }
-    });
-}
+//    public void getDetails(String idRestaurant) {
+//        DetailRestaurantViewState detailRestaurantViewState = null;
+////        PlaceDetailsAPI service = placeDetailsAPI();
+////        Call<RestaurantDetailsJson> callAsync = service.getResults(idRestaurant, ctx.getString(R.string.google_maps_key22));
+////
+////        callAsync.enqueue(new Callback<RestaurantDetailsJson>() {
+////            @Override
+////            public void onResponse(Call<RestaurantDetailsJson> call, Response<RestaurantDetailsJson> response) {
+////                ResultDetails detailsResponseAPI = response.body().getResult();
+////
+////                String image =
+////                        "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400"
+////                                + "&photo_reference=" + response.body().getResult().getPhotos().get(0).getPhotoReference()
+////                                + "&key=" + ctx.getString(R.string.google_maps_key22);
+//
+//
+//
+//
+//            Restaurant r = restaurantRepository.getRestaurantById(idRestaurant);
+//            if(r!=null)
+//
+//            {
+//                detailRestaurantViewState.setStarsCount(Utils.ratingToStars(r.getRcf().getAverageRate()));
+//                detailRestaurantViewState.setWorkmatesInterested(userRepository.getListWorkmatesByIds(r.getRcf().getWorkmatesInterestedIds()));
+//            }
+//                restaurantSelectedLiveData.setValue(detailRestaurantViewState);
+//        }
+//
+//        @Override
+//        public void onFailure (Call < RestaurantDetailsJson > call, Throwable t){
+//            Log.e(TAG, "onFailure: "+ t );
+//        }
+//    });
+//}
 
     public void addRate(String idWorkmate, String idRestaurant, int givenRate) {
         restaurantRepository.addGrade(new Rating(idRestaurant, idWorkmate, givenRate));
