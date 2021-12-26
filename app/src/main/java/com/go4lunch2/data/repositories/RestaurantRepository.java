@@ -99,8 +99,6 @@ public class RestaurantRepository {
     }
 
 
-
-
     private void getPlacesAPI(Double latitude, Double longitude) {
         Log.i(TAG, "Appel getPlacesAPI");
         allRestaurants.clear();
@@ -202,6 +200,7 @@ public class RestaurantRepository {
                         if (snapshot != null && snapshot.exists()) {
                             rcf = snapshot.toObject(RestaurantCustomFields.class);
                             allRestaurants.get(allRestaurants.indexOf(restaurant)).setRcf(rcf);
+                            restaurantsLiveData.setValue(allRestaurants);
                         } else {
                             rcf = new RestaurantCustomFields();
                             insertNewRestaurantDB(restaurant.getId(), restaurant.getName());
@@ -210,7 +209,7 @@ public class RestaurantRepository {
                 }
             });
         }
-        restaurantsLiveData.setValue(allRestaurants);
+
     }
 
 

@@ -26,8 +26,4 @@ public class SortRepository {
 
     public enum OrderBy {NAME, DISTANCE, RATING}
 
-
-
-
-
 }

@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.annimon.stream.Stream;
 import com.go4lunch2.MyApplication;
 import com.go4lunch2.Utils.Utils;
 import com.go4lunch2.data.model.CustomUser;
@@ -24,7 +25,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,6 +47,7 @@ public class UserRepository {
     public UserRepository() {
         Log.i(TAG, "Appel UserRepository()");
         allCustomUsers = new ArrayList<>();
+        getWorkmatesWithRestaurantsLiveData();
     }
 
     public LiveData<Map<CustomUser, String>> getWorkmatesWithRestaurantsLiveData() {
@@ -212,15 +213,11 @@ public class UserRepository {
         else {
             List<CustomUser> customUsers = new ArrayList<>();
             for (String id : ids) {
-                db.collection("users")
-                        .document(id)
-                        .get()
-                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                            @Override
-                            public void onSuccess(DocumentSnapshot document) {
-                                customUsers.add(document.toObject(CustomUser.class));
-                            }
-                        });
+                Map.Entry entry = Stream.of(usersWithRestaurant)
+                        .filter(u -> u.getKey().getId().equals(id))
+                        .findFirst()
+                        .get();
+                customUsers.add((CustomUser) entry.getKey());
             }
             return customUsers;
         }
