@@ -32,6 +32,7 @@ android {
     }
 }
 
+
 dependencies {
     // Firebase
     implementation platform('com.google.firebase:firebase-bom:29.0.0')
@@ -42,10 +43,10 @@ dependencies {
     //Authentification
     implementation 'com.firebaseui:firebase-ui-auth:8.0.0'
     implementation 'com.facebook.android:facebook-login:12.1.0'
-    implementation 'com.google.android.gms:play-services-auth:19.2.0'
+    implementation 'com.google.android.gms:play-services-auth:20.0.0'
 
     // Map
-    implementation 'com.google.android.gms:play-services-maps:18.0.0'
+    implementation 'com.google.android.gms:play-services-maps:18.0.1'
 
 
     // Retrofit
@@ -59,10 +60,11 @@ dependencies {
     // Tests
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0-alpha03'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     androidTestImplementation 'androidx.test:rules:1.4.1-alpha03'
-    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.5.0-alpha03'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.3.0'
     testImplementation 'org.mockito:mockito-inline:2.22.0'
+
 
     //Others
     implementation 'com.google.android.libraries.places:places:2.5.0'

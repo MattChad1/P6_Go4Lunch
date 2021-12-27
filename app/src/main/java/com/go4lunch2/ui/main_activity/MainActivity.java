@@ -127,8 +127,8 @@ public class MainActivity extends BaseActivity implements LocationListener {
             ImageView ivAvatarUser = headerView.findViewById(R.id.nav_drawer_avatar);
 
             for (UserInfo profile : user.getProviderData()) {
-                tvMailUser.setText(profile.getDisplayName());
-                tvNameUser.setText(profile.getEmail());
+                tvMailUser.setText(profile.getEmail());
+                tvNameUser.setText(profile.getDisplayName());
                 Glide.with(this).load(profile.getPhotoUrl())
                         .transform(new CircleCrop())
                         .into(ivAvatarUser);

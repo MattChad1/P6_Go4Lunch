@@ -184,9 +184,10 @@ public class RestaurantRepository {
 
 
     private void getCustomFields(List<Restaurant> restaurants) {
-        for (Restaurant restaurant : restaurants) {
-            final DocumentReference docRef = colRefRestaurants.document(restaurant.getId());
+        for (int i=0; i<restaurants.size(); i++) {
+            final DocumentReference docRef = colRefRestaurants.document(restaurants.get(i).getId());
 
+            int finalI = i;
             docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                 RestaurantCustomFields rcf;
                 @Override
@@ -198,11 +199,11 @@ public class RestaurantRepository {
                         }
                         if (snapshot != null && snapshot.exists()) {
                             rcf = snapshot.toObject(RestaurantCustomFields.class);
-                            allRestaurants.get(allRestaurants.indexOf(restaurant)).setRcf(rcf);
-                            restaurantsLiveData.setValue(allRestaurants);
+                            restaurants.get(finalI).setRcf(rcf);
+                            restaurantsLiveData.setValue(restaurants);
                         } else {
                             rcf = new RestaurantCustomFields();
-                            insertNewRestaurantDB(restaurant.getId(), restaurant.getName());
+                            insertNewRestaurantDB(restaurants.get(finalI).getId(), restaurants.get(finalI).getName());
                         }
 
                 }

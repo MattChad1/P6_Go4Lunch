@@ -216,8 +216,8 @@ public class UserRepository {
                 Map.Entry entry = Stream.of(usersWithRestaurant)
                         .filter(u -> u.getKey().getId().equals(id))
                         .findFirst()
-                        .get();
-                customUsers.add((CustomUser) entry.getKey());
+                        .orElse(null);
+                if (entry!=null) customUsers.add((CustomUser) entry.getKey());
             }
             return customUsers;
         }
