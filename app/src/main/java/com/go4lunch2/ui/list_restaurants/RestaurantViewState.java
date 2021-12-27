@@ -7,7 +7,6 @@ public class RestaurantViewState {
 
     String id;
     String name;
-    String type;
     String adress;
     String openingHours;
     Integer distance;
@@ -15,12 +14,11 @@ public class RestaurantViewState {
     int workmatesCount;
     String image;
 
-    public RestaurantViewState(String id, String name, String type, String adress, String openingHours, Integer distance, Double starsCount,
+    public RestaurantViewState(String id, String name, String adress, String openingHours, Integer distance, Double starsCount,
                                int workmatesCount,
                                String image) {
         this.id = id;
         this.name = name;
-        this.type = type;
         this.adress = adress;
         this.openingHours = openingHours;
         this.distance = distance;
@@ -35,10 +33,6 @@ public class RestaurantViewState {
 
     public String getName() {
         return name;
-    }
-
-    public String getType() {
-        return type;
     }
 
     public String getAdress() {

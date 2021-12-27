@@ -1,7 +1,9 @@
 package com.go4lunch2.ui.detail_restaurant;
 
+import android.app.Application;
 import android.content.Context;
 
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
@@ -19,17 +21,18 @@ import com.go4lunch2.data.repositories.UserRepository;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class DetailRestaurantViewModel extends ViewModel {
+public class DetailRestaurantViewModel extends AndroidViewModel {
 
     private String TAG = "MyLog DetailRestaurantViewModel";
     private RestaurantRepository restaurantRepository;
     private UserRepository userRepository;
     private MutableLiveData<DetailRestaurantViewState> restaurantSelectedLiveData = new MutableLiveData<>();
-    private Context ctx = MyApplication.getInstance();
 
-    public DetailRestaurantViewModel(RestaurantRepository restaurantRepository, UserRepository userRepository) {
+    public DetailRestaurantViewModel(RestaurantRepository restaurantRepository, UserRepository userRepository, Application application) {
+        super(application);
         this.restaurantRepository = restaurantRepository;
         this.userRepository = userRepository;
+
     }
 
     public LiveData<CustomUser> getCurrentCustomUser(String id) {
@@ -44,7 +47,7 @@ public class DetailRestaurantViewModel extends ViewModel {
             String image =
                     "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400"
                             + "&photo_reference=" + restaurant.getPhotos().get(0).getPhotoReference()
-                            + "&key=" + ctx.getString(R.string.google_maps_key22);
+                            + "&key=" + getApplication().getResources().getString(R.string.google_maps_key22);
 
             Restaurant restaurantInRepo = restaurantRepository.getRestaurantById(idRestaurant);
 
@@ -53,8 +56,8 @@ public class DetailRestaurantViewModel extends ViewModel {
                     idRestaurant,
                     restaurant.getName(),
                     restaurant.getFormattedAddress(),
-                    Utils.ratingToStars(restaurantInRepo.getRcf().getAverageRate()),
-                    userRepository.getListWorkmatesByIds(restaurantInRepo.getRcf().getWorkmatesInterestedIds()),
+                    restaurantInRepo!= null ? Utils.ratingToStars(restaurantInRepo.getRcf().getAverageRate()) : null,
+                    restaurantInRepo!= null ? userRepository.getListWorkmatesByIds(restaurantInRepo.getRcf().getWorkmatesInterestedIds()) : null,
                     image,
                     restaurant.getInternationalPhoneNumber(),
                     restaurant.getWebsite()

@@ -1,0 +1,235 @@
+{
+   "html_attributions" : [],
+   "result" : {
+      "address_components" : [
+         {
+            "long_name" : "5",
+            "short_name" : "5",
+            "types" : [ "street_number" ]
+         },
+         {
+            "long_name" : "Rue de Berri",
+            "short_name" : "Rue de Berri",
+            "types" : [ "route" ]
+         },
+         {
+            "long_name" : "Paris",
+            "short_name" : "Paris",
+            "types" : [ "locality", "political" ]
+         },
+         {
+            "long_name" : "Département de Paris",
+            "short_name" : "Département de Paris",
+            "types" : [ "administrative_area_level_2", "political" ]
+         },
+         {
+            "long_name" : "Île-de-France",
+            "short_name" : "IDF",
+            "types" : [ "administrative_area_level_1", "political" ]
+         },
+         {
+            "long_name" : "France",
+            "short_name" : "FR",
+            "types" : [ "country", "political" ]
+         },
+         {
+            "long_name" : "75008",
+            "short_name" : "75008",
+            "types" : [ "postal_code" ]
+         }
+      ],
+      "adr_address" : "\u003cspan class=\"street-address\"\u003e5 Rue de Berri\u003c/span\u003e, \u003cspan class=\"postal-code\"\u003e75008\u003c/span\u003e \u003cspan class=\"locality\"\u003eParis\u003c/span\u003e, \u003cspan class=\"country-name\"\u003eFrance\u003c/span\u003e",
+      "business_status" : "OPERATIONAL",
+      "formatted_address" : "5 Rue de Berri, 75008 Paris, France",
+      "formatted_phone_number" : "01 45 63 14 11",
+      "geometry" : {
+         "location" : {
+            "lat" : 48.8722222,
+            "lng" : 2.3030556
+         },
+         "viewport" : {
+            "northeast" : {
+               "lat" : 48.8734403802915,
+               "lng" : 2.304519080291502
+            },
+            "southwest" : {
+               "lat" : 48.8707424197085,
+               "lng" : 2.301821119708499
+            }
+         }
+      },
+      "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/lodging-71.png",
+      "icon_background_color" : "#909CE1",
+      "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/hotel_pinlet",
+      "international_phone_number" : "+33 1 45 63 14 11",
+      "name" : "Warwick Paris",
+      "opening_hours" : {
+         "open_now" : true,
+         "periods" : [
+            {
+               "open" : {
+                  "day" : 0,
+                  "time" : "0000"
+               }
+            }
+         ],
+         "weekday_text" : [
+            "lundi: Ouvert 24h/24",
+            "mardi: Ouvert 24h/24",
+            "mercredi: Ouvert 24h/24",
+            "jeudi: Ouvert 24h/24",
+            "vendredi: Ouvert 24h/24",
+            "samedi: Ouvert 24h/24",
+            "dimanche: Ouvert 24h/24"
+         ]
+      },
+      "photos" : [
+         {
+            "height" : 3024,
+            "html_attributions" : [
+               "\u003ca href=\"https://maps.google.com/maps/contrib/108081364312592661414\"\u003eAyah M\u003c/a\u003e"
+            ],
+            "photo_reference" : "Aap_uECj_c-igCc77iJmyI2EaNWkR_Wy7eOfDU-mGTDZAAkvoEctbxeolW4nJhNhRzAUjcI1kIeX1ViBiEJfSrAj4EcDjVHHTNKP-2aSIM8gKC9K3CWeTpx1jmKnRk9Xf2vzYD5tdX3AaUfEsF-sG112uKdRiqDZE-CDmwN68hnloMjf3x1q",
+            "width" : 4032
+         },
+         {
+            "height" : 933,
+            "html_attributions" : [
+               "\u003ca href=\"https://maps.google.com/maps/contrib/102595556527908707630\"\u003eWarwick Paris\u003c/a\u003e"
+            ],
+            "photo_reference" : "Aap_uEDBNrr86QsEHSl7OIRulQoQeQalBVTx9fPyPAQOQIyRfKcnVZzc7bigoNINeuNhhylp_ASWd7Ns2-6TOdJbyN4v3jgJYptyGzdy9hTRRJ0_38YXkjIQDgiWx0v9iRlPTSj5NYwzqGu8Gxijh770PtWM4vwyYAiExIBjYsCMryWLpCpw",
+            "width" : 1400
+         },
+         {
+            "height" : 1333,
+            "html_attributions" : [
+               "\u003ca href=\"https://maps.google.com/maps/contrib/102595556527908707630\"\u003eWarwick Paris\u003c/a\u003e"
+            ],
+            "photo_reference" : "Aap_uEA4S0daVnZiGz5ryDZNr3v-spX94jH2JguD_JHdQfLMUqDM2jnrfeAHWvJ8V13p3GpjPRbal5rRlFE21MSJALgg5Rt_IjCC3bybx7t5_A9Ps5-0za9jXwglzqfe7IAtLw0ZZleEeRUjR4BNyQoqy_wHcby2u49xSSYmKrzkNN4R3M2r",
+            "width" : 2000
+         },
+         {
+            "height" : 1872,
+            "html_attributions" : [
+               "\u003ca href=\"https://maps.google.com/maps/contrib/102595556527908707630\"\u003eWarwick Paris\u003c/a\u003e"
+            ],
+            "photo_reference" : "Aap_uECuAMVRbxJFIsyxXIEX-CVsPzm0XA6bvuB2ZkzKUuIRIsvRzqNIXANIWZDQG4KRFuQ07ydKkhi0yQ5MPETI2kp_pvxg3YFcas3yHoI8xHVz7hvltHMmItAWlFEVW8_2SZlOxDUjHd0T0GM-Xl6P6M3JssdnLQ6eO5pM2uCr-kkGrnFR",
+            "width" : 2808
+         },
+         {
+            "height" : 4129,
+            "html_attributions" : [
+               "\u003ca href=\"https://maps.google.com/maps/contrib/102595556527908707630\"\u003eWarwick Paris\u003c/a\u003e"
+            ],
+            "photo_reference" : "Aap_uEAKlksXPKsgacggiiugSFVT8o0TBElGe41cjs8uTZC9AVJVn7ohbO1Se1p9lA1D8zlWApfdmMGsDDIcNoyvIINvxdccT488v4EIIj3i7vr63agkAxs-2jRiL8NuUDluOfw_xU384rOnIHlBlU5Y5gs5aIwIPUsIs5TjoJAcBvukDiNP",
+            "width" : 6193
+         },
+         {
+            "height" : 605,
+            "html_attributions" : [
+               "\u003ca href=\"https://maps.google.com/maps/contrib/102595556527908707630\"\u003eWarwick Paris\u003c/a\u003e"
+            ],
+            "photo_reference" : "Aap_uEAOrOYhucF5BUdskG6j55JpFPUELDCWrblrVA_ZD6cyRd44AAVNzdXanApKVn4qMEp_neJMrY9UjJ5f85b344y0KjGX3QW1hazdgOACtJkjqSi62JeyI80H5lmslHI9DmgpDdkorUdgdHVSoc0yCNZNA9DgZwLtBUYzJ2KqvMSC4ssH",
+            "width" : 1024
+         },
+         {
+            "height" : 1333,
+            "html_attributions" : [
+               "\u003ca href=\"https://maps.google.com/maps/contrib/102595556527908707630\"\u003eWarwick Paris\u003c/a\u003e"
+            ],
+            "photo_reference" : "Aap_uEC-LzhyZHWoY4CRelf7htFw5SKQ1b7PshI9OJxI5vSiFVMaZ8aknm09jGQgsXD9DIKfLMfV-mse3LzTjUZpRrrrUGg9NDVh0CiDQ2oCdcDPK7KKY886ahqPWUaBQIIeKSu8wlQsuuYj7xbEw8IGoYi9p2kL-UB6-asFF7wa60cr6aWy",
+            "width" : 2000
+         },
+         {
+            "height" : 1333,
+            "html_attributions" : [
+               "\u003ca href=\"https://maps.google.com/maps/contrib/102595556527908707630\"\u003eWarwick Paris\u003c/a\u003e"
+            ],
+            "photo_reference" : "Aap_uECHbwvtCwf-BuYCfNubSH2z5nXorv4nU5MaDomw4A-xvJsHe8R5YLLzfJRqYh_kS_WvsV34sl-CWWc1y2WSWO2IPORq5Jk0Za6BXPEGKjL4mfLSNB_toGy7SqsfZl4sxTibxzVXWR6lYkn-Z61IzxIaI7cBoELoFSoMwmuOBOGSs7xr",
+            "width" : 2000
+         },
+         {
+            "height" : 1333,
+            "html_attributions" : [
+               "\u003ca href=\"https://maps.google.com/maps/contrib/102595556527908707630\"\u003eWarwick Paris\u003c/a\u003e"
+            ],
+            "photo_reference" : "Aap_uEAq79ZddgTVRsJP12Ox8Na-m92RbsfdMxTZI2xp4pBRMHcc_LeOO9Xg1JJ6Umb8AV7egu-uGSd9pHcp7JLx8A4yVwB7H_LCH0B-wScvtxIyAs1JgXuVXnfXhtlDDX9DnvlgSY4bG4GLe7nRjBFXBPfiCXvt1Jsgtok-OU_bkl8PSt0t",
+            "width" : 2000
+         },
+         {
+            "height" : 1733,
+            "html_attributions" : [
+               "\u003ca href=\"https://maps.google.com/maps/contrib/102595556527908707630\"\u003eWarwick Paris\u003c/a\u003e"
+            ],
+            "photo_reference" : "Aap_uEDB2A0U-PY9ikx_0G_BpLglQFeZM3VMBuxySaD-xoo5s7vI0jhQUYg1UK7omE-LmRizOzC6pFC6ERj6QMFchhpbn0BjC_R_7i-3ajxfdMuks6My4IR1B_6s-sDsbh820YYAkFByZT2ygbToea3xiLqK3gXmam5aJITs_mov8sjhdGRX",
+            "width" : 2598
+         }
+      ],
+      "place_id" : "ChIJzbddL8Jv5kcRSxvM72EgJ90",
+      "plus_code" : {
+         "compound_code" : "V8C3+V6 Paris, France",
+         "global_code" : "8FW4V8C3+V6"
+      },
+      "rating" : 4.1,
+      "reference" : "ChIJzbddL8Jv5kcRSxvM72EgJ90",
+      "reviews" : [
+         {
+            "author_name" : "David Ewerhard",
+            "author_url" : "https://www.google.com/maps/contrib/117198317729363601342/reviews",
+            "language" : "fr",
+            "profile_photo_url" : "https://lh3.googleusercontent.com/a-/AOh14Ggx-GdiBlSpVYFpINZHP_gAkZ42uyS8NcLEsQlk_A=s128-c0x00000000-cc-rp-mo-ba4",
+            "rating" : 3,
+            "relative_time_description" : "il y a un mois",
+            "text" : "Du bon et du moins bon.\nHôtel confortable mais vieillissant, jointures de portes arrachées, joints de carrelage saillant et dangereux, pas de sèche serviette, frigo vide, ...\nServices laissant place à la peu près, erreurs dans les commandes du room services...\nPersonnel d'accueil agréable et compétent.",
+            "time" : 1635782800
+         },
+         {
+            "author_name" : "Vincent",
+            "author_url" : "https://www.google.com/maps/contrib/116108709357686449228/reviews",
+            "language" : "fr",
+            "profile_photo_url" : "https://lh3.googleusercontent.com/a-/AOh14GiEhfKwraMZZ5n9llHt8mM4FQLxNp1V-xGm-x6z=s128-c0x00000000-cc-rp-mo-ba4",
+            "rating" : 5,
+            "relative_time_description" : "il y a 2 semaines",
+            "text" : "Extrêmement bien situé près des Champs Élysées . Hôtel luxueux",
+            "time" : 1639104974
+         },
+         {
+            "author_name" : "Olivia B",
+            "author_url" : "https://www.google.com/maps/contrib/111400011969556856756/reviews",
+            "language" : "fr",
+            "profile_photo_url" : "https://lh3.googleusercontent.com/a/AATXAJwnOb5erCAXAUI2W1xTdWBZiQI-9OSoSxO9L7PC=s128-c0x00000000-cc-rp-mo",
+            "rating" : 1,
+            "relative_time_description" : "il y a 3 semaines",
+            "text" : "Catastrophique ! J ai été logée chambre 111 chambre attenante à un bar restaurant extrêmement bruyant! J ai appelé la réception qui m annonce qu on ne peut me changer de chambre car l hôtel est complet. Résultat le mur vibre au son du caisson de basse des voisins et impossible de dormir. Insupportable. Je ne comprends pas qu un hôtel de ce standing ose mettre des clients dans cette chambre. Scandaleux .",
+            "time" : 1638315054
+         },
+         {
+            "author_name" : "Vivian ABRILLET",
+            "author_url" : "https://www.google.com/maps/contrib/115908404165609662321/reviews",
+            "language" : "fr",
+            "profile_photo_url" : "https://lh3.googleusercontent.com/a-/AOh14GgpcUA5SpLF4XOrbNRmtbebhSDK01T_SAvgG78XSA=s128-c0x00000000-cc-rp-mo-ba3",
+            "rating" : 5,
+            "relative_time_description" : "il y a 2 mois",
+            "text" : "Le restaurant en rotation avec vue sur la tour effeil, propose des plats bistronomique.\nJe recommande pour un repas amoureux.",
+            "time" : 1632972817
+         },
+         {
+            "author_name" : "Envie de goûter K",
+            "author_url" : "https://www.google.com/maps/contrib/114281817889751315224/reviews",
+            "language" : "fr",
+            "profile_photo_url" : "https://lh3.googleusercontent.com/a-/AOh14GiGdtcTgOZwCPVphgWVrMfZdEdsatgwxYeLlNwZ=s128-c0x00000000-cc-rp-mo-ba3",
+            "rating" : 5,
+            "relative_time_description" : "il y a 5 mois",
+            "text" : "Mon avis ne concerne que le côté restauration!!!\nTerrasse très rare à Paris où vous pouvez déjeuner et admirer la Dame de fer ainsi que les autres beautés de Paris\nRepas très intéressant de l’entrée au dessert\nPlats simples mais bien exécutés\nLes ingrédients se marient très bien, très frais et surtout très bien servis par le personnel de l’Hotel\nMoment ensoleillé, l’esprit en liberté et le ventre rempli\nParoles d’un Chef",
+            "time" : 1626761833
+         }
+      ],
+      "types" : [ "lodging", "restaurant", "food", "point_of_interest", "establishment" ],
+      "url" : "https://maps.google.com/?cid=15935741411480836939",
+      "user_ratings_total" : 736,
+      "utc_offset" : 60,
+      "vicinity" : "5 Rue de Berri, Paris",
+      "website" : "https://www.warwickhotels.com/warwick-paris/"
+   },
+   "status" : "OK"
+}

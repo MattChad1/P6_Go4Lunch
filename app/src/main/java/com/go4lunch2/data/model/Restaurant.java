@@ -9,7 +9,6 @@ public class Restaurant {
     // champs Google place
     @NonNull String name;
     @Nullable String image;
-    @Nullable String type;
     @Nullable String openingTime;
     @NonNull String adress;
     @NonNull Double latitude;
@@ -21,12 +20,11 @@ public class Restaurant {
     // champs contacts
     @NonNull RestaurantDetails restaurantDetails;
 
-    public Restaurant(@NonNull String id, @NonNull String name, @Nullable String image, @Nullable String type, @Nullable String openingTime,
+    public Restaurant(@NonNull String id, @NonNull String name, @Nullable String image, @Nullable String openingTime,
                       @NonNull String adress, @NonNull Double latitude, @NonNull Double longitude, @NonNull RestaurantCustomFields rcf, @NonNull RestaurantDetails restaurantDetails) {
         this.id = id;
         this.name = name;
         this.image = image;
-        this.type = type;
         this.openingTime = openingTime;
         this.adress = adress;
         this.latitude = latitude;
@@ -40,7 +38,6 @@ public class Restaurant {
         this.id = id;
         this.name = name;
         this.image = image;
-        this.type = type;
         this.openingTime = openingTime;
         this.adress = adress;
         this.latitude = latitude;
@@ -74,15 +71,6 @@ public class Restaurant {
 
     public void setImage(@Nullable String image) {
         this.image = image;
-    }
-
-    @Nullable
-    public String getType() {
-        return type;
-    }
-
-    public void setType(@Nullable String type) {
-        this.type = type;
     }
 
     @NonNull
@@ -145,7 +133,6 @@ public class Restaurant {
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", image='" + image + '\'' +
-                ", type='" + type + '\'' +
                 ", openingTime='" + openingTime + '\'' +
                 ", adress='" + adress + '\'' +
                 ", latitude=" + latitude +

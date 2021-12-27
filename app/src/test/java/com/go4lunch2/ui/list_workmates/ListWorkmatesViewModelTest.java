@@ -64,7 +64,5 @@ public class ListWorkmatesViewModelTest {
         List<WorkmateViewStateItem> listTest =  getOrAwaitValue(viewModel.getWorkmatesViewStateItemsLiveData());
         assertTrue(listTest.get(0).getIdWorkmate().equals(test1));
         assertTrue(listTest.get(0).getNameRestaurant().equals(test2));
-
-
     }
 }

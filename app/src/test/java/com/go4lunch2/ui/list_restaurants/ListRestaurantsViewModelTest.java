@@ -10,6 +10,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
+import android.app.Application;
 import android.content.Context;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
@@ -49,7 +50,7 @@ public class ListRestaurantsViewModelTest {
     SortRepository sortRepository;
 
     @Mock
-    Context ctx;
+    Application application;
 
 
     @Rule
@@ -61,8 +62,7 @@ public class ListRestaurantsViewModelTest {
 
         allRestaurants.add(new Restaurant(testId, testName, "", "", "", "", 0.0, 0.0, new RestaurantCustomFields()));
         fakeRestaurantsLiveData.setValue(allRestaurants);
-        ctx = Mockito.mock(Context.class);
-        viewModel = Mockito.spy(new ListRestaurantsViewModel(restaurantRepository, sortRepository, ctx));
+        viewModel = Mockito.spy(new ListRestaurantsViewModel(restaurantRepository, sortRepository, application));
 
         Map<String, Integer> mockMapDistance = new HashMap<>();
 

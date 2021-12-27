@@ -1,7 +1,10 @@
 package com.go4lunch2.ui.list_restaurants;
 
+import android.app.Application;
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -19,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ListRestaurantsViewModel extends ViewModel {
+public class ListRestaurantsViewModel extends AndroidViewModel {
 
     String TAG = "MyLog RestaurantsViewModel";
 
@@ -31,15 +34,14 @@ public class ListRestaurantsViewModel extends ViewModel {
     private final MutableLiveData<SortRepository.OrderBy> orderLiveData = new MutableLiveData<>();
     private final MediatorLiveData<List<RestaurantViewState>> allRestaurantsWithOrderMediatorLD = new MediatorLiveData<>();
 
-    Context ctx;
 
 
 
 
 
 
-    public ListRestaurantsViewModel(RestaurantRepository restaurantRepository, SortRepository sortRepository, Context ctx) {
-        this.ctx = ctx;
+    public ListRestaurantsViewModel(RestaurantRepository restaurantRepository, SortRepository sortRepository, @NonNull Application application) {
+        super(application);
         this.restaurantRepository = restaurantRepository;
         this.sortRepository = sortRepository;
         centerLocationLatitude = 48.856614;
@@ -106,9 +108,8 @@ public class ListRestaurantsViewModel extends ViewModel {
                 restaurantViewStates.add(new RestaurantViewState(
                                                  r.getId(),
                                                  r.getName(),
-                                                 r.getType(),
                                                  r.getAdress(),
-                                                 (r.getOpeningTime().equals("true")) ? ctx.getString(R.string.open) : ctx.getString(R.string.closed),
+                                                 (r.getOpeningTime().equals("true")) ? getApplication().getResources().getString(R.string.open) : getApplication().getResources().getString(R.string.closed),
                                                  mapDistance == null ? null : mapDistance.get(r.getId()),
                                                  Utils.ratingToStars(r.getRcf().getAverageRate()),
                                                  workmatesInterested,

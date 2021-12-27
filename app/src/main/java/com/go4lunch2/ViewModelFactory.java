@@ -1,5 +1,6 @@
 package com.go4lunch2;
 
+import android.app.Application;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
@@ -35,7 +36,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     private final RestaurantRepository restaurantRepository;
 
     @NonNull
-    private final Context ctx;
+    private final Application application;
 
     @NonNull
     private final UserRepository userRepository;
@@ -43,10 +44,10 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     private final SortRepository sortRepository;
 
-    public ViewModelFactory(@NonNull RestaurantRepository restaurantRepository, @NonNull Context ctx,
+    public ViewModelFactory(@NonNull RestaurantRepository restaurantRepository, @NonNull Application application,
                             @NonNull UserRepository userRepository, @NonNull SortRepository sortRepository) {
         this.restaurantRepository = restaurantRepository;
-        this.ctx = ctx;
+        this.application = application;
         this.userRepository = userRepository;
         this.sortRepository = sortRepository;
     }
@@ -59,13 +60,13 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             return (T) new MainActivityViewModel(userRepository, sortRepository, restaurantRepository);
         }
         else if (modelClass.isAssignableFrom(ListRestaurantsViewModel.class)) {
-            return (T) new ListRestaurantsViewModel(restaurantRepository, sortRepository, ctx);
+            return (T) new ListRestaurantsViewModel(restaurantRepository, sortRepository, application);
         }
         else if (modelClass.isAssignableFrom(LogInViewModel.class)) {
             return (T) new LogInViewModel(userRepository);
         }
         else if (modelClass.isAssignableFrom(DetailRestaurantViewModel.class)) {
-            return (T) new DetailRestaurantViewModel(restaurantRepository, userRepository);
+            return (T) new DetailRestaurantViewModel(restaurantRepository, userRepository, application);
         }
         else if (modelClass.isAssignableFrom(MapsViewModel.class)) {
             return (T) new MapsViewModel(restaurantRepository);
