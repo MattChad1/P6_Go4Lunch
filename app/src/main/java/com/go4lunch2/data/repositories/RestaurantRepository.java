@@ -159,7 +159,6 @@ public class RestaurantRepository {
                     result.getPlaceId(),
                     result.getName(),
                     finalImage,
-                    "", //TODO : type from Places.API?
                     result.getOpeningHours() != null ? result.getOpeningHours().getOpenNow() : "",
                     result.getVicinity(),
                     result.getGeometry().location.lat,

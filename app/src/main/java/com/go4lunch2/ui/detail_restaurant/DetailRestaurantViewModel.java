@@ -67,9 +67,7 @@ public class DetailRestaurantViewModel extends AndroidViewModel {
         });
     }
 
-    public void addRate(String idWorkmate, String idRestaurant, int givenRate) {
-        restaurantRepository.addGrade(new Rating(idRestaurant, idWorkmate, givenRate));
-    }
+    public void addRate(String idWorkmate, String idRestaurant, int givenRate) {restaurantRepository.addGrade(new Rating(idRestaurant, idWorkmate, givenRate));}
 
     public void updateRestaurantChosen(String idUser, String idRestaurant) {
         userRepository.updateRestaurantChosen(idUser, idRestaurant);

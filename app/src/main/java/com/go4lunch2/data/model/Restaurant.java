@@ -33,7 +33,7 @@ public class Restaurant {
         this.restaurantDetails = restaurantDetails;
     }
 
-    public Restaurant(@NonNull String id, @NonNull String name, @Nullable String image, @Nullable String type, @Nullable String openingTime,
+    public Restaurant(@NonNull String id, @NonNull String name, @Nullable String image, @Nullable String openingTime,
                       @NonNull String adress, @NonNull Double latitude, @NonNull Double longitude, @NonNull RestaurantCustomFields rcf) {
         this.id = id;
         this.name = name;

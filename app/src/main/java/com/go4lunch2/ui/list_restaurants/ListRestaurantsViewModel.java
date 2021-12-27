@@ -19,6 +19,7 @@ import com.go4lunch2.data.repositories.RestaurantRepository;
 import com.go4lunch2.data.repositories.SortRepository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -62,7 +63,7 @@ public class ListRestaurantsViewModel extends AndroidViewModel {
             allRestaurantsWithOrderMediatorLD.setValue(restaurants);
         });
 
-        // Source 3 : order in which the user wants the list of restaurants
+//         Source 3 : order in which the user wants the list of restaurants
         allRestaurantsWithOrderMediatorLD.addSource(getOrderLiveData(), order -> {
             List<RestaurantViewState> restaurants = allRestaurantsViewStateLD.getValue();
             if (restaurants != null && !restaurants.isEmpty()) {
@@ -71,6 +72,7 @@ public class ListRestaurantsViewModel extends AndroidViewModel {
                 else if (order == SortRepository.OrderBy.NAME) newList = Stream.of(restaurants).sortBy(RestaurantViewState::getName).toList();
                 else if (order == SortRepository.OrderBy.RATING) {
                     newList = Stream.of(restaurants).filter(r -> r.getStarsCount()!= null).sortBy(RestaurantViewState::getStarsCount).toList();
+                    Collections.reverse(newList);
                     newList.addAll(Stream.of(restaurants).filter(r -> r.getStarsCount()== null).toList());
                 }
                 allRestaurantsWithOrderMediatorLD.setValue(newList);
@@ -84,7 +86,6 @@ public class ListRestaurantsViewModel extends AndroidViewModel {
     public LiveData<SortRepository.OrderBy> getOrderLiveData() {
         return sortRepository.getOrderLiveData();
     }
-
     public LiveData<Map<String, Integer>> getDistancesLiveData() {
         return restaurantRepository.getRestaurantsDistancesLiveData();
     }

@@ -1,0 +1,61 @@
+package com.go4lunch2.ui.map;
+
+import static com.TestUtils.LiveDataTestUtils.getOrAwaitValue;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
+
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.lifecycle.MutableLiveData;
+
+import com.go4lunch2.data.model.Restaurant;
+import com.go4lunch2.data.model.RestaurantCustomFields;
+import com.go4lunch2.data.repositories.RestaurantRepository;
+import com.go4lunch2.ui.list_restaurants.RestaurantViewState;
+
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.mockito.Mock;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MapsViewModelTest {
+
+    @Mock
+    RestaurantRepository restaurantRepository;
+
+    @Rule
+    public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
+
+    MapsViewModel viewModel;
+    private final MutableLiveData<List<Restaurant>> mockRestaurantsLiveData = new MutableLiveData<>();
+    List<Restaurant> fakeList = new ArrayList<>();
+
+    String testId = "abcd1234";
+    String testName = "Le bon restaurant";
+    Double testLatitude = 45.0;
+    Double testLongitude = 2.0;
+
+
+
+    @Before
+    public void setUp() throws Exception {
+        initMocks(this);
+        viewModel = new MapsViewModel(restaurantRepository);
+        fakeList.add(new Restaurant(testId, testName, "", "true", "", testLatitude, testLongitude, new RestaurantCustomFields()));
+        mockRestaurantsLiveData.setValue(fakeList);
+        when (restaurantRepository.getRestaurantsLiveData()).thenReturn(mockRestaurantsLiveData);
+    }
+
+    @Test
+    public void getMarkersLiveData() throws InterruptedException {
+        List<MapsStateItem> markers = getOrAwaitValue(viewModel.getMarkersLiveData());
+        assertEquals(testId, markers.get(0).getId());
+        assertEquals(testName, markers.get(0).getName());
+        assertEquals(testLatitude, markers.get(0).getLatitude());
+        assertEquals(testLongitude, markers.get(0).getLongitude());
+
+    }
+}

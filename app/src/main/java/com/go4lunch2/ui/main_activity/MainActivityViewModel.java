@@ -51,9 +51,6 @@ public class MainActivityViewModel extends ViewModel {
         sortRepository.updateOrderLiveData(order);
     }
 
-
-
-
     public MutableLiveData<List<SearchViewStateItem>> getSearchResultsLiveData() {
         return searchResultsLiveData;
     }
