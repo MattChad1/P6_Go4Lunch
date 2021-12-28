@@ -67,6 +67,9 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
             v.findViewById(R.id.item_restaurant_num_stars3).setVisibility(View.GONE);
         }
         else {
+            v.findViewById(R.id.item_restaurant_num_stars1).setVisibility(View.VISIBLE);
+            v.findViewById(R.id.item_restaurant_num_stars2).setVisibility(View.VISIBLE);
+            v.findViewById(R.id.item_restaurant_num_stars3).setVisibility(View.VISIBLE);
             if (restaurant.getStarsCount() == 0.5) ((ImageView) v.findViewById(R.id.item_restaurant_num_stars1)).setImageDrawable(ctx.getDrawable(R.drawable.ic_star_half));
             else if (restaurant.getStarsCount() > 0.5) ((ImageView) v.findViewById(R.id.item_restaurant_num_stars1)).setImageDrawable(ctx.getDrawable(R.drawable.ic_star_filled));
             if (restaurant.getStarsCount() == 1.5) ((ImageView) v.findViewById(R.id.item_restaurant_num_stars2)).setImageDrawable(ctx.getDrawable(R.drawable.ic_star_half));

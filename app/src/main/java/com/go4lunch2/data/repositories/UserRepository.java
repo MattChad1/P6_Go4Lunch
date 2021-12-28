@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -43,9 +44,12 @@ public class UserRepository {
     List<CustomUser> allCustomUsers;
     Map<CustomUser, String> usersWithRestaurant = new HashMap<>();
     MutableLiveData<CustomUser> currentCustomUserLD = new MutableLiveData<>();
+    private CollectionReference colRefUsers;
 
     public UserRepository() {
         Log.i(TAG, "Appel UserRepository()");
+
+        colRefUsers = db.collection("users");
         allCustomUsers = new ArrayList<>();
         getWorkmatesWithRestaurantsLiveData();
     }
@@ -53,7 +57,7 @@ public class UserRepository {
     public LiveData<Map<CustomUser, String>> getWorkmatesWithRestaurantsLiveData() {
         Log.i(TAG, "Appel getWorkmatesWithRestaurantsLiveData ");
         usersWithRestaurant.clear();
-        db.collection("users")
+        colRefUsers
                 .whereNotEqualTo("idRestaurantChosen", null)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -86,7 +90,7 @@ public class UserRepository {
     }
 
     public void createUser(String id, String name, String avatar) {
-        db.collection("users")
+        colRefUsers
                 .document(id)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -96,7 +100,7 @@ public class UserRepository {
                             DocumentSnapshot document = task.getResult();
                             if (!document.exists()) {
                                 CustomUser newCustomUser = new CustomUser(id, name, avatar, null, null);
-                                db.collection("users").document(id)
+                                colRefUsers.document(id)
                                         .set(newCustomUser);
                                 allCustomUsers.add(newCustomUser);
                             }
@@ -122,7 +126,7 @@ public class UserRepository {
 
 
     public void getUserCustomFromFB(String id) {
-        db.collection("users")
+        colRefUsers
                 .document(id)
                 .addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
@@ -144,7 +148,7 @@ public class UserRepository {
 
     public void updateRestaurantChosen(String idUser, String idRestaurant) {
         // If there was a restaurant, we update the restaurants table to remove this user from the list of workmates interested
-        DocumentReference docRef = db.collection("users").document(idUser);
+        DocumentReference docRef = colRefUsers.document(idUser);
 
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override

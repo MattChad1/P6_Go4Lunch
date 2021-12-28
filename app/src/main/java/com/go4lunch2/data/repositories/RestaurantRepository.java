@@ -72,11 +72,11 @@ public class RestaurantRepository {
 
     FirebaseFirestore db;
     Context ctx = MyApplication.getInstance();
-    List<Restaurant> allRestaurants = new ArrayList<>();
-    Double centerLatitude;
-    Double centerLongitude;
-    CollectionReference colRefRestaurants;
-    Map<String, Integer> distancesResult = new HashMap<>();
+    private List<Restaurant> allRestaurants = new ArrayList<>();
+    private Double centerLatitude;
+    private Double centerLongitude;
+    private CollectionReference colRefRestaurants;
+    private Map<String, Integer> distancesResult = new HashMap<>();
 
     public RestaurantRepository() {
         db = DI.getDatabase();
