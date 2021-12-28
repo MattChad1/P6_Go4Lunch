@@ -79,7 +79,7 @@ public class RestaurantRepository {
     private Map<String, Integer> distancesResult = new HashMap<>();
 
     public RestaurantRepository() {
-        db = DI.getDatabase();
+        db = FirebaseFirestore.getInstance();
         colRefRestaurants = db.collection("restaurants");
         centerLatitude = 48.856614;
         centerLongitude = 2.3522219;
@@ -183,7 +183,7 @@ public class RestaurantRepository {
 
 
 
-    private void getCustomFields(List<Restaurant> restaurants) {
+    protected void getCustomFields(List<Restaurant> restaurants) {
         for (int i=0; i<restaurants.size(); i++) {
             final DocumentReference docRef = colRefRestaurants.document(restaurants.get(i).getId());
 
@@ -227,7 +227,6 @@ public class RestaurantRepository {
 
                               @Override
                               public void onFailure(Call<RestaurantDetailsJson> call, Throwable t) {
-
                               }
                           });
     }

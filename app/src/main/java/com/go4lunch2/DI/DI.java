@@ -12,8 +12,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class DI {
+    FirebaseFirestore db;
 
-    public static FirebaseFirestore getDatabase() {
+    public FirebaseFirestore getDatabase() {
         return FirebaseFirestore.getInstance();
     }
 
@@ -24,7 +25,6 @@ public class DI {
         InputStream is = am.open(file);
         final BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         return reader;
-
     }
 
 
