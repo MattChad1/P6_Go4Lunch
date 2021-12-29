@@ -12,6 +12,7 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.go4lunch2.BaseActivity;
@@ -32,8 +33,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-
-import com.facebook.FacebookSdk;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Arrays;
@@ -47,11 +46,9 @@ public class LogInActivity extends BaseActivity {
     private static final int RC_SIGN_IN = 94201;
     private GoogleSignInClient mGoogleSignInClient;
 
-//    private FirebaseAuth mAuth;
+    //    private FirebaseAuth mAuth;
     private CallbackManager mCallbackManager;
     private LogInViewModel vm;
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,41 +57,17 @@ public class LogInActivity extends BaseActivity {
         vm = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(LogInViewModel.class);
         FacebookSdk.sdkInitialize(getApplicationContext());
         mCallbackManager = CallbackManager.Factory.create();
-//        mAuth = FirebaseAuth.getInstance();
-//        try {
-//            PackageInfo info = getPackageManager().getPackageInfo("com.go4lunch2", PackageManager.GET_SIGNATURES);
-//            for (Signature signature : info.signatures) {
-//                MessageDigest md = MessageDigest.getInstance("SHA");
-//                md.update(signature.toByteArray());
-//                Log.i("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-//            }
-//        } catch (PackageManager.NameNotFoundException e) {
-//            Log.i("KeyHash:", "Exception 1");
-//        } catch (NoSuchAlgorithmException e) {
-//            Log.i("KeyHash:", "Exception 2");
-//        }
-
 
         binding = ActivityLogInBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-
-        binding.tvLienMain.setOnClickListener(v -> {
-            Log.i(TAG, "onCreate: clic lien main");
-            startActivity(new Intent(this, MainActivity.class));
-        });
-        
-
-
-        
 
         // Initialize Facebook Login button
         LoginButton loginButton = findViewById(R.id.login_button_facebook);
         loginButton.setReadPermissions(Arrays.asList(
                 "public_profile", "email"));
 
-
-      loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+        loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.i(TAG, "facebook:onSuccess:" + loginResult);
@@ -112,7 +85,6 @@ public class LogInActivity extends BaseActivity {
             }
         });
 
-
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -122,20 +94,7 @@ public class LogInActivity extends BaseActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         SignInButton signInButton = findViewById(R.id.login_button_google);
-//        for (int i = 0; i < signInButton.getChildCount(); i++) {
-//            View v = signInButton.getChildAt(i);
-//            if (v instanceof TextView) {
-//                TextView tv = (TextView) v;
-//                tv.setPadding(0, 8, 0, 0);
-//                return;
-//            }
-//        }
-
         signInButton.setOnClickListener(v -> signIn());
-
-
-
-
     }
 
     // [START on_start_check_user]
@@ -207,24 +166,21 @@ public class LogInActivity extends BaseActivity {
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
-                        } else {
+                        }
+                        else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             updateUI(null);
-
                         }
                     }
                 });
     }
-
 
     private void updateUI(FirebaseUser user) {
         if (user != null && !user.isAnonymous()) {
             vm.createUser(user.getUid(), user.getDisplayName(), user.getPhotoUrl().toString());
 
             FirebaseMessaging.getInstance().subscribeToTopic("midi");
-
-
             startActivity(new Intent(this, MainActivity.class));
         }
     }

@@ -2,7 +2,6 @@ package com.go4lunch2.ui.list_workmates;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,8 +40,6 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.View
         }
     }
 
-
-
     // Create new views (invoked by the layout manager)
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
@@ -53,7 +50,7 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.View
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        if (listWorkmates!=null && !listWorkmates.isEmpty()) {
+        if (listWorkmates != null && !listWorkmates.isEmpty()) {
             WorkmateViewStateItem workmate = listWorkmates.get(position);
             viewHolder.tvName.setText(ctx.getString(R.string.restaurant_chosen, workmate.getNameWorkmate(), workmate.getNameRestaurant()));
             Glide.with(viewHolder.ivAvatar.getContext())
@@ -65,7 +62,6 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.View
                 i.putExtra(DetailRestaurantActivity.RESTAURANT_SELECTED, listWorkmates.get(position).getIdRestaurant());
                 ctx.startActivity(i);
             });
-
         }
     }
 

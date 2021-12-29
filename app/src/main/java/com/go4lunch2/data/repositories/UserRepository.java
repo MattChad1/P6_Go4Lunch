@@ -48,45 +48,70 @@ public class UserRepository {
 
     public UserRepository() {
         Log.i(TAG, "Appel UserRepository()");
-
         colRefUsers = db.collection("users");
         allCustomUsers = new ArrayList<>();
-        getWorkmatesWithRestaurantsLiveData();
+        getWorkmatesWithRestaurants();
     }
 
     public LiveData<Map<CustomUser, String>> getWorkmatesWithRestaurantsLiveData() {
+        getWorkmatesWithRestaurants();
+        return workmatesWithRestaurantsLiveData;
+    }
+
+    // Get the list of workmates who have selected a restaurant and listen to changes
+    public void getWorkmatesWithRestaurants() {
         Log.i(TAG, "Appel getWorkmatesWithRestaurantsLiveData ");
-        usersWithRestaurant.clear();
         colRefUsers
                 .whereNotEqualTo("idRestaurantChosen", null)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                CustomUser customUser = document.toObject(CustomUser.class);
-
-                                    db.collection("restaurants")
-                                            .document(customUser.getIdRestaurantChosen())
-                                            .get()
-                                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<DocumentSnapshot> task2) {
-                                                    DocumentSnapshot document2 = task2.getResult();
-                                                    if (task2.isSuccessful()) {
-                                                        if (Utils.ValidForToday((Timestamp) document2.get("lastUpdate"))) {
-                                                            usersWithRestaurant.put(customUser, document2.getString("name"));
-                                                            workmatesWithRestaurantsLiveData.setValue(usersWithRestaurant);
+                    public void onEvent(@Nullable QuerySnapshot value,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w(TAG, "Listen failed.", e);
+                            return;
+                        }
+                        if (value != null) {
+                            for (QueryDocumentSnapshot doc : value) {
+                                CustomUser customUser = doc.toObject(CustomUser.class);
+                                assert customUser.getIdRestaurantChosen() != null;
+                                db.collection("restaurants")
+                                        .document(customUser.getIdRestaurantChosen())
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task2) {
+                                                DocumentSnapshot document2 = task2.getResult();
+                                                if (task2.isSuccessful()) {
+                                                    // check if the value is valid for the day (modify since last lunchtime)
+                                                    if (Utils.ValidForToday((Timestamp) document2.get("lastUpdate"))) {
+                                                        if (usersWithRestaurant.containsKey(customUser)) {
+                                                            usersWithRestaurant.remove(customUser);
                                                         }
+                                                        // get the name of the restaurant
+                                                        db.collection("restaurants")
+                                                                .document(customUser.getIdRestaurantChosen())
+                                                                .get()
+                                                                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                                        if (task.isSuccessful()) {
+                                                                            DocumentSnapshot document = task.getResult();
+                                                                            if (document.exists()) {
+                                                                                usersWithRestaurant.put(customUser, document.getString("name"));
+                                                                                workmatesWithRestaurantsLiveData.setValue(usersWithRestaurant);
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                });
                                                     }
                                                 }
-                                            });
+                                            }
+                                        });
                             }
                         }
                     }
                 });
-        return workmatesWithRestaurantsLiveData;
     }
 
     public void createUser(String id, String name, String avatar) {
@@ -124,7 +149,6 @@ public class UserRepository {
         return currentCustomUserLD;
     }
 
-
     public void getUserCustomFromFB(String id) {
         colRefUsers
                 .document(id)
@@ -139,7 +163,8 @@ public class UserRepository {
 
                         if (snapshot != null && snapshot.exists()) {
                             currentCustomUserLD.setValue(snapshot.toObject(CustomUser.class));
-                        } else {
+                        }
+                        else {
                             currentCustomUserLD.setValue(new CustomUser(id));
                         }
                     }
@@ -155,37 +180,36 @@ public class UserRepository {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
-                        String oldRestaurant = document.getString("idRestaurantChosen");
-                        if (oldRestaurant!= null) {
-                            db.collection("restaurants").document(oldRestaurant)
-                                    .update("workmatesInterestedIds", FieldValue.arrayRemove(idUser));
-                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                        }
-
-                } else {
+                    String oldRestaurant = document.getString("idRestaurantChosen");
+                    if (oldRestaurant != null) {
+                        db.collection("restaurants").document(oldRestaurant)
+                                .update("workmatesInterestedIds", FieldValue.arrayRemove(idUser));
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                    }
+                }
+                else {
                     Log.d(TAG, "get failed with ", task.getException());
                 }
             }
         });
 
         //  update table users
+        docRef.update("idRestaurantChosen", idRestaurant)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        docRef.update("lastUpdate", FieldValue.serverTimestamp());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error updating Restaurant chosen", e);
+                    }
+                });
 
-            docRef.update("idRestaurantChosen", idRestaurant)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            docRef.update("lastUpdate", FieldValue.serverTimestamp());
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.w(TAG, "Error updating Restaurant chosen", e);
-                        }
-                    });
-
-            // update document of the restaurant
-            //  idRestaurant== null when the notification is sent. In this case, there is nothing to do here
+        // update document of the restaurant
+        //  idRestaurant== null when the notification is sent. In this case, there is nothing to do here
         if (idRestaurant != null) {
             DocumentReference docRef2 = db.collection("restaurants").document(idRestaurant);
             docRef2.get()
@@ -221,7 +245,7 @@ public class UserRepository {
                         .filter(u -> u.getKey().getId().equals(id))
                         .findFirst()
                         .orElse(null);
-                if (entry!=null) customUsers.add((CustomUser) entry.getKey());
+                if (entry != null) customUsers.add((CustomUser) entry.getKey());
             }
             return customUsers;
         }

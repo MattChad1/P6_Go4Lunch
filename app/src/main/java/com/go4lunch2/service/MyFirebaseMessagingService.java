@@ -33,13 +33,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         notificationBuilder.setContentTitle(getString(R.string.app_name));
         notificationBuilder.setContentText(myMessage);
         notificationBuilder.setSmallIcon(R.drawable.ic_baseline_notifications_24);
-        Intent intentNotif = new Intent (this, MainActivity.class);
+        Intent intentNotif = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intentNotif, 0);
         notificationBuilder.setContentIntent(pendingIntent);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             String channelId = getString(R.string.notification_channel_id);
             String channelTitle = getString(R.string.notification_channel_title);
             String channelDescription = getString(R.string.notification_channel_desc);
@@ -71,5 +71,4 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
     }
-
 }

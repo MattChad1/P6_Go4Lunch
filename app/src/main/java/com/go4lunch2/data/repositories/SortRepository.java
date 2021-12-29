@@ -3,7 +3,6 @@ package com.go4lunch2.data.repositories;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-
 public class SortRepository {
 
     private OrderBy order;
@@ -19,11 +18,9 @@ public class SortRepository {
         return orderLiveData;
     }
 
-    public void updateOrderLiveData (OrderBy order) {
+    public void updateOrderLiveData(OrderBy order) {
         orderLiveData.setValue(order);
-
     }
 
     public enum OrderBy {NAME, DISTANCE, RATING}
-
 }

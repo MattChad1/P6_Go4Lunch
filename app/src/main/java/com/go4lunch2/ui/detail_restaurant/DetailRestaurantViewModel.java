@@ -1,15 +1,12 @@
 package com.go4lunch2.ui.detail_restaurant;
 
 import android.app.Application;
-import android.content.Context;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
-import androidx.lifecycle.ViewModel;
 
-import com.go4lunch2.MyApplication;
 import com.go4lunch2.R;
 import com.go4lunch2.Utils.Utils;
 import com.go4lunch2.data.model.CustomUser;
@@ -18,8 +15,9 @@ import com.go4lunch2.data.model.Restaurant;
 import com.go4lunch2.data.repositories.RestaurantRepository;
 import com.go4lunch2.data.repositories.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.Set;
 
 public class DetailRestaurantViewModel extends AndroidViewModel {
 
@@ -32,7 +30,6 @@ public class DetailRestaurantViewModel extends AndroidViewModel {
         super(application);
         this.restaurantRepository = restaurantRepository;
         this.userRepository = userRepository;
-
     }
 
     public LiveData<CustomUser> getCurrentCustomUser(String id) {
@@ -42,6 +39,7 @@ public class DetailRestaurantViewModel extends AndroidViewModel {
         });
     }
 
+    // get datas for the restaurant selected from restaurant repository
     public LiveData<DetailRestaurantViewState> getDetailRestaurantLiveData(String idRestaurant) {
         return Transformations.map(restaurantRepository.getRestaurantDetailsLiveData(idRestaurant), restaurant -> {
             String image =
@@ -51,13 +49,12 @@ public class DetailRestaurantViewModel extends AndroidViewModel {
 
             Restaurant restaurantInRepo = restaurantRepository.getRestaurantById(idRestaurant);
 
-
             DetailRestaurantViewState detailRestaurantViewState = new DetailRestaurantViewState(
                     idRestaurant,
                     restaurant.getName(),
                     restaurant.getFormattedAddress(),
-                    restaurantInRepo!= null ? Utils.ratingToStars(restaurantInRepo.getRcf().getAverageRate()) : null,
-                    restaurantInRepo!= null ? userRepository.getListWorkmatesByIds(restaurantInRepo.getRcf().getWorkmatesInterestedIds()) : null,
+                    restaurantInRepo != null ? Utils.ratingToStars(restaurantInRepo.getRcf().getAverageRate()) : null,
+                    restaurantInRepo != null ? userRepository.getListWorkmatesByIds(restaurantInRepo.getRcf().getWorkmatesInterestedIds()) : null,
                     image,
                     restaurant.getInternationalPhoneNumber(),
                     restaurant.getWebsite()
@@ -67,7 +64,23 @@ public class DetailRestaurantViewModel extends AndroidViewModel {
         });
     }
 
-    public void addRate(String idWorkmate, String idRestaurant, int givenRate) {restaurantRepository.addGrade(new Rating(idRestaurant, idWorkmate, givenRate));}
+    // get the list of the workmates who have selected this restaurant (list is shown at the bottom of the screen if there are any)
+    public LiveData<List<CustomUser>> getWorkmatesForThisRestaurantLiveData(String idRestaurant) {
+        return Transformations.map(userRepository.getWorkmatesWithRestaurantsLiveData(), map -> {
+            List<CustomUser> workmates = new ArrayList<>();
+            Set<CustomUser> workmatesInMap = map.keySet();
+            for (CustomUser c : workmatesInMap) {
+                if (c.getIdRestaurantChosen().equals(idRestaurant)) {
+                    workmates.add(c);
+                }
+            }
+            return workmates;
+        });
+    }
+
+    public void addRate(String idWorkmate, String idRestaurant, int givenRate) {
+        restaurantRepository.addGrade(new Rating(idRestaurant, idWorkmate, givenRate));
+    }
 
     public void updateRestaurantChosen(String idUser, String idRestaurant) {
         userRepository.updateRestaurantChosen(idUser, idRestaurant);

@@ -1,7 +1,5 @@
 package com.go4lunch2.ui.map;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
@@ -33,6 +31,13 @@ public class MapsViewModel extends ViewModel {
         return Transformations.map(restaurantRepository.getRestaurantsLiveData(), restaurantsList -> {
             List<MapsStateItem> mapsStateItems = new ArrayList<>();
             for (Restaurant r : restaurantsList) {
+                int workmatesInterested = 0;
+                if (r.getRcf().getWorkmatesInterestedIds() != null) {
+                    if (Utils.ValidForToday(r.getRcf().getLastUpdate())) {
+                        workmatesInterested = r.getRcf().getWorkmatesInterestedIds().size();
+                    }
+                }
+
                 mapsStateItems.add(new MapsStateItem(
                         r.getId(),
                         r.getName(),
@@ -40,11 +45,9 @@ public class MapsViewModel extends ViewModel {
                         r.getLatitude(),
                         r.getLongitude(),
                         Utils.ratingToStars(r.getRcf().getAverageRate()),
-                        r.getRcf().getWorkmatesInterestedIds() == null ? 0 : r.getRcf().getWorkmatesInterestedIds().size()
+                        workmatesInterested
                 ));
-                Log.i(TAG, "Image View model : "+ r.getImage());
             }
-
 
             return mapsStateItems;
         });

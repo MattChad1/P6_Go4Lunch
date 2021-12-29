@@ -1,13 +1,12 @@
 package com.go4lunch2.ui.list_restaurants;
 
-import android.location.Location;
-import android.location.LocationListener;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -17,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.go4lunch2.R;
 import com.go4lunch2.ViewModelFactory;
 import com.go4lunch2.databinding.FragmentListRestaurantsBinding;
-import com.go4lunch2.ui.main_activity.MainActivity;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.ArrayList;
@@ -38,8 +36,7 @@ public class ListRestaurantsFragment extends Fragment {
 
     // TODO: Rename and change types and number of parameters
     public static ListRestaurantsFragment newInstance() {
-        ListRestaurantsFragment fragment = new ListRestaurantsFragment();
-        return fragment;
+        return new ListRestaurantsFragment();
     }
 
     @Override
@@ -48,7 +45,7 @@ public class ListRestaurantsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         MaterialToolbar toolbar = (MaterialToolbar) getActivity().findViewById(R.id.topAppBar);
         toolbar.setTitle(getString(R.string.list_restaurants_desc));
@@ -75,9 +72,6 @@ public class ListRestaurantsFragment extends Fragment {
             }
         });
 
-        View view = binding.getRoot();
-        return view;
+        return binding.getRoot();
     }
-
-
 }

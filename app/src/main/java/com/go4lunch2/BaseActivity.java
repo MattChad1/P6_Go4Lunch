@@ -27,14 +27,12 @@ abstract public class BaseActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
     }
 
-
     @Override
     public void onStart() {
         super.onStart();
-         currentUser = mAuth.getCurrentUser();
+        currentUser = mAuth.getCurrentUser();
         user = FirebaseAuth.getInstance().getCurrentUser();
     }
-
 
     public void signOut() {
         AuthUI.getInstance()
@@ -47,7 +45,4 @@ abstract public class BaseActivity extends AppCompatActivity {
                     }
                 });
     }
-
-
-
 }

@@ -7,7 +7,6 @@ import android.location.Location;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
@@ -21,7 +20,6 @@ import com.go4lunch2.data.model.model_gmap.place_autocomplete.Root;
 import com.go4lunch2.data.repositories.RestaurantRepository;
 import com.go4lunch2.data.repositories.SortRepository;
 import com.go4lunch2.data.repositories.UserRepository;
-import com.google.firebase.firestore.core.OrderBy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +37,6 @@ public class MainActivityViewModel extends ViewModel {
     UserRepository userRepository;
     SortRepository sortRepository;
 
-
     public MainActivityViewModel(UserRepository userRepository, SortRepository sortRepository, RestaurantRepository restaurantRepository) {
         this.userRepository = userRepository;
         this.sortRepository = sortRepository;
@@ -55,13 +52,12 @@ public class MainActivityViewModel extends ViewModel {
         return searchResultsLiveData;
     }
 
-    public LiveData<CustomUser> getCurrentCustomUser (String id) {
+    public LiveData<CustomUser> getCurrentCustomUser(String id) {
         return Transformations.map(userRepository.getCurrentCustomUserLD(id), currentUser -> {
             if (currentUser == null) return new CustomUser(id);
             else return currentUser;
         });
     }
-
 
     public void getSearchResults(String s) {
         List<SearchViewStateItem> searchResults = new ArrayList<>();
@@ -74,7 +70,7 @@ public class MainActivityViewModel extends ViewModel {
 
             @Override
             public void onResponse(Call<Root> call, Response<Root> response) {
-                Log.i(TAG, "onResponse: call" );
+                Log.i(TAG, "onResponse: call");
                 for (Prediction p : response.body().getPredictions()) {
                     Log.i(TAG, "onResponse: " + p.getPlaceId());
                     searchResults.add(new SearchViewStateItem(
@@ -83,8 +79,7 @@ public class MainActivityViewModel extends ViewModel {
                             p.getStructuredFormatting().getSecondaryText()
                     ));
                 }
-               searchResultsLiveData.setValue(searchResults);
-
+                searchResultsLiveData.setValue(searchResults);
             }
 
             @Override
@@ -93,12 +88,9 @@ public class MainActivityViewModel extends ViewModel {
                 System.out.println(t);
             }
         });
-
     }
 
     public void updateCenter(Location location) {
         restaurantRepository.updateCenter(location);
     }
-
-
 }

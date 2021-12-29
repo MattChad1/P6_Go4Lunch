@@ -15,7 +15,6 @@ public class MyApplication extends Application {
     private static Application sApplication;
     private static Boolean debug;
 
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -32,7 +31,6 @@ public class MyApplication extends Application {
             editor.putString(PREFS_CENTER, PREFS_CENTER_COMPANY);
             editor.commit();
         }
-
     }
 
     public static Application getInstance() {

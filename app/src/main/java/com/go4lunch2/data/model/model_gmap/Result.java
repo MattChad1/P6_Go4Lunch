@@ -1,10 +1,11 @@
-
 package com.go4lunch2.data.model.model_gmap;
 
-import java.util.List;
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
+import javax.annotation.Generated;
 
 @Generated("jsonschema2pojo")
 public class Result {
@@ -91,8 +92,6 @@ public class Result {
     public String getVicinity() {
         return vicinity;
     }
-
-
 
     @Override
     public String toString() {

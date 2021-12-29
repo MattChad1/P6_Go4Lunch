@@ -21,7 +21,6 @@ import java.util.List;
 
 public class ListWorkmatesFragment extends Fragment {
 
-
     FragmentListWorkmatesBinding binding;
     RecyclerView rv;
     List<WorkmateViewStateItem> workmates = new ArrayList<>();
@@ -31,7 +30,6 @@ public class ListWorkmatesFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     public static ListWorkmatesFragment newInstance(String param1, String param2) {
         ListWorkmatesFragment fragment = new ListWorkmatesFragment();
         return fragment;
@@ -40,7 +38,6 @@ public class ListWorkmatesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -49,7 +46,6 @@ public class ListWorkmatesFragment extends Fragment {
         toolbar.setTitle(getString(R.string.list_workmates_desc));
         toolbar.getMenu().getItem(0).setVisible(false);
         toolbar.getMenu().getItem(1).setVisible(false);
-
 
         binding = FragmentListWorkmatesBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
@@ -62,20 +58,12 @@ public class ListWorkmatesFragment extends Fragment {
         WorkmatesAdapter adapter = new WorkmatesAdapter(getActivity(), workmates);
         rv.setAdapter(adapter);
 
-
         vm.getWorkmatesViewStateItemsLiveData().observe(getViewLifecycleOwner(), workmateViewStateItems -> {
-           workmates.clear();
-           workmates.addAll(workmateViewStateItems);
-           adapter.notifyDataSetChanged();
+            workmates.clear();
+            workmates.addAll(workmateViewStateItems);
+            adapter.notifyDataSetChanged();
         });
-
-
-
 
         return view;
     }
-
-
-
-
 }

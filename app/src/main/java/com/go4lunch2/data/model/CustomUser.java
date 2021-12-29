@@ -6,6 +6,8 @@ import androidx.annotation.Nullable;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.ServerTimestamp;
 
+import java.util.Objects;
+
 public class CustomUser {
     @NonNull
     String id;
@@ -19,7 +21,7 @@ public class CustomUser {
     @ServerTimestamp
     Timestamp lastUpdate;
 
-    public CustomUser(@NonNull String id, @NonNull String name, @Nullable String avatar, String idRestaurantChosen, Timestamp lastUpdate) {
+    public CustomUser(@NonNull String id, @NonNull String name, @Nullable String avatar, @Nullable String idRestaurantChosen, Timestamp lastUpdate) {
         this.id = id;
         this.name = name;
         this.avatar = avatar;
@@ -40,7 +42,6 @@ public class CustomUser {
         this.avatar = null;
         this.idRestaurantChosen = null;
     }
-
 
     public String getId() {
         return id;
@@ -78,5 +79,18 @@ public class CustomUser {
 
     public Timestamp getLastUpdate() {
         return lastUpdate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CustomUser that = (CustomUser) o;
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

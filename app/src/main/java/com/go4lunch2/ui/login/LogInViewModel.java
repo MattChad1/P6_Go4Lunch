@@ -12,8 +12,7 @@ public class LogInViewModel extends ViewModel {
         this.userRepository = userRepository;
     }
 
-    public void createUser (String idFirebase, String name, String avatar) {
+    public void createUser(String idFirebase, String name, String avatar) {
         userRepository.createUser(idFirebase, name, avatar);
-
     }
 }

@@ -1,9 +1,9 @@
-
 package com.go4lunch2.data.model.model_gmap;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import javax.annotation.Generated;
 
 @Generated("jsonschema2pojo")
 public class Viewport {
@@ -14,5 +14,4 @@ public class Viewport {
     @SerializedName("southwest")
     @Expose
     public Southwest southwest;
-
 }

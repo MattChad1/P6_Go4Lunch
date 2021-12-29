@@ -26,10 +26,10 @@ public abstract class PermissionUtils {
             // Display a dialog with rationale.
             PermissionUtils.RationaleDialog.newInstance(requestId, finishActivity)
                     .show(activity.getSupportFragmentManager(), "dialog");
-        } else {
+        }
+        else {
             // Location permission has not been granted yet, request it.
             ActivityCompat.requestPermissions(activity, new String[]{permission}, requestId);
-
         }
     }
 

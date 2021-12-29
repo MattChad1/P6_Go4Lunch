@@ -4,24 +4,34 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class Restaurant {
-    @NonNull String id;
+    @NonNull
+    String id;
 
     // champs Google place
-    @NonNull String name;
-    @Nullable String image;
-    @Nullable String openingTime;
-    @NonNull String adress;
-    @NonNull Double latitude;
-    @NonNull Double longitude;
+    @NonNull
+    String name;
+    @Nullable
+    String image;
+    @Nullable
+    String openingTime;
+    @NonNull
+    String adress;
+    @NonNull
+    Double latitude;
+    @NonNull
+    Double longitude;
 
     // champs custom
-    @NonNull RestaurantCustomFields rcf;
+    @NonNull
+    RestaurantCustomFields rcf;
 
     // champs contacts
-    @NonNull RestaurantDetails restaurantDetails;
+    @NonNull
+    RestaurantDetails restaurantDetails;
 
     public Restaurant(@NonNull String id, @NonNull String name, @Nullable String image, @Nullable String openingTime,
-                      @NonNull String adress, @NonNull Double latitude, @NonNull Double longitude, @NonNull RestaurantCustomFields rcf, @NonNull RestaurantDetails restaurantDetails) {
+                      @NonNull String adress, @NonNull Double latitude, @NonNull Double longitude, @NonNull RestaurantCustomFields rcf,
+                      @NonNull RestaurantDetails restaurantDetails) {
         this.id = id;
         this.name = name;
         this.image = image;

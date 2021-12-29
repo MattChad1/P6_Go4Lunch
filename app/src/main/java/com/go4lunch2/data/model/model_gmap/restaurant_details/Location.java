@@ -1,9 +1,9 @@
-
 package com.go4lunch2.data.model.model_gmap.restaurant_details;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import javax.annotation.Generated;
 
 @Generated("jsonschema2pojo")
 public class Location {
@@ -30,5 +30,4 @@ public class Location {
     public void setLng(Double lng) {
         this.lng = lng;
     }
-
 }

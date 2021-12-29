@@ -70,7 +70,4 @@ public class RestaurantViewState {
             return right.getName().toLowerCase(Locale.ROOT).compareTo(left.getName().toLowerCase(Locale.ROOT));
         }
     }
-
-
-
 }

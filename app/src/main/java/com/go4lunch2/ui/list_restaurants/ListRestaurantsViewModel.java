@@ -1,7 +1,6 @@
 package com.go4lunch2.ui.list_restaurants;
 
 import android.app.Application;
-import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -9,7 +8,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
-import androidx.lifecycle.ViewModel;
 
 import com.annimon.stream.Stream;
 import com.go4lunch2.R;
@@ -35,12 +33,6 @@ public class ListRestaurantsViewModel extends AndroidViewModel {
     private final MutableLiveData<SortRepository.OrderBy> orderLiveData = new MutableLiveData<>();
     private final MediatorLiveData<List<RestaurantViewState>> allRestaurantsWithOrderMediatorLD = new MediatorLiveData<>();
 
-
-
-
-
-
-
     public ListRestaurantsViewModel(RestaurantRepository restaurantRepository, SortRepository sortRepository, @NonNull Application application) {
         super(application);
         this.restaurantRepository = restaurantRepository;
@@ -56,9 +48,9 @@ public class ListRestaurantsViewModel extends AndroidViewModel {
         allRestaurantsWithOrderMediatorLD.addSource(getDistancesLiveData(), map -> {
             List<RestaurantViewState> restaurants = allRestaurantsViewStateLD.getValue();
             if (restaurants != null && !restaurants.isEmpty()) {
-               for (RestaurantViewState r: restaurants) {
-                   if (map.containsKey(r.getId())) r.setDistance(map.get(r.getId()));
-               }
+                for (RestaurantViewState r : restaurants) {
+                    if (map.containsKey(r.getId())) r.setDistance(map.get(r.getId()));
+                }
             }
             allRestaurantsWithOrderMediatorLD.setValue(restaurants);
         });
@@ -68,28 +60,30 @@ public class ListRestaurantsViewModel extends AndroidViewModel {
             List<RestaurantViewState> restaurants = allRestaurantsViewStateLD.getValue();
             if (restaurants != null && !restaurants.isEmpty()) {
                 List<RestaurantViewState> newList = new ArrayList<>();
-                if (order.equals(SortRepository.OrderBy.DISTANCE)) newList = Stream.of(restaurants).filter(r -> r.getDistance()!= null).sorted((a, b) -> a.getDistance() - b.getDistance()).toList();
+                if (order.equals(SortRepository.OrderBy.DISTANCE)) newList = Stream.of(restaurants).filter(r -> r.getDistance() != null).sorted(
+                        (a, b) -> a.getDistance() - b.getDistance()).toList();
                 else if (order == SortRepository.OrderBy.NAME) newList = Stream.of(restaurants).sortBy(RestaurantViewState::getName).toList();
                 else if (order == SortRepository.OrderBy.RATING) {
-                    newList = Stream.of(restaurants).filter(r -> r.getStarsCount()!= null).sortBy(RestaurantViewState::getStarsCount).toList();
+                    newList = Stream.of(restaurants).filter(r -> r.getStarsCount() != null).sortBy(RestaurantViewState::getStarsCount).toList();
                     Collections.reverse(newList);
-                    newList.addAll(Stream.of(restaurants).filter(r -> r.getStarsCount()== null).toList());
+                    newList.addAll(Stream.of(restaurants).filter(r -> r.getStarsCount() == null).toList());
                 }
                 allRestaurantsWithOrderMediatorLD.setValue(newList);
             }
-        } );
+        });
     }
 
     public LiveData<List<RestaurantViewState>> getAllRestaurantsWithOrderMediatorLD() {
         return allRestaurantsWithOrderMediatorLD;
     }
+
     public LiveData<SortRepository.OrderBy> getOrderLiveData() {
         return sortRepository.getOrderLiveData();
     }
+
     public LiveData<Map<String, Integer>> getDistancesLiveData() {
         return restaurantRepository.getRestaurantsDistancesLiveData();
     }
-
 
     public LiveData<List<RestaurantViewState>> getAllRestaurantsViewStateLD() {
         return Transformations.map(restaurantRepository.getRestaurantsLiveData(), restaurantsList -> {
@@ -99,8 +93,9 @@ public class ListRestaurantsViewModel extends AndroidViewModel {
             Map<String, Integer> mapDistance = getDistancesLiveData().getValue();
             for (Restaurant r : restaurantsList) {
 
+                // set the number of workmates who have selected this restaurant since last lunchtime
                 int workmatesInterested = 0;
-                if (r.getRcf().getWorkmatesInterestedIds()!= null) {
+                if (r.getRcf().getWorkmatesInterestedIds() != null) {
                     if (Utils.ValidForToday(r.getRcf().getLastUpdate())) {
                         workmatesInterested = r.getRcf().getWorkmatesInterestedIds().size();
                     }
@@ -110,7 +105,8 @@ public class ListRestaurantsViewModel extends AndroidViewModel {
                                                  r.getId(),
                                                  r.getName(),
                                                  r.getAdress(),
-                                                 (r.getOpeningTime().equals("true")) ? getApplication().getResources().getString(R.string.open) : getApplication().getResources().getString(R.string.closed),
+                                                 (r.getOpeningTime().equals("true")) ? getApplication().getResources().getString(
+                                                         R.string.open) : getApplication().getResources().getString(R.string.closed),
                                                  mapDistance == null ? null : mapDistance.get(r.getId()),
                                                  Utils.ratingToStars(r.getRcf().getAverageRate()),
                                                  workmatesInterested,
@@ -121,9 +117,5 @@ public class ListRestaurantsViewModel extends AndroidViewModel {
             allRestaurantsViewStateLD.setValue(restaurantViewStates);
             return restaurantViewStates;
         });
-
     }
-
-
-
 }

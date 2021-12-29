@@ -9,6 +9,6 @@ import retrofit2.http.Query;
 public interface PlaceAutocompleteAPI {
 
     @GET("maps/api/place/autocomplete/json")
-    public Call<Root> getResults(@Query("input") String input, @Query("location") String location, @Query("radius") String radius, @Query("types") String types, @Query("key") String mapsAPIKey);
-
+    public Call<Root> getResults(@Query("input") String input, @Query("location") String location, @Query("radius") String radius,
+                                 @Query("types") String types, @Query("key") String mapsAPIKey);
 }

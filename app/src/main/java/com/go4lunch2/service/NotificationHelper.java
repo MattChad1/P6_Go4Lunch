@@ -6,7 +6,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -15,7 +14,6 @@ import com.go4lunch2.R;
 import com.go4lunch2.ui.main_activity.MainActivity;
 
 public class NotificationHelper {
-
 
     public static void createNotificationChannel(Context context, String name, String description) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -26,12 +24,8 @@ public class NotificationHelper {
 
             NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
-
         }
-
-
     }
-
 
     public static void createSampleDataNotification(Context context, String title, String message, String canal) {
 
@@ -48,7 +42,4 @@ public class NotificationHelper {
 
         notificationManager.notify(1, notificationBuilder.build());
     }
-
-
-
 }

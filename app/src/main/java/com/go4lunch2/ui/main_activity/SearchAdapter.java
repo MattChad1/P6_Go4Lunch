@@ -45,7 +45,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         }
     }
 
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -63,7 +62,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             intent.putExtra(DetailRestaurantActivity.RESTAURANT_SELECTED, test);
             holder.itemView.getContext().startActivity(intent);
         });
-
     }
 
     @Override
@@ -80,13 +78,13 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             FilterResults results = new FilterResults();
 
             final List<String> list = new ArrayList<>();
-            for (SearchViewStateItem s: searchResults) list.add(s.getName() + " " + s.getAdress());
+            for (SearchViewStateItem s : searchResults) list.add(s.getName() + " " + s.getAdress());
 
             int count = list.size();
             //final ArrayList<String> nlist = new ArrayList<String>(count);
             final List<SearchViewStateItem> nList = new ArrayList();
 
-            String filterableString ;
+            String filterableString;
 
             for (int i = 0; i < count; i++) {
                 filterableString = list.get(i);
@@ -107,12 +105,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             searchResults = (ArrayList<SearchViewStateItem>) results.values;
             notifyDataSetChanged();
         }
-
     }
-
-
-
-    }
+}
 
 
 

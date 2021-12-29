@@ -1,27 +1,19 @@
 package com.go4lunch2.ui.detail_restaurant;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.go4lunch2.R;
-import com.go4lunch2.ViewModelFactory;
-import com.go4lunch2.ui.detail_restaurant.DetailRestaurantActivity;
-import com.go4lunch2.ui.main_activity.MainActivity;
 
 public class ReminderBroadcast extends BroadcastReceiver {
 
     String TAG = "ReminderBroadcast";
-    private static final String CANAL = "Noon" ;
+    private static final String CANAL = "Noon";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -33,7 +25,7 @@ public class ReminderBroadcast extends BroadcastReceiver {
         notificationBuilder.setContentText("Il est midi. Rendez-vous au restaurant " + nameRestaurant);
         notificationBuilder.setSmallIcon(R.drawable.ic_baseline_notifications_24);
         notificationBuilder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
-        Intent intentNotif = new Intent (context, DetailRestaurantActivity.class);
+        Intent intentNotif = new Intent(context, DetailRestaurantActivity.class);
         intentNotif.putExtra(DetailRestaurantActivity.RESTAURANT_SELECTED, idRestaurant);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intentNotif, 0);
         notificationBuilder.setContentIntent(pendingIntent);
@@ -50,9 +42,5 @@ public class ReminderBroadcast extends BroadcastReceiver {
 //            notificationBuilder.setChannelId(channelId);
 //        }
         notificationManager.notify(1, notificationBuilder.build());
-
-        }
-
-
-
+    }
 }

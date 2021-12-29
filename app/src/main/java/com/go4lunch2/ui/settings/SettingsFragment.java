@@ -8,19 +8,16 @@ import static com.go4lunch2.MyApplication.PREFS_NOTIFS;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.appcompat.widget.SwitchCompat;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.fragment.app.Fragment;
+
 import com.go4lunch2.R;
 import com.go4lunch2.databinding.FragmentSettingsBinding;
-import com.go4lunch2.ui.main_activity.MainActivity;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -31,14 +28,12 @@ public class SettingsFragment extends Fragment {
     SharedPreferences.Editor editor;
     FragmentSettingsBinding binding;
 
-
     public SettingsFragment() {
         // Required empty public constructor
     }
 
     public static SettingsFragment newInstance() {
         SettingsFragment fragment = new SettingsFragment();
-
 
         return fragment;
     }
@@ -85,5 +80,4 @@ public class SettingsFragment extends Fragment {
         View view = binding.getRoot();
         return view;
     }
-
 }

@@ -1,7 +1,6 @@
 package com.go4lunch2;
 
 import android.app.Application;
-import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
@@ -25,7 +24,8 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
         if (factory == null) {
             synchronized (ViewModelFactory.class) {
                 if (factory == null) {
-                    factory = new ViewModelFactory(new RestaurantRepository(), MyApplication.getInstance(), new UserRepository(), new SortRepository());
+                    factory = new ViewModelFactory(new RestaurantRepository(), MyApplication.getInstance(), new UserRepository(),
+                                                   new SortRepository());
                 }
             }
         }

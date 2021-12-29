@@ -40,8 +40,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.appbar.MaterialToolbar;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -145,14 +143,13 @@ public class MapsFragment extends Fragment implements GoogleMap.InfoWindowAdapte
 
         bindingWindow.tvMapwindowWorkmates.setText(getString(R.string.num_workmates, item.workmatesCount));
 
-
         if (item.getImage() != null && !item.getImage().isEmpty()) {
-String url = item.getImage().replace("maxwidth=150", "maxwidth=90");
+            String url = item.getImage().replace("maxwidth=150", "maxwidth=90");
             Glide.with(getActivity()).load(url)
                     .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                        .placeholder(R.drawable.ic_downloading_24)
-                        .error(R.drawable.ic_search)
-                        .centerCrop()
+                    .placeholder(R.drawable.ic_downloading_24)
+                    .error(R.drawable.ic_search)
+                    .centerCrop()
                     .listener(new RequestListener<Drawable>() {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -160,12 +157,13 @@ String url = item.getImage().replace("maxwidth=150", "maxwidth=90");
                         }
 
                         @Override
-                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource,
+                                                       boolean isFirstResource) {
                             if (!dataSource.equals(DataSource.MEMORY_CACHE)) marker.showInfoWindow();
                             return false;
                         }
                     })
-                        .into((ImageView) bindingWindow.ivMapwindow);
+                    .into((ImageView) bindingWindow.ivMapwindow);
         }
 
         View view = bindingWindow.getRoot();
@@ -181,13 +179,11 @@ String url = item.getImage().replace("maxwidth=150", "maxwidth=90");
 
     @Override
     public void onInfoWindowClick(@NonNull Marker marker) {
-        Intent i = new Intent (mapFragment.getContext(), DetailRestaurantActivity.class);
+        Intent i = new Intent(mapFragment.getContext(), DetailRestaurantActivity.class);
         int position = (int) marker.getTag();
         MapsStateItem item = allMarkers.get(position);
         i.putExtra(DetailRestaurantActivity.RESTAURANT_SELECTED, item.getId());
         startActivity(i);
-
-
     }
 
     /**
@@ -254,8 +250,6 @@ String url = item.getImage().replace("maxwidth=150", "maxwidth=90");
         PermissionUtils.PermissionDeniedDialog
                 .newInstance(true).show(mapFragment.getChildFragmentManager(), "dialog");
     }
-
-
 }
 
 

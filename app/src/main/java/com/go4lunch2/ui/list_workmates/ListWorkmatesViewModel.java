@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
+import com.go4lunch2.data.model.CustomUser;
 import com.go4lunch2.data.repositories.RestaurantRepository;
 import com.go4lunch2.data.repositories.UserRepository;
-import com.go4lunch2.data.model.CustomUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,27 +18,21 @@ public class ListWorkmatesViewModel extends ViewModel {
     RestaurantRepository restaurantRepository;
     UserRepository userRepository;
 
-
     public ListWorkmatesViewModel(RestaurantRepository restaurantRepository, UserRepository userRepository) {
         this.restaurantRepository = restaurantRepository;
         this.userRepository = userRepository;
     }
 
-
     public LiveData<List<WorkmateViewStateItem>> getWorkmatesViewStateItemsLiveData() {
-        return Transformations.map(userRepository.getWorkmatesWithRestaurantsLiveData(), users -> {
+        return Transformations.map(userRepository.getWorkmatesWithRestaurantsLiveData(), map -> {
             List<WorkmateViewStateItem> workmateViewStateItems = new ArrayList<>();
-            for (Map.Entry<CustomUser, String> entry : users.entrySet()) {
-                    WorkmateViewStateItem w = new WorkmateViewStateItem(entry.getKey().getId(), entry.getKey().getAvatar(), entry.getKey().getName(), entry.getKey().getIdRestaurantChosen(),
-                                                                                            entry.getValue());
-                    if (!workmateViewStateItems.contains(w)) workmateViewStateItems.add(w);
+            for (Map.Entry<CustomUser, String> entry : map.entrySet()) {
+                WorkmateViewStateItem w = new WorkmateViewStateItem(entry.getKey().getId(), entry.getKey().getAvatar(), entry.getKey().getName(),
+                                                                    entry.getKey().getIdRestaurantChosen(),
+                                                                    entry.getValue());
+                if (!workmateViewStateItems.contains(w)) workmateViewStateItems.add(w);
             }
-           return workmateViewStateItems;
+            return workmateViewStateItems;
         });
     }
-
-
-
-
-
 }

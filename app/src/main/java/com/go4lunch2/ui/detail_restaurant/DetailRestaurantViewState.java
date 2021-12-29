@@ -15,7 +15,8 @@ public class DetailRestaurantViewState {
     String phone;
     String website;
 
-    public DetailRestaurantViewState(String id, String name, String adress, Double starsCount, List<CustomUser> workmatesInterested, String image, String phone, String website) {
+    public DetailRestaurantViewState(String id, String name, String adress, Double starsCount, List<CustomUser> workmatesInterested, String image,
+                                     String phone, String website) {
         this.id = id;
         this.name = name;
         this.adress = adress;
@@ -56,13 +57,5 @@ public class DetailRestaurantViewState {
 
     public String getWebsite() {
         return website;
-    }
-
-    public void setStarsCount(Double starsCount) {
-        this.starsCount = starsCount;
-    }
-
-    public void setWorkmatesInterested(List<CustomUser> workmatesInterested) {
-        this.workmatesInterested = workmatesInterested;
     }
 }

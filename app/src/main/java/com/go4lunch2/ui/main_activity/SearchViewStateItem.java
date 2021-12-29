@@ -1,7 +1,5 @@
 package com.go4lunch2.ui.main_activity;
 
-
-
 public class SearchViewStateItem {
     String id;
     String name;

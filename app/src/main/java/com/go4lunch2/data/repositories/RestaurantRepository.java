@@ -1,6 +1,5 @@
 package com.go4lunch2.data.repositories;
 
-import static com.go4lunch2.DI.DI.getReader;
 import static com.go4lunch2.data.api.APIClient.distancesAPI;
 import static com.go4lunch2.data.api.APIClient.placeDetailsAPI;
 import static com.go4lunch2.data.api.APIClient.placesAPI;
@@ -17,8 +16,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.annimon.stream.IntStream;
 import com.annimon.stream.OptionalInt;
 import com.annimon.stream.Stream;
-import com.go4lunch2.BuildConfig;
-import com.go4lunch2.DI.DI;
 import com.go4lunch2.MyApplication;
 import com.go4lunch2.R;
 import com.go4lunch2.data.api.DistancesAPI;
@@ -32,8 +29,8 @@ import com.go4lunch2.data.model.model_gmap.Matrix;
 import com.go4lunch2.data.model.model_gmap.Place;
 import com.go4lunch2.data.model.model_gmap.Result;
 import com.go4lunch2.data.model.model_gmap.Row;
-import com.go4lunch2.data.model.model_gmap.restaurant_details.ResultDetails;
 import com.go4lunch2.data.model.model_gmap.restaurant_details.RestaurantDetailsJson;
+import com.go4lunch2.data.model.model_gmap.restaurant_details.ResultDetails;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -89,6 +86,7 @@ public class RestaurantRepository {
     public MutableLiveData<List<Restaurant>> getRestaurantsLiveData() {
         return restaurantsLiveData;
     }
+
     public MutableLiveData<ResultDetails> getRestaurantDetailsLiveData(String idRestaurant) {
         getDetailsFromAPI(idRestaurant);
         return restaurantDetailsLiveData;
@@ -98,11 +96,13 @@ public class RestaurantRepository {
         return restaurantsDistancesLiveData;
     }
 
-
+    // get JSON results from the Google API
     private void getPlacesAPI(Double latitude, Double longitude) {
         Log.i(TAG, "Appel getPlacesAPI");
         allRestaurants.clear();
         List<Result> results = new ArrayList<>();
+
+        // In case we are in debug mode (set in MyApplication), use a local file
         if (MyApplication.getDebug()) {
             try {
                 AssetManager am = ctx.getAssets();
@@ -136,11 +136,10 @@ public class RestaurantRepository {
                 }
             });
         }
-
     }
 
-
-    public void updateRepoPlaces (List<Result> results) {
+    // deals with the Json results to create the places list
+    public void updateRepoPlaces(List<Result> results) {
         for (Result result : results) {
             String image = null;
             if (!MyApplication.getDebug()) {
@@ -181,57 +180,58 @@ public class RestaurantRepository {
         getDistancesAPI(allRestaurants);
     }
 
-
-
-    protected void getCustomFields(List<Restaurant> restaurants) {
-        for (int i=0; i<restaurants.size(); i++) {
-            final DocumentReference docRef = colRefRestaurants.document(restaurants.get(i).getId());
-
-            int finalI = i;
+    // Get custom fields form db : rates, list of workmates who have selected this restaurant
+    protected void getCustomFields(List<Restaurant> allRestaurants) {
+        for (Restaurant r : allRestaurants) {
+            final DocumentReference docRef = colRefRestaurants.document(r.getId());
             docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                 RestaurantCustomFields rcf;
+
                 @Override
                 public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException e) {
+                    if (e != null) {
+                        Log.w(TAG, "Listen failed in getCustomFields().", e);
+                        return;
+                    }
+                    else if (snapshot != null && snapshot.exists()) {
+                        rcf = snapshot.toObject(RestaurantCustomFields.class);
+                        OptionalInt num = IntStream.range(0, allRestaurants.size())
+                                .filter(i -> allRestaurants.get(i).getId().equals(r.getId()))
+                                .findFirst();
 
-                        if (e != null) {
-                            Log.w(TAG, "Listen failed in getCustomFields().", e);
-                            return;
+                        if (!num.isEmpty()) {
+                            allRestaurants.get(num.getAsInt()).setRcf(rcf);
                         }
-                        if (snapshot != null && snapshot.exists()) {
-                            rcf = snapshot.toObject(RestaurantCustomFields.class);
-                            restaurants.get(finalI).setRcf(rcf);
-                            restaurantsLiveData.setValue(restaurants);
-                        } else {
-                            rcf = new RestaurantCustomFields();
-                            insertNewRestaurantDB(restaurants.get(finalI).getId(), restaurants.get(finalI).getName());
-                        }
-
+                        restaurantsLiveData.setValue(allRestaurants);
+                    }
+                    else {
+                        rcf = new RestaurantCustomFields();
+                        insertNewRestaurantDB(r.getId(), r.getName());
+                    }
                 }
             });
         }
-
     }
 
-
-
+    //Get contact infos
     public void getDetailsFromAPI(String idRestaurant) {
         PlaceDetailsAPI service = placeDetailsAPI();
         Call<RestaurantDetailsJson> callAsync = service.getResults(idRestaurant, ctx.getString(R.string.google_maps_key22));
 
         callAsync.enqueue(new Callback<RestaurantDetailsJson>() {
-                              @Override
-                              public void onResponse(Call<RestaurantDetailsJson> call, Response<RestaurantDetailsJson> response) {
-                                  ResultDetails resultDetails = response.body().getResult();
-                                  restaurantDetailsLiveData.setValue(resultDetails);
-                              }
+            @Override
+            public void onResponse(Call<RestaurantDetailsJson> call, Response<RestaurantDetailsJson> response) {
+                ResultDetails resultDetails = response.body().getResult();
+                restaurantDetailsLiveData.setValue(resultDetails);
+            }
 
-                              @Override
-                              public void onFailure(Call<RestaurantDetailsJson> call, Throwable t) {
-                              }
-                          });
+            @Override
+            public void onFailure(Call<RestaurantDetailsJson> call, Throwable t) {
+            }
+        });
     }
 
-            // Insert un nouveau restaurant dans la table "custom fields" si son id n'existe pas
+    // Insert a new restaurant in the "custom fields" table if its id is not known
     private void insertNewRestaurantDB(String idRestaurant, String name) {
         db.collection("restaurants")
                 .document(idRestaurant)
@@ -326,14 +326,11 @@ public class RestaurantRepository {
                 });
     }
 
-
-
     public Restaurant getRestaurantById(String idRestaurant) {
         return Stream.of(allRestaurants)
                 .filter(restaurant -> restaurant.getId().equals(idRestaurant))
                 .findFirst()
                 .orElse(null);
-
     }
 
     public void updateCenter(Location location) {
@@ -342,18 +339,30 @@ public class RestaurantRepository {
         getPlacesAPI(centerLatitude, centerLongitude);
     }
 
-
     public void getDistancesAPI(List<Restaurant> restaurants) {
 
         List<Element> elements = new ArrayList<>();
         distancesResult.clear();
 
-        if (BuildConfig.DEBUG) {
+        if (MyApplication.getDebug()) {
             try {
-                final BufferedReader reader = getReader(ctx, "distances_matrix.json");
+                AssetManager am = ctx.getAssets();
+                InputStream is = am.open("distances_matrix.json");
+                final BufferedReader reader = new BufferedReader(new InputStreamReader(is));
                 final Gson gson = new Gson();
                 Matrix matrix = gson.fromJson(reader, Matrix.class);
                 for (Row r : matrix.getRows()) elements.addAll(r.getElements());
+                for (int i = 0; i < restaurants.size(); i++) {
+                    try {
+                        distancesResult.put(restaurants.get(i).getId(), ((Element) elements.get(i)).getDistance().getValue());
+                    } catch (NullPointerException e) {
+                        Log.i(TAG, "Erreur : " + restaurants.get(i).getId() + e);
+                        distancesResult.put(restaurants.get(i).getId(), 0);
+                    } catch (IndexOutOfBoundsException e) {
+                        Log.i(TAG, "Erreur getDistancesAPI: " + restaurants.get(i).getId() + e);
+                    }
+                }
+                restaurantsDistancesLiveData.setValue(distancesResult);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -377,28 +386,25 @@ public class RestaurantRepository {
                 public void onResponse(Call<Matrix> call, Response<Matrix> response) {
                     Matrix matrix = response.body();
                     for (Row r : matrix.getRows()) elements.addAll(r.getElements());
+                    for (int i = 0; i < restaurants.size(); i++) {
+                        try {
+                            distancesResult.put(restaurants.get(i).getId(), ((Element) elements.get(i)).getDistance().getValue());
+                        } catch (NullPointerException e) {
+                            Log.i(TAG, "Erreur : " + restaurants.get(i).getId() + e);
+                            distancesResult.put(restaurants.get(i).getId(), 0);
+                        } catch (IndexOutOfBoundsException e) {
+                            Log.i(TAG, "Erreur getDistancesAPI: " + restaurants.get(i).getId() + e);
+                        }
+                    }
+                    restaurantsDistancesLiveData.setValue(distancesResult);
                 }
 
                 @Override
                 public void onFailure(Call<Matrix> call, Throwable t) {
-                    Log.i("Test retrofit", "onFailure: " + t);
                     System.out.println(t);
                 }
             });
         }
-        for (int i = 0; i < restaurants.size(); i++) {
-            try {
-                distancesResult.put(restaurants.get(i).getId(), ((Element) elements.get(i)).getDistance().getValue());
-            } catch (NullPointerException e) {
-                Log.i(TAG, "Erreur : " + restaurants.get(i).getId());
-                distancesResult.put(restaurants.get(i).getId(), 0);
-            } catch (IndexOutOfBoundsException e) {
-                Log.i(TAG, "Erreur getDistancesAPI: " + restaurants.get(i).getId());
-            }
-        }
-
-        restaurantsDistancesLiveData.setValue(distancesResult);
     }
-
 }
 

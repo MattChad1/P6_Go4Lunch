@@ -1,10 +1,11 @@
-
 package com.go4lunch2.data.model.model_gmap.restaurant_details;
 
-import java.util.List;
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
+import javax.annotation.Generated;
 
 @Generated("jsonschema2pojo")
 public class RestaurantDetailsJson {
@@ -42,5 +43,4 @@ public class RestaurantDetailsJson {
     public void setStatus(String status) {
         this.status = status;
     }
-
 }

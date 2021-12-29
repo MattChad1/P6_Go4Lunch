@@ -10,19 +10,11 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import android.app.Application;
-import android.content.Context;
 import android.content.res.Resources;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.MutableLiveData;
 
-import com.go4lunch2.MyApplication;
-import com.go4lunch2.R;
-import com.go4lunch2.data.model.CustomUser;
-import com.go4lunch2.data.model.Restaurant;
-import com.go4lunch2.data.model.RestaurantCustomFields;
-import com.go4lunch2.data.model.RestaurantDetails;
-import com.go4lunch2.data.model.model_gmap.Place;
 import com.go4lunch2.data.model.model_gmap.restaurant_details.RestaurantDetailsJson;
 import com.go4lunch2.data.model.model_gmap.restaurant_details.ResultDetails;
 import com.go4lunch2.data.repositories.RestaurantRepository;
@@ -37,8 +29,6 @@ import org.mockito.Mock;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.List;
-import java.util.Map;
 
 public class DetailRestaurantViewModelTest {
 

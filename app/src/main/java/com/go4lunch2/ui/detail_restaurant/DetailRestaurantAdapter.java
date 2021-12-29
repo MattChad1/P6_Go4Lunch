@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.go4lunch2.data.model.CustomUser;
 import com.go4lunch2.R;
+import com.go4lunch2.data.model.CustomUser;
 
 import java.util.List;
 
@@ -49,12 +49,12 @@ public class DetailRestaurantAdapter extends RecyclerView.Adapter<DetailRestaura
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         CustomUser customUser = listCustomUsers.get(position);
-        viewHolder.tvName.setText(ctx.getString(R.string.restaurant_chosen2, customUser.getName())); //TODO:  mettre les fonctions du repo
+        viewHolder.tvName.setText(ctx.getString(R.string.restaurant_chosen2, customUser.getName()));
         Glide.with(viewHolder.ivAvatar.getContext())
                 .load(customUser.getAvatar())
                 .apply(RequestOptions.circleCropTransform())
                 .into(viewHolder.ivAvatar);
-        Log.i("Glide", customUser.getAvatar().substring(0 , customUser.getAvatar().indexOf('.')));
+        Log.i("Glide", customUser.getAvatar().substring(0, customUser.getAvatar().indexOf('.')));
     }
 
     // Return the size of your dataset (invoked by the layout manager)
