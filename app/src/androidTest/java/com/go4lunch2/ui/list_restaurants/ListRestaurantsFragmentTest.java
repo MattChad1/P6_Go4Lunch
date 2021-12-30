@@ -5,6 +5,7 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.pressBack;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.contrib.DrawerMatchers.isClosed;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -17,9 +18,12 @@ import static org.hamcrest.CoreMatchers.anything;
 import static org.hamcrest.Matchers.allOf;
 import static org.junit.Assert.assertEquals;
 
+import android.view.Gravity;
+
 import androidx.test.InstrumentationRegistry;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.Espresso;
+import androidx.test.espresso.contrib.DrawerActions;
 
 import com.go4lunch2.TestUtils;
 import com.go4lunch2.ui.main_activity.MainActivity;
@@ -82,14 +86,15 @@ public class ListRestaurantsFragmentTest {
     //check link in nav menu
 @Test
     public void checkTheLinkinNavigationDrawer() throws InterruptedException {
-    Thread.sleep(2000);
     String nameRestaurantPre = TestUtils.getText(allOf(withId(R.id.item_restaurant_name), withParent(nthChildOf(withId(R.id.rv_list_restaurants),0))));
     onView(allOf(withId(R.id.item_restaurant_name), withParent(nthChildOf(withId(R.id.rv_list_restaurants),0)))).perform(click());
     Thread.sleep(1000);
     onView(withId(R.id.fab_restaurant_chosen)).perform(click());
     onView(withId(R.id.backToMain)).perform(click());
     Thread.sleep(1000);
-    onView(withContentDescription("Navigate up")).perform(click());
+    onView(withId(R.id.drawerLayout))
+            .check(matches(isClosed(Gravity.LEFT))) // Left Drawer should be closed.
+            .perform(DrawerActions.open()); // Open Drawer
     onView(withId(R.id.menu_drawer_yourlunch)).perform(click());
     Thread.sleep(1000);
     String nameRestaurantPost = TestUtils.getText(withId(R.id.restaurant_name));
@@ -99,7 +104,11 @@ public class ListRestaurantsFragmentTest {
 @Test
     public void checkListWorkmatesAfterSelection() throws InterruptedException {
         //check username
-        onView(withContentDescription("Navigate up")).perform(click());
+
+    onView(withId(R.id.drawerLayout))
+            .check(matches(isClosed(Gravity.LEFT))) // Left Drawer should be closed.
+            .perform(DrawerActions.open()); // Open Drawer
+
     String user = TestUtils.getText(withId(R.id.nav_drawer_name));
     Espresso.pressBack();
 
