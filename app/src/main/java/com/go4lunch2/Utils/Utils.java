@@ -1,5 +1,7 @@
 package com.go4lunch2.Utils;
 
+import android.util.Log;
+
 import com.go4lunch2.MyApplication;
 import com.go4lunch2.R;
 import com.google.firebase.Timestamp;
@@ -20,7 +22,7 @@ public class Utils {
     static public Boolean ValidForToday(Timestamp timestamp) {
         if (timestamp == null) return false;
         else {
-            long valueDB = timestamp.getSeconds() * 1000 * 1000;
+            long valueDB = timestamp.getSeconds() * 1000;
 
             Calendar now = Calendar.getInstance();
             Calendar noon = Calendar.getInstance();
@@ -30,12 +32,12 @@ public class Utils {
 
             // If we are after noon
             if (noon.getTimeInMillis() < now.getTimeInMillis()) {
-                if (valueDB < (noon.getTimeInMillis()-900)) return false;
+                if (valueDB < (noon.getTimeInMillis()-900 * 1000)) return false;
                 else return true;
             }
 
             else {
-                if (valueDB < ((noon.getTimeInMillis()-900) - 24 * 3600 * 1000 )) return false;
+                if (valueDB < ((noon.getTimeInMillis()- 900 * 1000) - 24 * 3600 * 1000)) return false;
                 else return true;
             }
         }
