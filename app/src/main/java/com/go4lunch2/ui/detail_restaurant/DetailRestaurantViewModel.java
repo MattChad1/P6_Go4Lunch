@@ -39,28 +39,28 @@ public class DetailRestaurantViewModel extends AndroidViewModel {
     public LiveData<DetailRestaurantViewState> getDetailRestaurantLiveData(String idRestaurant) {
         return Transformations.map(restaurantRepository.getRestaurantDetailsLiveData(idRestaurant), restaurant -> {
 
-        if (restaurant!=null) {
-            String image = (restaurant.getPhotos() != null)
-                    ? "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400"
-                    + "&photo_reference=" + restaurant.getPhotos().get(0).getPhotoReference()
-                    + "&key=" + getApplication().getResources().getString(R.string.google_maps_key22)
-                    : null;
+            if (restaurant != null) {
+                String image = (restaurant.getPhotos() != null)
+                        ? "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400"
+                        + "&photo_reference=" + restaurant.getPhotos().get(0).getPhotoReference()
+                        + "&key=" + getApplication().getResources().getString(R.string.google_maps_key22)
+                        : null;
 
-            Restaurant restaurantInRepo = restaurantRepository.getRestaurantById(idRestaurant);
+                Restaurant restaurantInRepo = restaurantRepository.getRestaurantById(idRestaurant);
 
-            return new DetailRestaurantViewState(
-                    idRestaurant,
-                    restaurant.getName(),
-                    restaurant.getFormattedAddress(),
-                    restaurantInRepo != null ? Utils.ratingToStars(restaurantInRepo.getRcf().getAverageRate()) : null,
-                    restaurantInRepo != null ? userRepository.getListWorkmatesByIds(restaurantInRepo.getRcf().getWorkmatesInterestedIds()) : null,
-                    image,
-                    restaurant.getInternationalPhoneNumber(),
-                    restaurant.getWebsite()
-            );
-        }
-        // if data problem
-        else return new DetailRestaurantViewState(idRestaurant);
+                return new DetailRestaurantViewState(
+                        idRestaurant,
+                        restaurant.getName(),
+                        restaurant.getFormattedAddress(),
+                        restaurantInRepo != null ? Utils.ratingToStars(restaurantInRepo.getRcf().getAverageRate()) : null,
+                        restaurantInRepo != null ? userRepository.getListWorkmatesByIds(restaurantInRepo.getRcf().getWorkmatesInterestedIds()) : null,
+                        image,
+                        restaurant.getInternationalPhoneNumber(),
+                        restaurant.getWebsite()
+                );
+            }
+            // if data problem
+            else return new DetailRestaurantViewState(idRestaurant);
         });
     }
 
@@ -69,7 +69,7 @@ public class DetailRestaurantViewModel extends AndroidViewModel {
         return Transformations.map(userRepository.getWorkmatesWithRestaurantsLiveData(), users -> {
             List<CustomUser> workmates = new ArrayList<>();
             for (CustomUser c : users) {
-                if (c.getIdRestaurantChosen() !=null && c.getIdRestaurantChosen().equals(idRestaurant)) {
+                if (c.getIdRestaurantChosen() != null && c.getIdRestaurantChosen().equals(idRestaurant)) {
                     workmates.add(c);
                 }
             }

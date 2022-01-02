@@ -12,13 +12,13 @@ public class Place {
 
     @SerializedName("html_attributions")
     @Expose
-    public List<Object> htmlAttributions = null;
+    public final List<Object> htmlAttributions = null;
     @SerializedName("next_page_token")
     @Expose
     public String nextPageToken;
     @SerializedName("results")
     @Expose
-    public List<Result> results = null;
+    public final List<Result> results = null;
     @SerializedName("status")
     @Expose
     public String status;

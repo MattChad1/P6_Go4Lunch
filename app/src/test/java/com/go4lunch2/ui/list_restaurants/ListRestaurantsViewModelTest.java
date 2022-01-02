@@ -31,7 +31,7 @@ import java.util.Map;
 
 public class ListRestaurantsViewModelTest {
 
-    List<Restaurant> allRestaurants = new ArrayList<>();
+    final List<Restaurant> allRestaurants = new ArrayList<>();
     private final MutableLiveData<List<Restaurant>> fakeRestaurantsLiveData = new MutableLiveData<>();
     private final MutableLiveData<SortRepository.OrderBy> fakeOrderLiveData = new MutableLiveData<>();
     private final MutableLiveData<Map<String, Integer>> fakeRestaurantsDistancesLiveData = new MutableLiveData<>();

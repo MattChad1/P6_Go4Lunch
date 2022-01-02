@@ -10,12 +10,11 @@ import com.go4lunch2.data.repositories.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ListWorkmatesViewModel extends ViewModel {
 
-    RestaurantRepository restaurantRepository;
-    UserRepository userRepository;
+    final RestaurantRepository restaurantRepository;
+    final UserRepository userRepository;
 
     public ListWorkmatesViewModel(RestaurantRepository restaurantRepository, UserRepository userRepository) {
         this.restaurantRepository = restaurantRepository;

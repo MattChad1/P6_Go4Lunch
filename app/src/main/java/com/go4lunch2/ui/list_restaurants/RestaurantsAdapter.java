@@ -1,7 +1,6 @@
 package com.go4lunch2.ui.list_restaurants;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,7 @@ import java.util.List;
 public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.ViewHolder> {
 
     private final List<RestaurantViewState> listRestaurants;
-    Context ctx;
+    final Context ctx;
     ItemRestaurantBinding binding;
     private ItemClickListener clickListener;
 
@@ -102,10 +101,8 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
                     .into((ImageView) v.findViewById(R.id.item_restaurant_image));
         }
 
-        v.setOnClickListener(view1 -> {
-            Log.i("Adapter", "onClick: ");
-            clickListener.onClick(v, position);
-        });
+        v.setOnClickListener(view1 -> clickListener.onClick(v, position));
+
     }
 
     // Return the size of your dataset (invoked by the layout manager)

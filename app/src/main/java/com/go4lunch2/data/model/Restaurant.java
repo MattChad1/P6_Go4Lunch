@@ -11,14 +11,19 @@ public class Restaurant {
     @NonNull
     String name;
     @Nullable
+    final
     String image;
     @Nullable
+    final
     String openingTime;
     @NonNull
+    final
     String adress;
     @NonNull
+    final
     Double latitude;
     @NonNull
+    final
     Double longitude;
 
     // champs custom (from database)

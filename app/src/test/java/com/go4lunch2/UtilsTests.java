@@ -3,11 +3,8 @@ package com.go4lunch2;
 import static org.junit.Assert.assertEquals;
 
 import com.go4lunch2.Utils.Utils;
-import com.google.firebase.Timestamp;
 
 import org.junit.Test;
-
-import java.util.Calendar;
 
 
 

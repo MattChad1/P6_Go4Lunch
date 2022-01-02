@@ -31,10 +31,10 @@ import retrofit2.Response;
 public class MainActivityViewModel extends AndroidViewModel {
 
     private final MutableLiveData<List<SearchViewStateItem>> searchResultsLiveData;
-    String TAG = "MyLog SearchViewModel";
-    RestaurantRepository restaurantRepository;
-    UserRepository userRepository;
-    SortRepository sortRepository;
+    final String TAG = "MyLog SearchViewModel";
+    final RestaurantRepository restaurantRepository;
+    final UserRepository userRepository;
+    final SortRepository sortRepository;
 
     public MainActivityViewModel(UserRepository userRepository, SortRepository sortRepository, RestaurantRepository restaurantRepository,
                                  @NonNull Application application) {

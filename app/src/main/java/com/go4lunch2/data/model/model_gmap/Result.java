@@ -33,7 +33,7 @@ public class Result {
     public OpeningHours openingHours;
     @SerializedName("photos")
     @Expose
-    public List<Photo> photos = null;
+    public final List<Photo> photos = null;
     @SerializedName("place_id")
     @Expose
     public String placeId;
@@ -51,7 +51,7 @@ public class Result {
     public String scope;
     @SerializedName("types")
     @Expose
-    public List<String> types = null;
+    public final List<String> types = null;
     @SerializedName("user_ratings_total")
     @Expose
     public Integer userRatingsTotal;

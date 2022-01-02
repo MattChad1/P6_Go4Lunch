@@ -1,13 +1,13 @@
 package com.go4lunch2.ui.map;
 
 public class MapsStateItem {
-    String id;
-    String name;
-    String image;
-    Double latitude;
-    Double longitude;
-    Double starsCount;
-    int workmatesCount;
+    final String id;
+    final String name;
+    final String image;
+    final Double latitude;
+    final Double longitude;
+    final Double starsCount;
+    final int workmatesCount;
 
     public MapsStateItem(String id, String name, String image, Double latitude, Double longitude, Double starsCount, int workmatesCount) {
         this.id = id;

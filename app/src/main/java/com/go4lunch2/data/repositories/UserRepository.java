@@ -58,22 +58,6 @@ public class UserRepository {
                                 usersWithRestaurant.remove(customUser);
                                 usersWithRestaurant.add(customUser);
                                 workmatesWithRestaurantsLiveData.setValue(usersWithRestaurant);
-//                                db.collection("restaurants")
-//                                        .document(customUser.getIdRestaurantChosen())
-//                                        .get()
-//                                        .addOnCompleteListener(task -> {
-//                                            if (task.isSuccessful()) {
-//                                                Log.i(TAG, "getWorkmatesWithRestaurants: task successful");
-//                                                DocumentSnapshot document = task.getResult();
-//                                                if (document.exists()) {
-//                                                    Log.i(TAG, "getWorkmatesWithRestaurants: user add");
-//                                                    usersWithRestaurant.put(customUser, document.getString("name"));
-//                                                    workmatesWithRestaurantsLiveData.setValue(usersWithRestaurant);
-//                                                }
-//                                            }
-//                                        })
-//                                        .addOnFailureListener(err -> Log.w(TAG, "Error searching document", err));
-
                             }
                         }
                     }
@@ -156,7 +140,8 @@ public class UserRepository {
                             docRef2.update("workmatesInterestedIds", FieldValue.arrayUnion(idUser), "lastUpdate", FieldValue.serverTimestamp());
                         }
                         else {
-                            docRef2.update("workmatesInterestedIds", new ArrayList<>(Collections.singletonList(idUser)), "lastUpdate", FieldValue.serverTimestamp());
+                            docRef2.update("workmatesInterestedIds", new ArrayList<>(Collections.singletonList(idUser)), "lastUpdate",
+                                           FieldValue.serverTimestamp());
                         }
                     })
                     .addOnFailureListener(e -> Log.w(TAG, "Error updating document", e));

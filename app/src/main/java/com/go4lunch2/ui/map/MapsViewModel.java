@@ -13,9 +13,9 @@ import java.util.List;
 
 public class MapsViewModel extends ViewModel {
 
-    RestaurantRepository restaurantRepository;
-    Double centerLocationLatitude;
-    Double centerLocationLongitude;
+    final RestaurantRepository restaurantRepository;
+    final Double centerLocationLatitude;
+    final Double centerLocationLongitude;
 
     public MapsViewModel(RestaurantRepository restaurantRepository) {
 

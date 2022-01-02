@@ -62,9 +62,9 @@ public class RestaurantRepository {
     private final List<Restaurant> allRestaurants = new ArrayList<>();
     private final CollectionReference colRefRestaurants;
     private final Map<String, Integer> distancesResult = new HashMap<>();
-    String TAG = "MyLog Repository";
-    FirebaseFirestore db;
-    Context ctx = MyApplication.getInstance();
+    final String TAG = "MyLog Repository";
+    final FirebaseFirestore db;
+    final Context ctx = MyApplication.getInstance();
     private Double centerLatitude;
     private Double centerLongitude;
 
@@ -219,7 +219,6 @@ public class RestaurantRepository {
                     resultDetails = response.body().getResult();
                     restaurantDetailsLiveData.postValue(resultDetails);
                 }
-
             }
 
             @Override

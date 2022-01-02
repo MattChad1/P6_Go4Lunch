@@ -11,7 +11,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.go4lunch2.data.model.Restaurant;
 import com.go4lunch2.data.model.RestaurantCustomFields;
 import com.go4lunch2.data.repositories.RestaurantRepository;
-import com.go4lunch2.ui.list_restaurants.RestaurantViewState;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -31,17 +30,17 @@ public class MapsViewModelTest {
 
     MapsViewModel viewModel;
     private final MutableLiveData<List<Restaurant>> mockRestaurantsLiveData = new MutableLiveData<>();
-    List<Restaurant> fakeList = new ArrayList<>();
+    final List<Restaurant> fakeList = new ArrayList<>();
 
-    String testId = "abcd1234";
-    String testName = "Le bon restaurant";
-    Double testLatitude = 45.0;
-    Double testLongitude = 2.0;
+    final String testId = "abcd1234";
+    final String testName = "Le bon restaurant";
+    final Double testLatitude = 45.0;
+    final Double testLongitude = 2.0;
 
 
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         initMocks(this);
         viewModel = new MapsViewModel(restaurantRepository);
         fakeList.add(new Restaurant(testId, testName, "", "true", "", testLatitude, testLongitude, new RestaurantCustomFields()));

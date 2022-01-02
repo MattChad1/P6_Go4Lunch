@@ -1,21 +1,16 @@
 package com.go4lunch2.ui.list_workmates;
 
 import static com.TestUtils.LiveDataTestUtils.getOrAwaitValue;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-import android.content.Context;
-
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModelProvider;
 
-import com.go4lunch2.ViewModelFactory;
 import com.go4lunch2.data.model.CustomUser;
 import com.go4lunch2.data.repositories.RestaurantRepository;
 import com.go4lunch2.data.repositories.UserRepository;
-import com.go4lunch2.ui.list_restaurants.ListRestaurantsViewModel;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -23,9 +18,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ListWorkmatesViewModelTest {
 
@@ -40,8 +33,8 @@ public class ListWorkmatesViewModelTest {
 
     ListWorkmatesViewModel viewModel;
 
-    String test1 = "idWorkmate";
-    String test2 = "name restaurant";
+    final String test1 = "idWorkmate";
+    final String test2 = "name restaurant";
 
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();

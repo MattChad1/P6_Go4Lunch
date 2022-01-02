@@ -14,11 +14,14 @@ public class CustomUser {
     @Nullable
     String name;
     @Nullable
+    final
     String avatar;
     @Nullable
+    final
     String idRestaurantChosen;
 
     @Nullable
+    final
     String nameRestaurantChosen;
 
     @ServerTimestamp

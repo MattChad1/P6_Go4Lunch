@@ -27,7 +27,7 @@ public class MyApplication extends Application {
         super.onCreate();
         sApplication = this;
         debug = BuildConfig.DEBUG;
-//        debug = false;
+        debug = false;
 
         settings = getSharedPreferences(PREFS_NAME, 0);
 

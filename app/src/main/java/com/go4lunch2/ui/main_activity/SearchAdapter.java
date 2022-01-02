@@ -50,8 +50,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTitle;
-        TextView tvSubtitle;
+        final TextView tvTitle;
+        final TextView tvSubtitle;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
