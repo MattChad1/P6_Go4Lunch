@@ -1,11 +1,10 @@
 package com.go4lunch2.ui.detail_restaurant;
 
 import static com.TestUtils.LiveDataTestUtils.getOrAwaitValue;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -32,12 +31,6 @@ import java.io.InputStreamReader;
 
 public class DetailRestaurantViewModelTest {
 
-    String idFromJson = "ChIJzbddL8Jv5kcRSxvM72EgJ90";
-    String nameFromJson = "Warwick Paris";
-    String adressFromJson = "5 Rue de Berri, 75008 Paris, France";
-    String websiteFromJson = "https://www.warwickhotels.com/warwick-paris/";
-
-
     private final MutableLiveData<ResultDetails> restaurantDetailsLiveData = new MutableLiveData<>();
 
     @Mock
@@ -59,7 +52,7 @@ public class DetailRestaurantViewModelTest {
     private Resources mockResources;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         initMocks(this);
         viewModel = new DetailRestaurantViewModel(restaurantRepository, userRepository, application);
 
@@ -79,11 +72,15 @@ public class DetailRestaurantViewModelTest {
 
     @Test
     public void getDetailRestaurantLiveData() throws InterruptedException {
+        String idFromJson = "ChIJzbddL8Jv5kcRSxvM72EgJ90";
         DetailRestaurantViewState detailTest = getOrAwaitValue(viewModel.getDetailRestaurantLiveData(idFromJson));
 
         assertEquals(idFromJson, detailTest.getId());
+        String nameFromJson = "Warwick Paris";
         assertEquals(nameFromJson, detailTest.getName());
+        String adressFromJson = "5 Rue de Berri, 75008 Paris, France";
         assertEquals(adressFromJson, detailTest.getAdress());
+        String websiteFromJson = "https://www.warwickhotels.com/warwick-paris/";
         assertEquals(websiteFromJson, detailTest.getWebsite());
 
 

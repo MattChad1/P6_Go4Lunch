@@ -2,11 +2,11 @@ package com.go4lunch2.ui.list_workmates;
 
 public class WorkmateViewStateItem {
 
-    String idWorkmate;
-    String avatar;
-    String nameWorkmate;
-    String idRestaurant;
-    String nameRestaurant;
+    private final String idWorkmate;
+    private final String avatar;
+    private final String nameWorkmate;
+    private final String idRestaurant;
+    private String nameRestaurant;
 
     public WorkmateViewStateItem(String idWorkmate, String avatar, String nameWorkmate, String idRestaurant, String nameRestaurant) {
         this.idWorkmate = idWorkmate;

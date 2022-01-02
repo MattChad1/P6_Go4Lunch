@@ -39,4 +39,11 @@
     <string name="receive_notifications">Recevoir une notification à midi</string>
     <string name="order_name">Trier par nom</string>
     <string name="back_to_main">Retour à la liste des restaurants</string>
+    <string name="noon_goto">Il est midi. Rendez-vous au restaurant %s</string>
+    <string name="fab_choose_restaurant">Choisir ce restaurant</string>
+    <string name="btn_call">APPEL</string>
+    <string name="btn_website">SITE WEB</string>
+    <string name="btn_like">NOTE</string>
+    <string name="desc_chanel">Rappel pour le restaurant choisi</string>
+    <string name="title_chanel">Midi</string>
 </resources>

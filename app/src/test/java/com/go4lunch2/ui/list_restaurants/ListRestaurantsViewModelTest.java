@@ -1,10 +1,8 @@
 package com.go4lunch2.ui.list_restaurants;
 
 import static com.TestUtils.LiveDataTestUtils.getOrAwaitValue;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -39,27 +37,26 @@ public class ListRestaurantsViewModelTest {
     private final MutableLiveData<Map<String, Integer>> fakeRestaurantsDistancesLiveData = new MutableLiveData<>();
     ListRestaurantsViewModel viewModel;
 
-    String testName1 = "A Fake restaurant";
-    String testId1 = "a1";
-    Double rating1 = 2.0;
+    private final String testName1 = "A Fake restaurant";
+    private final String testId1 = "a1";
+    private final Double rating1 = 2.0;
 
-    String testName2 = "B Fake restaurant";
-    String testId2 = "a2";
-    Double rating2 = 1.0;
+    private final String testName2 = "B Fake restaurant";
+    private final String testId2 = "a2";
+    private final Double rating2 = 1.0;
 
-    String testName3 = "C Fake restaurant";
-    String testId3 = "a3";
-    Double rating3 = 2.5;
-
-    @Mock
-    RestaurantRepository restaurantRepository;
-
+    private final String testName3 = "C Fake restaurant";
+    private final String testId3 = "a3";
+    private final Double rating3 = 2.5;
 
     @Mock
-    SortRepository sortRepository;
+    private RestaurantRepository restaurantRepository;
 
     @Mock
-    Application application;
+    private SortRepository sortRepository;
+
+    @Mock
+    private Application application;
 
     @Mock
     private Resources mockResources;
@@ -69,7 +66,7 @@ public class ListRestaurantsViewModelTest {
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         initMocks(this);
 
         allRestaurants.add(new Restaurant(testId1, testName1, "", "", "", 0.0, 0.0, new RestaurantCustomFields(testId1, testName1, rating1, new ArrayList<>(),

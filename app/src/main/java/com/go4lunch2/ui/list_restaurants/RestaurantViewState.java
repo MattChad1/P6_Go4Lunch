@@ -5,14 +5,14 @@ import java.util.Locale;
 
 public class RestaurantViewState {
 
-    String id;
-    String name;
-    String adress;
-    String openingHours;
-    Integer distance;
-    Double starsCount;
-    int workmatesCount;
-    String image;
+    private final String id;
+    private final String name;
+    private final String adress;
+    private final String openingHours;
+    private Integer distance;
+    private final Double starsCount;
+    private final int workmatesCount;
+    private final String image;
 
     public RestaurantViewState(String id, String name, String adress, String openingHours, Integer distance, Double starsCount,
                                int workmatesCount,
@@ -47,6 +47,10 @@ public class RestaurantViewState {
         return distance;
     }
 
+    public void setDistance(Integer distance) {
+        this.distance = distance;
+    }
+
     public Double getStarsCount() {
         return starsCount;
     }
@@ -59,12 +63,7 @@ public class RestaurantViewState {
         return image;
     }
 
-    public void setDistance(Integer distance) {
-        this.distance = distance;
-    }
-
     public static class NameZAComparator implements Comparator<RestaurantViewState> {
-
         @Override
         public int compare(RestaurantViewState left, RestaurantViewState right) {
             return right.getName().toLowerCase(Locale.ROOT).compareTo(left.getName().toLowerCase(Locale.ROOT));

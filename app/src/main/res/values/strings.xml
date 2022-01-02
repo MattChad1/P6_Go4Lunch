@@ -55,6 +55,7 @@
     <string name="restaurant_chosen2">%s will be there !</string>
 
     //Detail activity
+    <string name="fab_choose_restaurant">Choose this restaurant</string>
     <string name="give_rate">What do you think of this restaurant?</string>
     <string name="no_phone">No phone number registered</string>
     <string name="no_website">No website registered</string>
@@ -64,6 +65,9 @@
         <item>Wonderful</item>
     </string-array>
     <string name="rate_registered">Your rate has been registered</string>
+    <string name="btn_call">CALL</string>
+    <string name="btn_website">WEBSITE</string>
+    <string name="btn_like">LIKE</string>
 
 
     //Permissions
@@ -76,5 +80,10 @@
 
     // Settings
     <string name="receive_notifications">Receive notification at noon</string>
+
+    // Notif
+    <string name="noon_goto">It\'s noon. It\'s time to go to the restaurant  %s</string>
+    <string name="desc_chanel">Reminder for the restaurant chosen</string>
+    <string name="title_chanel">Noon</string>
 
 </resources>

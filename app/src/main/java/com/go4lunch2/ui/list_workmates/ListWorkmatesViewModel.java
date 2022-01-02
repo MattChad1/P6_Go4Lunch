@@ -14,7 +14,6 @@ import java.util.Map;
 
 public class ListWorkmatesViewModel extends ViewModel {
 
-    String TAG = "MyLog ListWorkmatesViewModel";
     RestaurantRepository restaurantRepository;
     UserRepository userRepository;
 
@@ -24,13 +23,13 @@ public class ListWorkmatesViewModel extends ViewModel {
     }
 
     public LiveData<List<WorkmateViewStateItem>> getWorkmatesViewStateItemsLiveData() {
-        return Transformations.map(userRepository.getWorkmatesWithRestaurantsLiveData(), map -> {
+        return Transformations.map(userRepository.getWorkmatesWithRestaurantsLiveData(), users -> {
             List<WorkmateViewStateItem> workmateViewStateItems = new ArrayList<>();
-            for (Map.Entry<CustomUser, String> entry : map.entrySet()) {
-                WorkmateViewStateItem w = new WorkmateViewStateItem(entry.getKey().getId(), entry.getKey().getAvatar(), entry.getKey().getName(),
-                                                                    entry.getKey().getIdRestaurantChosen(),
-                                                                    entry.getValue());
-                if (!workmateViewStateItems.contains(w)) workmateViewStateItems.add(w);
+            for (CustomUser entry : users) {
+                WorkmateViewStateItem w = new WorkmateViewStateItem(entry.getId(), entry.getAvatar(), entry.getName(),
+                                                                    entry.getIdRestaurantChosen(),
+                                                                    entry.getNameRestaurantChosen());
+                workmateViewStateItems.add(w);
             }
             return workmateViewStateItems;
         });

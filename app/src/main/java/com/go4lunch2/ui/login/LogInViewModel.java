@@ -6,7 +6,7 @@ import com.go4lunch2.data.repositories.UserRepository;
 
 public class LogInViewModel extends ViewModel {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public LogInViewModel(UserRepository userRepository) {
         this.userRepository = userRepository;

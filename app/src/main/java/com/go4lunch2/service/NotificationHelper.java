@@ -17,11 +17,8 @@ public class NotificationHelper {
 
     public static void createNotificationChannel(Context context, String name, String description) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            CharSequence name = "NoonNotificationChannel";
-//            String description = "Channel for the noon notifications";
-            NotificationChannel channel = new NotificationChannel("Noon", name, NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel channel = new NotificationChannel(context.getString(R.string.notification_channel_title), name, NotificationManager.IMPORTANCE_DEFAULT);
             channel.setDescription(description);
-
             NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
@@ -37,7 +34,6 @@ public class NotificationHelper {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intentNotif, 0);
         notificationBuilder.setContentIntent(pendingIntent);
 
-//        NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
         notificationManager.notify(1, notificationBuilder.build());

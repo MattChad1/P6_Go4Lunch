@@ -1,5 +1,7 @@
 package com.go4lunch2.data.model;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.ServerTimestamp;
 
@@ -26,10 +28,6 @@ public class RestaurantCustomFields {
     public RestaurantCustomFields() {
     }
 
-    public String getIdRestaurant() {
-        return idRestaurant;
-    }
-
     public String getName() {
         return name;
     }
@@ -46,6 +44,7 @@ public class RestaurantCustomFields {
         return lastUpdate;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "RestaurantCustomFields{" +

@@ -12,10 +12,11 @@
         android:layout_width="80dp"
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
+        android:importantForAccessibility="no"
         android:scaleType="fitXY"
-        tools:src="@drawable/r1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/r1" />
 
     <TextView
         android:id="@+id/item_restaurant_distance"
@@ -31,10 +32,10 @@
         android:id="@+id/icon_person"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@id/item_restaurant_num_workmates"
-        app:layout_constraintTop_toBottomOf="@id/item_restaurant_distance"
+        android:importantForAccessibility="no"
         android:src="@drawable/ic_person_outline_24"
-        />
+        app:layout_constraintEnd_toStartOf="@id/item_restaurant_num_workmates"
+        app:layout_constraintTop_toBottomOf="@id/item_restaurant_distance" />
 
 
     <TextView
@@ -42,7 +43,7 @@
         style="item_restaurant"
         android:layout_width="25dp"
         android:layout_height="wrap_content"
-        android:gravity="left"
+        android:gravity="start"
         app:layout_constraintEnd_toStartOf="@id/item_restaurant_image"
         app:layout_constraintTop_toBottomOf="@id/item_restaurant_distance"
         tools:text="(2)" />
@@ -53,30 +54,30 @@
         android:layout_width="18dp"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
+        android:src="@drawable/ic_star_filled"
         app:layout_constraintEnd_toStartOf="@id/item_restaurant_num_stars2"
         app:layout_constraintTop_toBottomOf="@id/item_restaurant_num_workmates"
-        app:tint="@color/yellow"
-        android:src="@drawable/ic_star_filled" />
+        app:tint="@color/yellow" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/item_restaurant_num_stars2"
         android:layout_width="18dp"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
+        android:src="@drawable/ic_star_half"
         app:layout_constraintEnd_toStartOf="@id/item_restaurant_num_stars3"
         app:layout_constraintTop_toBottomOf="@id/item_restaurant_num_workmates"
-        app:tint="@color/yellow"
-        android:src="@drawable/ic_star_half" />
+        app:tint="@color/yellow" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/item_restaurant_num_stars3"
         android:layout_width="18dp"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
+        android:src="@drawable/ic_star_empty"
         app:layout_constraintEnd_toStartOf="@id/item_restaurant_image"
         app:layout_constraintTop_toBottomOf="@id/item_restaurant_num_workmates"
-        app:tint="@color/yellow"
-        android:src="@drawable/ic_star_empty" />
+        app:tint="@color/yellow" />
 
 
     <TextView
@@ -84,12 +85,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="start"
-        android:text="Le Zinc"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/item_restaurant_distance"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Le Zinc" />
 
 
     <TextView
@@ -97,10 +98,10 @@
         style="item_restaurant"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
         app:layout_constraintEnd_toStartOf="@id/icon_person"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/item_restaurant_name"
-        android:layout_marginEnd="5dp"
         tools:text="Français - 12 rue du faubourg Poissonnière" />
 
 

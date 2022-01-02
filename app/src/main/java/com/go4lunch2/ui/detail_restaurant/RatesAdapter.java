@@ -5,16 +5,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.go4lunch2.R;
 
 public class RatesAdapter extends BaseAdapter {
 
-    private Context context; //context
-    private String[] grades;
-    private Integer[] icons;
+    private final Context context; //context
+    private final String[] grades;
+    private final Integer[] icons;
 
     public RatesAdapter(Context context, String[] grades, Integer[] icons) {
         this.context = context;
@@ -44,7 +43,7 @@ public class RatesAdapter extends BaseAdapter {
         }
 
         ((TextView) view.findViewById(R.id.tv_item_rate)).setText(grades[position]);
-        ((ImageView) view.findViewById(R.id.iv_item_rate)).setBackgroundResource(icons[position]);
+        view.findViewById(R.id.iv_item_rate).setBackgroundResource(icons[position]);
         return view;
     }
 }

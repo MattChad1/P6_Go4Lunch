@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
 
     <ImageView
@@ -11,54 +11,51 @@
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:scaleType="fitXY"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:padding="0dp"
         android:contentDescription=""
-        tools:src="@drawable/r1"
-        />
+        android:padding="0dp"
+        android:scaleType="fitXY"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/r1" />
 
     <TextView
         android:id="@+id/tv_mapwindow_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        app:layout_constraintStart_toEndOf="@id/iv_mapwindow"
-        app:layout_constraintTop_toTopOf="parent"
         android:textColor="#000000"
         android:textSize="18sp"
         android:textStyle="bold"
-        tools:text="Nom du restaurant"/>
+        app:layout_constraintStart_toEndOf="@id/iv_mapwindow"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Nom du restaurant" />
 
     <TextView
         android:id="@+id/tv_mapwindow_subtitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/iv_mapwindow"
-        app:layout_constraintTop_toBottomOf="@id/tv_mapwindow_title"
         android:layout_margin="5dp"
         android:textColor="#000000"
-        tools:text="Cuisine française"
-        />
+        app:layout_constraintStart_toEndOf="@id/iv_mapwindow"
+        app:layout_constraintTop_toBottomOf="@id/tv_mapwindow_title"
+        tools:text="Cuisine française" />
 
     <ImageView
         android:id="@+id/icon_person"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/iv_mapwindow"
-        app:layout_constraintTop_toBottomOf="@id/tv_mapwindow_subtitle"
         android:layout_marginStart="5dp"
         android:src="@drawable/ic_person_outline_24"
-        />
+        app:layout_constraintStart_toEndOf="@id/iv_mapwindow"
+        app:layout_constraintTop_toBottomOf="@id/tv_mapwindow_subtitle" />
 
     <TextView
         android:id="@+id/tv_mapwindow_workmates"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#000000"
         app:layout_constraintStart_toEndOf="@id/icon_person"
         app:layout_constraintTop_toBottomOf="@id/tv_mapwindow_subtitle"
-        android:textColor="#000000"
         tools:text="(0)" />
 
 
@@ -66,31 +63,31 @@
         android:id="@+id/mapwindow_num_stars1"
         android:layout_width="18dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:src="@drawable/ic_star_filled"
         app:layout_constraintStart_toEndOf="@id/tv_mapwindow_workmates"
         app:layout_constraintTop_toBottomOf="@id/tv_mapwindow_subtitle"
-        android:layout_marginStart="50dp"
-        app:tint="@color/yellow"
-        android:src="@drawable/ic_star_filled" />
+        app:tint="@color/yellow" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/mapwindow_num_stars2"
         android:layout_width="18dp"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
+        android:src="@drawable/ic_star_half"
         app:layout_constraintStart_toEndOf="@id/mapwindow_num_stars1"
         app:layout_constraintTop_toBottomOf="@id/tv_mapwindow_subtitle"
-        app:tint="@color/yellow"
-        android:src="@drawable/ic_star_half" />
+        app:tint="@color/yellow" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/mapwindow_num_stars3"
         android:layout_width="18dp"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
+        android:src="@drawable/ic_star_empty"
         app:layout_constraintStart_toEndOf="@id/mapwindow_num_stars2"
         app:layout_constraintTop_toBottomOf="@id/tv_mapwindow_subtitle"
-        app:tint="@color/yellow"
-        android:src="@drawable/ic_star_empty" />
+        app:tint="@color/yellow" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

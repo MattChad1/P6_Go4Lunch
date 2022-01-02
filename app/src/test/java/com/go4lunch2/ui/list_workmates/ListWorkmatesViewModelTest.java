@@ -22,14 +22,15 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class ListWorkmatesViewModelTest {
 
-    private Map<CustomUser, String> map = new HashMap<>();
-    private final MutableLiveData<Map<CustomUser, String>> workmatesWithRestaurantsLiveData = new MutableLiveData<>();
+    private final List<CustomUser> users = new ArrayList<>();
+    private final MutableLiveData<List<CustomUser>> workmatesWithRestaurantsLiveData = new MutableLiveData<>();
 
     @Mock
     UserRepository userRepository;
@@ -42,19 +43,16 @@ public class ListWorkmatesViewModelTest {
     String test1 = "idWorkmate";
     String test2 = "name restaurant";
 
-    @Mock
-    private Context ctx;
-
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         initMocks(this);
         viewModel = new ListWorkmatesViewModel(restaurantRepository, userRepository);
 
-        map.put(new CustomUser(test1, "Mr test", "", "r1", null), test2);
-        workmatesWithRestaurantsLiveData.setValue(map);
+        users.add(new CustomUser(test1, "Mr test", "", "r1", "name restaurant", null));
+        workmatesWithRestaurantsLiveData.setValue(users);
 
         when(userRepository.getWorkmatesWithRestaurantsLiveData()).thenReturn(workmatesWithRestaurantsLiveData);
     }
@@ -62,7 +60,7 @@ public class ListWorkmatesViewModelTest {
     @Test
     public void getWorkmatesViewStateItemsLiveData() throws InterruptedException {
         List<WorkmateViewStateItem> listTest =  getOrAwaitValue(viewModel.getWorkmatesViewStateItemsLiveData());
-        assertTrue(listTest.get(0).getIdWorkmate().equals(test1));
-        assertTrue(listTest.get(0).getNameRestaurant().equals(test2));
+        assertEquals(listTest.get(0).getIdWorkmate(), test1);
+        assertEquals(listTest.get(0).getNameRestaurant(), test2);
     }
 }

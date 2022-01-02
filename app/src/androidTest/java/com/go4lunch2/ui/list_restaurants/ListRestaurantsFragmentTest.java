@@ -1,20 +1,15 @@
 package com.go4lunch2.ui.list_restaurants;
 
-import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.pressBack;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.DrawerMatchers.isClosed;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
-import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.go4lunch2.TestUtils.hasItem;
 import static com.go4lunch2.TestUtils.nthChildOf;
-
-import static org.hamcrest.CoreMatchers.anything;
 import static org.hamcrest.Matchers.allOf;
 import static org.junit.Assert.assertEquals;
 
@@ -25,29 +20,23 @@ import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.contrib.DrawerActions;
 
+import com.go4lunch2.R;
 import com.go4lunch2.TestUtils;
 import com.go4lunch2.ui.main_activity.MainActivity;
-import com.go4lunch2.R;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 public class ListRestaurantsFragmentTest {
 
-    private MainActivity activityRef;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         ActivityScenario<MainActivity> activityScenario = ActivityScenario.launch(MainActivity.class);
-        activityScenario.onActivity(activity -> activityRef = activity);
         onView(withId(R.id.menu_bb_listview)).perform(click());
     }
 
-    @After
-    public void tearDown() throws Exception {
-            activityRef = null;
-    }
+
 
 
     @Test

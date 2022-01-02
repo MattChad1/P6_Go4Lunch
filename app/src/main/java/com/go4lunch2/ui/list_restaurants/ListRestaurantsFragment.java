@@ -1,7 +1,7 @@
 package com.go4lunch2.ui.list_restaurants;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,17 +13,19 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.go4lunch2.MyApplication;
 import com.go4lunch2.R;
 import com.go4lunch2.ViewModelFactory;
 import com.go4lunch2.databinding.FragmentListRestaurantsBinding;
+import com.go4lunch2.ui.ItemClickListener;
+import com.go4lunch2.ui.detail_restaurant.DetailRestaurantActivity;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListRestaurantsFragment extends Fragment {
+public class ListRestaurantsFragment extends Fragment implements ItemClickListener {
 
-    String TAG = "MyLog ListRestaurantsFragment";
     FragmentListRestaurantsBinding binding;
     ListRestaurantsViewModel vm;
 
@@ -31,13 +33,8 @@ public class ListRestaurantsFragment extends Fragment {
     RecyclerView rv;
 
     public ListRestaurantsFragment() {
-        // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
-    public static ListRestaurantsFragment newInstance() {
-        return new ListRestaurantsFragment();
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,7 +44,7 @@ public class ListRestaurantsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        MaterialToolbar toolbar = (MaterialToolbar) getActivity().findViewById(R.id.topAppBar);
+        MaterialToolbar toolbar = requireActivity().findViewById(R.id.topAppBar);
         toolbar.setTitle(getString(R.string.list_restaurants_desc));
         toolbar.getMenu().getItem(0).setVisible(true);
         toolbar.getMenu().getItem(1).setVisible(true);
@@ -58,14 +55,12 @@ public class ListRestaurantsFragment extends Fragment {
 
         rv = binding.rvListRestaurants;
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
-        rv.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        RestaurantsAdapter adapter = new RestaurantsAdapter(getActivity(), datas);
+        rv.addItemDecoration(new DividerItemDecoration(MyApplication.getInstance(), DividerItemDecoration.VERTICAL));
+        RestaurantsAdapter adapter = new RestaurantsAdapter(getActivity(), datas, this);
         rv.setAdapter(adapter);
 
         vm.getAllRestaurantsWithOrderMediatorLD().observe(getViewLifecycleOwner(), listRestaurants -> {
-//        vm.getAllRestaurantsViewStateLD().observe(getViewLifecycleOwner(), listRestaurants -> {
             if (listRestaurants != null) {
-                Log.i(TAG, "onCreateView: getAllRestaurantsWithOrderMediatorLD()");
                 datas.clear();
                 datas.addAll(listRestaurants);
                 adapter.notifyDataSetChanged();
@@ -73,5 +68,12 @@ public class ListRestaurantsFragment extends Fragment {
         });
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onClick(View view, int position) {
+        Intent intent = new Intent(MyApplication.getInstance(), DetailRestaurantActivity.class);
+        intent.putExtra(DetailRestaurantActivity.RESTAURANT_SELECTED, datas.get(position).getId());
+        startActivity(intent);
     }
 }

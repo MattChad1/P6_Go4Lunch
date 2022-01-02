@@ -18,14 +18,18 @@ public class CustomUser {
     @Nullable
     String idRestaurantChosen;
 
+    @Nullable
+    String nameRestaurantChosen;
+
     @ServerTimestamp
     Timestamp lastUpdate;
 
-    public CustomUser(@NonNull String id, @NonNull String name, @Nullable String avatar, @Nullable String idRestaurantChosen, Timestamp lastUpdate) {
+    public CustomUser(@NonNull String id, @NonNull String name, @Nullable String avatar, @Nullable String idRestaurantChosen, @Nullable String nameRestaurantChosen, Timestamp lastUpdate) {
         this.id = id;
         this.name = name;
         this.avatar = avatar;
         this.idRestaurantChosen = idRestaurantChosen;
+        this.nameRestaurantChosen = nameRestaurantChosen;
         this.lastUpdate = lastUpdate;
     }
 
@@ -34,24 +38,28 @@ public class CustomUser {
         this.name = null;
         this.avatar = null;
         this.idRestaurantChosen = null;
+        this.nameRestaurantChosen = null;
     }
 
+    //for Firebase, to avoid Could not deserialize object error
     public CustomUser() {
         this.id = "Error";
         this.name = null;
         this.avatar = null;
         this.idRestaurantChosen = null;
+        this.nameRestaurantChosen = null;
     }
 
+    @NonNull
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(@NonNull String id) {
         this.id = id;
     }
 
-    @NonNull
+    @Nullable
     public String getName() {
         return name;
     }
@@ -65,16 +73,14 @@ public class CustomUser {
         return avatar;
     }
 
-    public void setAvatar(@Nullable String avatar) {
-        this.avatar = avatar;
-    }
-
+    @Nullable
     public String getIdRestaurantChosen() {
         return idRestaurantChosen;
     }
 
-    public void setIdRestaurantChosen(String idRestaurantChosen) {
-        this.idRestaurantChosen = idRestaurantChosen;
+    @Nullable
+    public String getNameRestaurantChosen() {
+        return nameRestaurantChosen;
     }
 
     public Timestamp getLastUpdate() {

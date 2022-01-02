@@ -2,7 +2,6 @@ package com.go4lunch2.ui.main_activity;
 
 import static com.go4lunch2.MyApplication.PREFS_CENTER;
 import static com.go4lunch2.MyApplication.PREFS_CENTER_GPS;
-import static java.lang.Math.abs;
 
 import android.Manifest;
 import android.content.Context;
@@ -12,7 +11,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -56,19 +54,16 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity implements LocationListener {
 
-    String TAG = "MyLog MainActivity";
-    private ActivityMainBinding binding;
     DrawerLayout drawer;
     FirebaseUser user;
     CustomUser currentCustomUser;
-
     RecyclerView rv;
     List<SearchViewStateItem> searchResults = new ArrayList<>();
     SearchAdapter adapter;
     MainActivityViewModel vm;
-
     LocationManager locationManager;
     Location userLocation;
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +72,7 @@ public class MainActivity extends BaseActivity implements LocationListener {
         vm = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(MainActivityViewModel.class);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
-        vm.getCurrentCustomUser(user.getUid()).observe(this, value -> currentCustomUser = value);
+        vm.getCurrentCustomUser(user != null ? user.getUid() : null).observe(this, value -> currentCustomUser = value);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
 
@@ -88,9 +83,7 @@ public class MainActivity extends BaseActivity implements LocationListener {
         setSupportActionBar(toolbar);
 
         drawer = binding.drawerLayout;
-        toolbar.setNavigationOnClickListener(v -> {
-            drawer.openDrawer(GravityCompat.START);
-        });
+        toolbar.setNavigationOnClickListener(v -> drawer.openDrawer(GravityCompat.START));
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -105,12 +98,12 @@ public class MainActivity extends BaseActivity implements LocationListener {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 100);
             }
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 50, this);
         }
 
         // Set up the content of the navigation drawer
-        if (user != null) { //TODO : supprimer le if car user ne peut pas être null ici (connecté)
-            NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_drawer);
+        if (user != null) {
+            NavigationView navigationView = findViewById(R.id.navigation_drawer);
             View headerView = navigationView.getHeaderView(0);
             TextView tvMailUser = headerView.findViewById(R.id.nav_drawer_tv_email);
             TextView tvNameUser = headerView.findViewById(R.id.nav_drawer_name);
@@ -154,25 +147,29 @@ public class MainActivity extends BaseActivity implements LocationListener {
         BottomNavigationView bottombar = binding.bottomNavigation;
         bottombar.setSelectedItemId(R.id.menu_bb_listview);
         bottombar.setOnItemSelectedListener(view1 -> {
-            Class linkTo;
-            switch (view1.getItemId()) {
-                case R.id.menu_bb_mapview:
-                    linkTo = MapsFragment.class;
-                    break;
-                case R.id.menu_bb_listview:
-                    linkTo = ListRestaurantsFragment.class;
-                    break;
-                case R.id.menu_bb_workmates:
-                    linkTo = ListWorkmatesFragment.class;
-                    break;
-                default:
-                    throw new IllegalStateException("Unexpected value: " + view1.getItemId());
+            if (view1.getItemId() == R.id.menu_bb_mapview) {
+                Bundle bundle = new Bundle();
+                bundle.putDouble("centerLatitude", userLocation.getLatitude());
+                bundle.putDouble("centerLongitude", userLocation.getLongitude());
+                MapsFragment frag = new MapsFragment();
+                frag.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction()
+                        .setReorderingAllowed(true)
+                        .replace(R.id.main_fragment, frag, null)
+                        .commit();
             }
-
-            getSupportFragmentManager().beginTransaction()
-                    .setReorderingAllowed(true)
-                    .replace(R.id.main_fragment, linkTo, null)
-                    .commit();
+            else if (view1.getItemId() == R.id.menu_bb_listview) {
+                getSupportFragmentManager().beginTransaction()
+                        .setReorderingAllowed(true)
+                        .replace(R.id.main_fragment, ListRestaurantsFragment.class, null)
+                        .commit();
+            }
+            else if (view1.getItemId() == R.id.menu_bb_workmates) {
+                getSupportFragmentManager().beginTransaction()
+                        .setReorderingAllowed(true)
+                        .replace(R.id.main_fragment, ListWorkmatesFragment.class, null)
+                        .commit();
+            }
 
             return true;
         });
@@ -217,10 +214,6 @@ public class MainActivity extends BaseActivity implements LocationListener {
                     rv.setVisibility(View.VISIBLE);
                     binding.mainFragment.setVisibility(View.GONE);
                     vm.getSearchResults(s);
-//                    if (s.length() >= 3) {
-//                        vm.getSearchResults(s);
-//                    }
-//                    else adapter.getFilter().filter(s);
                 }
 
                 return false;
@@ -232,21 +225,9 @@ public class MainActivity extends BaseActivity implements LocationListener {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // function for the list to be sorted
-        switch (item.getItemId()) {
-            case R.id.menu_order_name:
-                vm.updateOrderLiveData(SortRepository.OrderBy.NAME);
-                break;
-            case R.id.menu_order_distance:
-                vm.updateOrderLiveData(SortRepository.OrderBy.DISTANCE);
-                break;
-            case R.id.menu_order_rating:
-                vm.updateOrderLiveData(SortRepository.OrderBy.RATING);
-                break;
-
-            default:
-                Log.i(TAG, "Clic error on toolbar menu : id " + item.getItemId());
-                ;
-        }
+        if (item.getItemId() == R.id.menu_order_name) vm.updateOrderLiveData(SortRepository.OrderBy.NAME);
+        else if (item.getItemId() == R.id.menu_order_distance) vm.updateOrderLiveData(SortRepository.OrderBy.DISTANCE);
+        else if (item.getItemId() == R.id.menu_order_rating) vm.updateOrderLiveData(SortRepository.OrderBy.RATING);
         return true;
     }
 
@@ -262,12 +243,7 @@ public class MainActivity extends BaseActivity implements LocationListener {
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
-        // if the position of the user has changed enough, we call updateCenter, so the list or map can update.
-        if (userLocation == null || abs(userLocation.getLatitude() - location.getLatitude()) > 0.01 || abs(
-                userLocation.getLongitude() - location.getLongitude()) > 0.01) {
-            vm.updateCenter(location);
-            Log.i(TAG, "onLocationChanged: update center");
-        }
+        vm.updateCenter(location);
         userLocation = location;
     }
 

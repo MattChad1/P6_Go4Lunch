@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -27,12 +28,10 @@ public class ListWorkmatesFragment extends Fragment {
     ListWorkmatesViewModel vm;
 
     public ListWorkmatesFragment() {
-        // Required empty public constructor
     }
 
-    public static ListWorkmatesFragment newInstance(String param1, String param2) {
-        ListWorkmatesFragment fragment = new ListWorkmatesFragment();
-        return fragment;
+    public static ListWorkmatesFragment newInstance() {
+        return new ListWorkmatesFragment();
     }
 
     @Override
@@ -41,8 +40,8 @@ public class ListWorkmatesFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        MaterialToolbar toolbar = (MaterialToolbar) getActivity().findViewById(R.id.topAppBar);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        MaterialToolbar toolbar = requireActivity().findViewById(R.id.topAppBar);
         toolbar.setTitle(getString(R.string.list_workmates_desc));
         toolbar.getMenu().getItem(0).setVisible(false);
         toolbar.getMenu().getItem(1).setVisible(false);
@@ -54,7 +53,7 @@ public class ListWorkmatesFragment extends Fragment {
 
         rv = binding.rvListWorkmates;
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
-        rv.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+        rv.addItemDecoration(new DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL));
         WorkmatesAdapter adapter = new WorkmatesAdapter(getActivity(), workmates);
         rv.setAdapter(adapter);
 

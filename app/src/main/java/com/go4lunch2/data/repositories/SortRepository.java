@@ -5,12 +5,10 @@ import androidx.lifecycle.MutableLiveData;
 
 public class SortRepository {
 
-    private OrderBy order;
-    private MutableLiveData<OrderBy> orderLiveData = new MutableLiveData<>();
+    private final MutableLiveData<OrderBy> orderLiveData = new MutableLiveData<>();
 
     public SortRepository() {
-
-        this.order = OrderBy.NAME;
+        OrderBy order = OrderBy.NAME;
         orderLiveData.setValue(order);
     }
 

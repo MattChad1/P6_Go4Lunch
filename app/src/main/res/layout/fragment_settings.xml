@@ -1,76 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.settings.SettingsFragment">
 
-   <androidx.appcompat.widget.SwitchCompat
-       android:id="@+id/switch_notif"
-       app:layout_constraintTop_toTopOf="parent"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:layout_marginHorizontal="30dp"
-       android:layout_marginTop="50dp"
-       android:text="@string/receive_notifications"
-       style="@style/label_form"
-       />
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch_notif"
+        style="@style/label_form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="50dp"
+        android:text="@string/receive_notifications"
+        app:layout_constraintTop_toTopOf="parent" />
 
-   <TextView
-      android:id="@+id/tv_label_centermap1"
-       style="@style/label_form"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       app:layout_constraintTop_toBottomOf="@id/switch_notif"
+    <TextView
+        android:id="@+id/tv_label_centermap1"
+        style="@style/label_form"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
 
-      app:layout_constraintLeft_toLeftOf="parent"
-      android:layout_marginLeft="30dp"
-       android:layout_marginTop="15dp"
-      android:labelFor="@id/btn_radio_centermap1"
-      android:text="Centrer la carte sur l'entreprise"
-      />
+        android:layout_marginTop="15dp"
+        android:labelFor="@id/btn_radio_centermap1"
+        android:text="Centrer la carte sur l'entreprise"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/switch_notif" />
 
-   <RadioGroup
-       android:id="@+id/radio_group_centermap"
-       android:layout_height="wrap_content"
-       android:layout_width="wrap_content"
-       app:layout_constraintTop_toBottomOf="@id/switch_notif"
-       app:layout_constraintRight_toRightOf="parent"
-       android:orientation="vertical"
-       >
-   <com.google.android.material.radiobutton.MaterialRadioButton
-      android:id="@+id/btn_radio_centermap1"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
+    <RadioGroup
+        android:id="@+id/radio_group_centermap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/switch_notif">
 
-       android:layout_marginRight="30dp"
-      />
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/btn_radio_centermap1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-   <com.google.android.material.radiobutton.MaterialRadioButton
-       android:id="@+id/btn_radio_centermap2"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_marginRight="30dp"
+            android:layout_marginRight="30dp" />
 
-       />
-   </RadioGroup>
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/btn_radio_centermap2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+
+            />
+    </RadioGroup>
 
 
-   <TextView
-       android:id="@+id/tv_label_centermap2"
-       style="@style/label_form"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       app:layout_constraintTop_toBottomOf="@id/tv_label_centermap1"
+    <TextView
+        android:id="@+id/tv_label_centermap2"
+        style="@style/label_form"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
 
-       app:layout_constraintLeft_toLeftOf="parent"
-       android:layout_marginLeft="30dp"
-       android:layout_marginTop="25dp"
-       android:labelFor="@id/btn_radio_centermap2"
-       android:text="Centrer la carte sur ma position"
-       />
-
+        android:layout_marginTop="25dp"
+        android:labelFor="@id/btn_radio_centermap2"
+        android:text="Centrer la carte sur ma position"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_label_centermap1" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

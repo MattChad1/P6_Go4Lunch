@@ -18,23 +18,11 @@ public class Rating {
         return idRestaurant;
     }
 
-    public void setIdRestaurant(String idRestaurant) {
-        this.idRestaurant = idRestaurant;
-    }
-
     public String getIdWorkmate() {
         return idWorkmate;
     }
 
-    public void setIdWorkmate(String idWorkmate) {
-        this.idWorkmate = idWorkmate;
-    }
-
     public Integer getRateGiven() {
         return rateGiven;
-    }
-
-    public void setRateGiven(Integer rateGiven) {
-        this.rateGiven = rateGiven;
     }
 }

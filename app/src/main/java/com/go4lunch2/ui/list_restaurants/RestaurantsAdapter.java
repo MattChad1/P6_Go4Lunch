@@ -1,7 +1,7 @@
 package com.go4lunch2.ui.list_restaurants;
 
 import android.content.Context;
-import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,38 +9,38 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.go4lunch2.R;
 import com.go4lunch2.Utils.Utils;
 import com.go4lunch2.databinding.ItemRestaurantBinding;
-import com.go4lunch2.ui.detail_restaurant.DetailRestaurantActivity;
+import com.go4lunch2.ui.ItemClickListener;
 
 import java.util.List;
 
 public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.ViewHolder> {
 
-    String TAG = "MyLog RestaurantsAdapter";
-    Context ctx;
     private final List<RestaurantViewState> listRestaurants;
+    Context ctx;
     ItemRestaurantBinding binding;
+    private ItemClickListener clickListener;
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-        }
-    }
-
-    public RestaurantsAdapter(Context ctx, List<RestaurantViewState> listRestaurants) {
+    public RestaurantsAdapter(Context ctx, List<RestaurantViewState> listRestaurants, ItemClickListener clickListener) {
         this.ctx = ctx;
         this.listRestaurants = listRestaurants;
+        this.clickListener = clickListener;
+    }
+
+    public void setClickListener(ItemClickListener itemClickListener) {
+        this.clickListener = itemClickListener;
     }
 
     // Create new views (invoked by the layout manager)
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         binding = ItemRestaurantBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false);
         return new ViewHolder(binding.getRoot());
     }
@@ -71,17 +71,27 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
             v.findViewById(R.id.item_restaurant_num_stars2).setVisibility(View.VISIBLE);
             v.findViewById(R.id.item_restaurant_num_stars3).setVisibility(View.VISIBLE);
             if (restaurant.getStarsCount() == 0.5)
-                ((ImageView) v.findViewById(R.id.item_restaurant_num_stars1)).setImageDrawable(ctx.getDrawable(R.drawable.ic_star_half));
+                ((ImageView) v.findViewById(R.id.item_restaurant_num_stars1)).setImageDrawable(
+                        ContextCompat.getDrawable(ctx, R.drawable.ic_star_half));
             else if (restaurant.getStarsCount() > 0.5)
-                ((ImageView) v.findViewById(R.id.item_restaurant_num_stars1)).setImageDrawable(ctx.getDrawable(R.drawable.ic_star_filled));
-            if (restaurant.getStarsCount() < 1.5) ((ImageView) v.findViewById(R.id.item_restaurant_num_stars2)).setImageDrawable(ctx.getDrawable(R.drawable.ic_star_empty));
+                ((ImageView) v.findViewById(R.id.item_restaurant_num_stars1)).setImageDrawable(
+                        ContextCompat.getDrawable(ctx, R.drawable.ic_star_filled));
+            if (restaurant.getStarsCount() < 1.5)
+                ((ImageView) v.findViewById(R.id.item_restaurant_num_stars2)).setImageDrawable(
+                        ContextCompat.getDrawable(ctx, R.drawable.ic_star_empty));
             else if (restaurant.getStarsCount() == 1.5)
-                ((ImageView) v.findViewById(R.id.item_restaurant_num_stars2)).setImageDrawable(ctx.getDrawable(R.drawable.ic_star_half));
-            else ((ImageView) v.findViewById(R.id.item_restaurant_num_stars2)).setImageDrawable(ctx.getDrawable(R.drawable.ic_star_filled));
-            if (restaurant.getStarsCount() < 2.5) ((ImageView) v.findViewById(R.id.item_restaurant_num_stars3)).setImageDrawable(ctx.getDrawable(R.drawable.ic_star_empty));
+                ((ImageView) v.findViewById(R.id.item_restaurant_num_stars2)).setImageDrawable(
+                        ContextCompat.getDrawable(ctx, R.drawable.ic_star_half));
+            else ((ImageView) v.findViewById(R.id.item_restaurant_num_stars2)).setImageDrawable(
+                        ContextCompat.getDrawable(ctx, R.drawable.ic_star_filled));
+            if (restaurant.getStarsCount() < 2.5)
+                ((ImageView) v.findViewById(R.id.item_restaurant_num_stars3)).setImageDrawable(
+                        ContextCompat.getDrawable(ctx, R.drawable.ic_star_empty));
             else if (restaurant.getStarsCount() == 2.5)
-                ((ImageView) v.findViewById(R.id.item_restaurant_num_stars3)).setImageDrawable(ctx.getDrawable(R.drawable.ic_star_half));
-            else ((ImageView) v.findViewById(R.id.item_restaurant_num_stars3)).setImageDrawable(ctx.getDrawable(R.drawable.ic_star_filled));
+                ((ImageView) v.findViewById(R.id.item_restaurant_num_stars3)).setImageDrawable(
+                        ContextCompat.getDrawable(ctx, R.drawable.ic_star_half));
+            else ((ImageView) v.findViewById(R.id.item_restaurant_num_stars3)).setImageDrawable(
+                        ContextCompat.getDrawable(ctx, R.drawable.ic_star_filled));
         }
 
         if (restaurant.getImage() != null && !restaurant.getImage().isEmpty()) {
@@ -92,10 +102,9 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
                     .into((ImageView) v.findViewById(R.id.item_restaurant_image));
         }
 
-        v.setOnClickListener(view -> {
-            Intent intent = new Intent(ctx, DetailRestaurantActivity.class);
-            intent.putExtra(DetailRestaurantActivity.RESTAURANT_SELECTED, restaurant.getId());
-            ctx.startActivity(intent);
+        v.setOnClickListener(view1 -> {
+            Log.i("Adapter", "onClick: ");
+            clickListener.onClick(v, position);
         });
     }
 
@@ -103,5 +112,11 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
     @Override
     public int getItemCount() {
         return listRestaurants.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+        }
     }
 }

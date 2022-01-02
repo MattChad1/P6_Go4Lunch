@@ -26,10 +26,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -39,11 +37,8 @@ import java.util.Arrays;
 
 public class LogInActivity extends BaseActivity {
 
-    private String TAG = "MyLog LogInActivity";
-
-    private ActivityLogInBinding binding;
-
     private static final int RC_SIGN_IN = 94201;
+    private final String TAG = "MyLog LogInActivity";
     private GoogleSignInClient mGoogleSignInClient;
 
     //    private FirebaseAuth mAuth;
@@ -58,7 +53,7 @@ public class LogInActivity extends BaseActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         mCallbackManager = CallbackManager.Factory.create();
 
-        binding = ActivityLogInBinding.inflate(getLayoutInflater());
+        com.go4lunch2.databinding.ActivityLogInBinding binding = ActivityLogInBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 
@@ -80,7 +75,7 @@ public class LogInActivity extends BaseActivity {
             }
 
             @Override
-            public void onError(FacebookException error) {
+            public void onError(@NonNull FacebookException error) {
                 Log.i(TAG, "facebook:onError", error);
             }
         });
@@ -114,7 +109,6 @@ public class LogInActivity extends BaseActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.i(TAG, "onActivityResult: ");
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -136,20 +130,17 @@ public class LogInActivity extends BaseActivity {
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
-                        }
-                        else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            updateUI(null);
-                        }
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "signInWithCredential:success");
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        updateUI(user);
+                    }
+                    else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "signInWithCredential:failure", task.getException());
+                        updateUI(null);
                     }
                 });
     }
@@ -158,27 +149,24 @@ public class LogInActivity extends BaseActivity {
         Log.d(TAG, "handleFacebookAccessToken:" + token);
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
-                        }
-                        else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            updateUI(null);
-                        }
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "signInWithCredential:success");
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        updateUI(user);
+                    }
+                    else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "signInWithCredential:failure", task.getException());
+                        updateUI(null);
                     }
                 });
     }
 
     private void updateUI(FirebaseUser user) {
         if (user != null && !user.isAnonymous()) {
-            vm.createUser(user.getUid(), user.getDisplayName(), user.getPhotoUrl().toString());
+            vm.createUser(user.getUid(), user.getDisplayName(), String.valueOf(user.getPhotoUrl()));
 
             FirebaseMessaging.getInstance().subscribeToTopic("midi");
             startActivity(new Intent(this, MainActivity.class));

@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -71,23 +72,24 @@ public abstract class PermissionUtils {
             return dialog;
         }
 
+        @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            finishActivity = getArguments().getBoolean(ARGUMENT_FINISH_ACTIVITY);
+            if (getArguments() != null) finishActivity = getArguments().getBoolean(ARGUMENT_FINISH_ACTIVITY);
 
-            return new AlertDialog.Builder(getActivity())
+            return new AlertDialog.Builder(requireActivity())
                     .setMessage(R.string.location_permission_denied)
                     .setPositiveButton(android.R.string.ok, null)
                     .create();
         }
 
         @Override
-        public void onDismiss(DialogInterface dialog) {
+        public void onDismiss(@NonNull DialogInterface dialog) {
             super.onDismiss(dialog);
             if (finishActivity) {
                 Toast.makeText(getActivity(), R.string.permission_required_toast,
                                Toast.LENGTH_SHORT).show();
-                getActivity().finish();
+                requireActivity().finish();
             }
         }
     }
@@ -129,19 +131,20 @@ public abstract class PermissionUtils {
             return dialog;
         }
 
+        @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             Bundle arguments = getArguments();
             final int requestCode = arguments.getInt(ARGUMENT_PERMISSION_REQUEST_CODE);
             finishActivity = arguments.getBoolean(ARGUMENT_FINISH_ACTIVITY);
 
-            return new AlertDialog.Builder(getActivity())
+            return new AlertDialog.Builder(requireActivity())
                     .setMessage(R.string.permission_rationale_location)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             // After click on Ok, request the permission.
-                            ActivityCompat.requestPermissions(getActivity(),
+                            ActivityCompat.requestPermissions(requireActivity(),
                                                               new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                                                               requestCode);
                             // Do not finish the Activity while requesting permission.
@@ -153,14 +156,14 @@ public abstract class PermissionUtils {
         }
 
         @Override
-        public void onDismiss(DialogInterface dialog) {
+        public void onDismiss(@NonNull DialogInterface dialog) {
             super.onDismiss(dialog);
             if (finishActivity) {
                 Toast.makeText(getActivity(),
                                R.string.permission_required_toast,
                                Toast.LENGTH_SHORT)
                         .show();
-                getActivity().finish();
+                requireActivity().finish();
             }
         }
     }

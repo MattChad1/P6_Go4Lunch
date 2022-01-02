@@ -10,37 +10,30 @@ public class APIClient {
     private static Retrofit getRetrofit() {
 
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-//        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build();
 
-        Retrofit retrofit = new Retrofit.Builder()
+        return new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl("https://maps.googleapis.com/")
                 .client(okHttpClient)
                 .build();
-
-        return retrofit;
     }
 
     public static DistancesAPI distancesAPI() {
-        DistancesAPI distancesAPI = getRetrofit().create(DistancesAPI.class);
-        return distancesAPI;
+        return getRetrofit().create(DistancesAPI.class);
     }
 
     public static PlaceAutocompleteAPI placeAutocompleteAPI() {
-        PlaceAutocompleteAPI placeAutocompleteAPI = getRetrofit().create(PlaceAutocompleteAPI.class);
-        return placeAutocompleteAPI;
+        return getRetrofit().create(PlaceAutocompleteAPI.class);
     }
 
     public static PlaceDetailsAPI placeDetailsAPI() {
-        PlaceDetailsAPI placeDetailsAPI = getRetrofit().create(PlaceDetailsAPI.class);
-        return placeDetailsAPI;
+        return getRetrofit().create(PlaceDetailsAPI.class);
     }
 
     public static PlacesAPI placesAPI() {
-        PlacesAPI placesAPI = getRetrofit().create(PlacesAPI.class);
-        return placesAPI;
+        return getRetrofit().create(PlacesAPI.class);
     }
 }

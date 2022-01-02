@@ -31,10 +31,6 @@ import com.go4lunch2.data.model.model_gmap.Result;
 import com.go4lunch2.data.model.model_gmap.Row;
 import com.go4lunch2.data.model.model_gmap.restaurant_details.RestaurantDetailsJson;
 import com.go4lunch2.data.model.model_gmap.restaurant_details.ResultDetails;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -43,7 +39,6 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -61,19 +56,17 @@ import retrofit2.Response;
 
 public class RestaurantRepository {
 
-    String TAG = "MyLog Repository";
-
     private final MutableLiveData<List<Restaurant>> restaurantsLiveData = new MutableLiveData<>();
     private final MutableLiveData<ResultDetails> restaurantDetailsLiveData = new MutableLiveData<>();
     private final MutableLiveData<Map<String, Integer>> restaurantsDistancesLiveData = new MutableLiveData<>();
-
+    private final List<Restaurant> allRestaurants = new ArrayList<>();
+    private final CollectionReference colRefRestaurants;
+    private final Map<String, Integer> distancesResult = new HashMap<>();
+    String TAG = "MyLog Repository";
     FirebaseFirestore db;
     Context ctx = MyApplication.getInstance();
-    private List<Restaurant> allRestaurants = new ArrayList<>();
     private Double centerLatitude;
     private Double centerLongitude;
-    private CollectionReference colRefRestaurants;
-    private Map<String, Integer> distancesResult = new HashMap<>();
 
     public RestaurantRepository() {
         db = FirebaseFirestore.getInstance();
@@ -98,7 +91,6 @@ public class RestaurantRepository {
 
     // get JSON results from the Google API
     private void getPlacesAPI(Double latitude, Double longitude) {
-        Log.i(TAG, "Appel getPlacesAPI");
         allRestaurants.clear();
         List<Result> results = new ArrayList<>();
 
@@ -124,14 +116,16 @@ public class RestaurantRepository {
 
             callAsync.enqueue(new Callback<Place>() {
                 @Override
-                public void onResponse(Call<Place> call, Response<Place> response) {
+                public void onResponse(@NonNull Call<Place> call, @NonNull Response<Place> response) {
 
-                    results.addAll(response.body().getResults());
+                    if (response.body() != null) {
+                        results.addAll(response.body().getResults());
+                    }
                     updateRepoPlaces(results);
                 }
 
                 @Override
-                public void onFailure(Call<Place> call, Throwable t) {
+                public void onFailure(@NonNull Call<Place> call, @NonNull Throwable t) {
                     Log.i(TAG, "Repository - onFailure: " + t);
                 }
             });
@@ -152,7 +146,6 @@ public class RestaurantRepository {
                     Log.w(TAG, "No image found for this restaurant");
                 }
             }
-            else image = "";
             String finalImage = image;
             Restaurant newRestaurant = new Restaurant(
                     result.getPlaceId(),
@@ -191,7 +184,6 @@ public class RestaurantRepository {
                 public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException e) {
                     if (e != null) {
                         Log.w(TAG, "Listen failed in getCustomFields().", e);
-                        return;
                     }
                     else if (snapshot != null && snapshot.exists()) {
                         rcf = snapshot.toObject(RestaurantCustomFields.class);
@@ -220,13 +212,18 @@ public class RestaurantRepository {
 
         callAsync.enqueue(new Callback<RestaurantDetailsJson>() {
             @Override
-            public void onResponse(Call<RestaurantDetailsJson> call, Response<RestaurantDetailsJson> response) {
-                ResultDetails resultDetails = response.body().getResult();
-                restaurantDetailsLiveData.setValue(resultDetails);
+            public void onResponse(@NonNull Call<RestaurantDetailsJson> call, @NonNull Response<RestaurantDetailsJson> response) {
+                ResultDetails resultDetails;
+                if (response.body() != null) {
+                    Log.i(TAG, "onResponse: getDetailsFromAPI update");
+                    resultDetails = response.body().getResult();
+                    restaurantDetailsLiveData.postValue(resultDetails);
+                }
+
             }
 
             @Override
-            public void onFailure(Call<RestaurantDetailsJson> call, Throwable t) {
+            public void onFailure(@NonNull Call<RestaurantDetailsJson> call, @NonNull Throwable t) {
             }
         });
     }
@@ -236,26 +233,23 @@ public class RestaurantRepository {
         db.collection("restaurants")
                 .document(idRestaurant)
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (!document.exists()) {
-                                Map<String, Object> data = new HashMap<>();
-                                data.put("idRestaurant", idRestaurant);
-                                data.put("name", name);
-                                data.put("averageRate", null);
-                                data.put("workmatesInterestedIds", new ArrayList<String>());
-                                data.put("lastUpdate", FieldValue.serverTimestamp());
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (!document.exists()) {
+                            Map<String, Object> data = new HashMap<>();
+                            data.put("idRestaurant", idRestaurant);
+                            data.put("name", name);
+                            data.put("averageRate", null);
+                            data.put("workmatesInterestedIds", new ArrayList<String>());
+                            data.put("lastUpdate", FieldValue.serverTimestamp());
 
-                                db.collection("restaurants").document(idRestaurant)
-                                        .set(data);
-                            }
+                            db.collection("restaurants").document(idRestaurant)
+                                    .set(data);
                         }
-                        else {
-                            Log.d(TAG, "get failed with insertion of new restaurant : ", task.getException());
-                        }
+                    }
+                    else {
+                        Log.d(TAG, "get failed with insertion of new restaurant : ", task.getException());
                     }
                 });
     }
@@ -266,38 +260,27 @@ public class RestaurantRepository {
                 .whereEqualTo("idWorkmate", rating.getIdWorkmate())
                 .whereEqualTo("idRestaurant", rating.getIdRestaurant())
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            // if there is already a rate => update it and call updateAverageRate
-                            if (task.getResult().size() > 0) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    db.collection("rates").document(document.getId()).update("rateGiven", rating.getRateGiven());
-                                    updateAverageRate(rating.getIdRestaurant());
-                                }
-                            }
-                            // else => add new one and call updateAverageRate
-                            else {
-                                db.collection("rates")
-                                        .add(rating)
-                                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                            @Override
-                                            public void onSuccess(DocumentReference documentReference) {
-                                                Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                                                updateAverageRate(rating.getIdRestaurant());
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Log.w(TAG, "Error adding document", e);
-                                            }
-                                        });
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // if there is already a rate => update it and call updateAverageRate
+                        if (task.getResult().size() > 0) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                db.collection("rates").document(document.getId()).update("rateGiven", rating.getRateGiven());
+                                updateAverageRate(rating.getIdRestaurant());
                             }
                         }
-                        else Log.w(TAG, "FAIL  addGrade()");
+                        // else => add new one and call updateAverageRate
+                        else {
+                            db.collection("rates")
+                                    .add(rating)
+                                    .addOnSuccessListener(documentReference -> {
+                                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                                        updateAverageRate(rating.getIdRestaurant());
+                                    })
+                                    .addOnFailureListener(e -> Log.w(TAG, "Error adding document", e));
+                        }
                     }
+                    else Log.w(TAG, "FAIL  addGrade()");
                 });
     }
 
@@ -316,7 +299,7 @@ public class RestaurantRepository {
                             total[0] += r.getRateGiven();
                         }
 
-                        double average = 0.0;
+                        double average;
                         if (count[0] > 0) {
                             average = total[0] / count[0];
                             db.collection("restaurants").document(idRestaurant)
@@ -354,7 +337,7 @@ public class RestaurantRepository {
                 for (Row r : matrix.getRows()) elements.addAll(r.getElements());
                 for (int i = 0; i < restaurants.size(); i++) {
                     try {
-                        distancesResult.put(restaurants.get(i).getId(), ((Element) elements.get(i)).getDistance().getValue());
+                        distancesResult.put(restaurants.get(i).getId(), elements.get(i).getDistance().getValue());
                     } catch (NullPointerException e) {
                         Log.i(TAG, "Erreur : " + restaurants.get(i).getId() + e);
                         distancesResult.put(restaurants.get(i).getId(), 0);
@@ -369,26 +352,28 @@ public class RestaurantRepository {
         }
 
         else {
-            String destinationsURLParameter = "";
+            StringBuilder destinationsURLParameter = new StringBuilder();
             for (Restaurant restaurant : restaurants) {
-                if (!destinationsURLParameter.isEmpty()) destinationsURLParameter += "|place_id:";
-                else destinationsURLParameter += "place_id:";
-                destinationsURLParameter += restaurant.getId();
+                if (destinationsURLParameter.length() > 0) destinationsURLParameter.append("|place_id:");
+                else destinationsURLParameter.append("place_id:");
+                destinationsURLParameter.append(restaurant.getId());
             }
 
             DistancesAPI service = distancesAPI();
-            Call<Matrix> callAsync = service.getResults(centerLatitude + "," + centerLongitude, destinationsURLParameter,
+            Call<Matrix> callAsync = service.getResults(centerLatitude + "," + centerLongitude, destinationsURLParameter.toString(),
                                                         "walking", ctx.getString(
                             R.string.google_maps_key22));
 
             callAsync.enqueue(new Callback<Matrix>() {
                 @Override
-                public void onResponse(Call<Matrix> call, Response<Matrix> response) {
+                public void onResponse(@NonNull Call<Matrix> call, @NonNull Response<Matrix> response) {
                     Matrix matrix = response.body();
-                    for (Row r : matrix.getRows()) elements.addAll(r.getElements());
+                    if (matrix != null) {
+                        for (Row r : matrix.getRows()) elements.addAll(r.getElements());
+                    }
                     for (int i = 0; i < restaurants.size(); i++) {
                         try {
-                            distancesResult.put(restaurants.get(i).getId(), ((Element) elements.get(i)).getDistance().getValue());
+                            distancesResult.put(restaurants.get(i).getId(), elements.get(i).getDistance().getValue());
                         } catch (NullPointerException e) {
                             Log.i(TAG, "Erreur : " + restaurants.get(i).getId() + e);
                             distancesResult.put(restaurants.get(i).getId(), 0);
@@ -400,8 +385,8 @@ public class RestaurantRepository {
                 }
 
                 @Override
-                public void onFailure(Call<Matrix> call, Throwable t) {
-                    System.out.println(t);
+                public void onFailure(@NonNull Call<Matrix> call, @NonNull Throwable t) {
+                    Log.w(TAG, "Fail distance matrix" + t);
                 }
             });
         }

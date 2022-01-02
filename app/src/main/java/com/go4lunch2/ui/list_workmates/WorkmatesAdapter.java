@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -19,28 +20,16 @@ import java.util.List;
 
 public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.ViewHolder> {
 
-    Context ctx;
-    private List<WorkmateViewStateItem> listWorkmates;
+    private final List<WorkmateViewStateItem> listWorkmates;
+    private final Context ctx;
 
     public WorkmatesAdapter(Context ctx, List<WorkmateViewStateItem> listWorkmates) {
         this.ctx = ctx;
         this.listWorkmates = listWorkmates;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvName;
-        ImageView ivAvatar;
-        View itemView;
-
-        public ViewHolder(View view) {
-            super(view);
-            tvName = view.findViewById(R.id.tv_workmate_choise);
-            ivAvatar = view.findViewById(R.id.iv_workmate_avatar);
-            itemView = view;
-        }
-    }
-
     // Create new views (invoked by the layout manager)
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_workmate, viewGroup, false);
@@ -49,7 +38,7 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.View
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int position) {
         if (listWorkmates != null && !listWorkmates.isEmpty()) {
             WorkmateViewStateItem workmate = listWorkmates.get(position);
             viewHolder.tvName.setText(ctx.getString(R.string.restaurant_chosen, workmate.getNameWorkmate(), workmate.getNameRestaurant()));
@@ -68,6 +57,19 @@ public class WorkmatesAdapter extends RecyclerView.Adapter<WorkmatesAdapter.View
     @Override
     public int getItemCount() {
         return listWorkmates.size();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final TextView tvName;
+        private final ImageView ivAvatar;
+        private final View itemView;
+
+        public ViewHolder(View view) {
+            super(view);
+            tvName = view.findViewById(R.id.tv_workmate_choise);
+            ivAvatar = view.findViewById(R.id.iv_workmate_avatar);
+            itemView = view;
+        }
     }
 }
 

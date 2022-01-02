@@ -4,7 +4,6 @@ import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
 import com.go4lunch2.R;
@@ -17,14 +16,11 @@ import com.go4lunch2.data.repositories.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class DetailRestaurantViewModel extends AndroidViewModel {
 
-    private String TAG = "MyLog DetailRestaurantViewModel";
-    private RestaurantRepository restaurantRepository;
-    private UserRepository userRepository;
-    private MutableLiveData<DetailRestaurantViewState> restaurantSelectedLiveData = new MutableLiveData<>();
+    private final RestaurantRepository restaurantRepository;
+    private final UserRepository userRepository;
 
     public DetailRestaurantViewModel(RestaurantRepository restaurantRepository, UserRepository userRepository, Application application) {
         super(application);
@@ -42,14 +38,17 @@ public class DetailRestaurantViewModel extends AndroidViewModel {
     // get datas for the restaurant selected from restaurant repository
     public LiveData<DetailRestaurantViewState> getDetailRestaurantLiveData(String idRestaurant) {
         return Transformations.map(restaurantRepository.getRestaurantDetailsLiveData(idRestaurant), restaurant -> {
-            String image =
-                    "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400"
-                            + "&photo_reference=" + restaurant.getPhotos().get(0).getPhotoReference()
-                            + "&key=" + getApplication().getResources().getString(R.string.google_maps_key22);
+
+        if (restaurant!=null) {
+            String image = (restaurant.getPhotos() != null)
+                    ? "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400"
+                    + "&photo_reference=" + restaurant.getPhotos().get(0).getPhotoReference()
+                    + "&key=" + getApplication().getResources().getString(R.string.google_maps_key22)
+                    : null;
 
             Restaurant restaurantInRepo = restaurantRepository.getRestaurantById(idRestaurant);
 
-            DetailRestaurantViewState detailRestaurantViewState = new DetailRestaurantViewState(
+            return new DetailRestaurantViewState(
                     idRestaurant,
                     restaurant.getName(),
                     restaurant.getFormattedAddress(),
@@ -59,18 +58,18 @@ public class DetailRestaurantViewModel extends AndroidViewModel {
                     restaurant.getInternationalPhoneNumber(),
                     restaurant.getWebsite()
             );
-
-            return detailRestaurantViewState;
+        }
+        // if data problem
+        else return new DetailRestaurantViewState(idRestaurant);
         });
     }
 
     // get the list of the workmates who have selected this restaurant (list is shown at the bottom of the screen if there are any)
     public LiveData<List<CustomUser>> getWorkmatesForThisRestaurantLiveData(String idRestaurant) {
-        return Transformations.map(userRepository.getWorkmatesWithRestaurantsLiveData(), map -> {
+        return Transformations.map(userRepository.getWorkmatesWithRestaurantsLiveData(), users -> {
             List<CustomUser> workmates = new ArrayList<>();
-            Set<CustomUser> workmatesInMap = map.keySet();
-            for (CustomUser c : workmatesInMap) {
-                if (c.getIdRestaurantChosen().equals(idRestaurant)) {
+            for (CustomUser c : users) {
+                if (c.getIdRestaurantChosen() !=null && c.getIdRestaurantChosen().equals(idRestaurant)) {
                     workmates.add(c);
                 }
             }
@@ -82,7 +81,7 @@ public class DetailRestaurantViewModel extends AndroidViewModel {
         restaurantRepository.addGrade(new Rating(idRestaurant, idWorkmate, givenRate));
     }
 
-    public void updateRestaurantChosen(String idUser, String idRestaurant) {
-        userRepository.updateRestaurantChosen(idUser, idRestaurant);
+    public void updateRestaurantChosen(String idUser, String idRestaurant, String nameRestaurant) {
+        userRepository.updateRestaurantChosen(idUser, idRestaurant, nameRestaurant);
     }
 }

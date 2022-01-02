@@ -1,9 +1,9 @@
 package com.go4lunch2.ui.main_activity;
 
 public class SearchViewStateItem {
-    String id;
-    String name;
-    String adress;
+    private final String id;
+    private final String name;
+    private final String adress;
 
     public SearchViewStateItem(String id, String name, String adress) {
         this.id = id;

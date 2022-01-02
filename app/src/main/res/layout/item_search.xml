@@ -1,28 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="60dp"
-    android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:orientation="vertical">
 
 
     <TextView
         android:id="@+id/item_search_tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
         android:layout_marginStart="15dp"
-        tools:text="Restaurant Le bel établissement"
-        />
+        android:textSize="18sp"
+        tools:text="Restaurant Le bel établissement" />
 
     <TextView
         android:id="@+id/item_search_tv_subtitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
-        tools:text="Rue xxxxxxxxxxx"
-        />
+        tools:text="Rue xxxxxxxxxxx" />
 
 </LinearLayout>

@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="60dp"
-    xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center_vertical"
+    android:orientation="horizontal"
     android:padding="10dp"
-    android:orientation="horizontal">
+    tools:ignore="UseCompoundDrawables">
 
     <ImageView
         android:id="@+id/iv_item_rate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:src="@drawable/ic_star_filled"
-        android:backgroundTint="@color/yellow" />
+        android:backgroundTint="@color/yellow"
+        android:importantForAccessibility="no"
+        tools:src="@drawable/ic_star_filled" />
 
     <TextView
         android:id="@+id/tv_item_rate"
@@ -21,8 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:textSize="20sp"
-        tools:text="Wonderful !"
-        />
+        tools:text="Wonderful !" />
 
 
 </LinearLayout>

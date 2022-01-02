@@ -1,7 +1,6 @@
 package com.go4lunch2.ui.map;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
@@ -14,9 +13,7 @@ import java.util.List;
 
 public class MapsViewModel extends ViewModel {
 
-    String TAG = "MyLog MapsViewModel";
     RestaurantRepository restaurantRepository;
-    MutableLiveData<List<MapsStateItem>> markersLiveData = new MutableLiveData<>();
     Double centerLocationLatitude;
     Double centerLocationLongitude;
 

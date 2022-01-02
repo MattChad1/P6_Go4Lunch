@@ -6,11 +6,9 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,6 +23,7 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.go4lunch2.MyApplication;
 import com.go4lunch2.R;
 import com.go4lunch2.ViewModelFactory;
 import com.go4lunch2.databinding.FragmentMapsBinding;
@@ -50,24 +49,30 @@ public class MapsFragment extends Fragment implements GoogleMap.InfoWindowAdapte
                                                       OnMapReadyCallback,
                                                       ActivityCompat.OnRequestPermissionsResultCallback {
 
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     FragmentMapsBinding binding;
     MapsViewModel vm;
     List<MapsStateItem> allMarkers = new ArrayList<>();
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    SupportMapFragment mapFragment;
     private GoogleMap map;
     private boolean permissionDenied = false;
-    SupportMapFragment mapFragment;
+    private Double centerLatitude;
+    private Double centerLongitude;
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(@NonNull GoogleMap googleMap) {
         map = googleMap;
 
         map.setOnMyLocationButtonClickListener(this);
         map.setOnMyLocationClickListener(this);
         enableMyLocation();
 
-        LatLng paris = new LatLng(48.856614, 2.3522219);
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(paris, 13f));
+        if (MyApplication.settings.getString(MyApplication.PREFS_CENTER, "").equals(MyApplication.PREFS_CENTER_COMPANY)) {
+            LatLng paris = new LatLng(48.856614, 2.3522219);
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(paris, 13f));
+        }
+        else map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(centerLatitude, centerLongitude), 13f));
+
         map.getUiSettings().setZoomControlsEnabled(true);
 
         vm.getMarkersLiveData().observe(MapsFragment.this, mapsStateItems -> {
@@ -76,12 +81,12 @@ public class MapsFragment extends Fragment implements GoogleMap.InfoWindowAdapte
 
                 int iconeMarker = marker.getWorkmatesCount() > 0 ? R.drawable.marker_restaurant_orange : R.drawable.marker_restaurant_green;
 
-                map.addMarker(new MarkerOptions()
-                                      .position(new LatLng(marker.getLatitude(), marker.getLongitude()))
-                                      .title(marker.getName())
-                                      .icon(BitmapDescriptorFactory.fromResource(iconeMarker))
-
-                             ).setTag(allMarkers.indexOf(marker));
+                Marker m = map.addMarker(new MarkerOptions()
+                                                 .position(new LatLng(marker.getLatitude(), marker.getLongitude()))
+                                                 .title(marker.getName())
+                                                 .icon(BitmapDescriptorFactory.fromResource(iconeMarker))
+                                        );
+                if (m != null) m.setTag(allMarkers.indexOf(marker));
             }
         });
 
@@ -92,7 +97,7 @@ public class MapsFragment extends Fragment implements GoogleMap.InfoWindowAdapte
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        MaterialToolbar toolbar = (MaterialToolbar) getActivity().findViewById(R.id.topAppBar);
+        MaterialToolbar toolbar = requireActivity().findViewById(R.id.topAppBar);
         toolbar.setTitle(getString(R.string.map_view_desc));
         toolbar.getMenu().getItem(0).setVisible(true);
         toolbar.getMenu().getItem(1).setVisible(false);
@@ -101,6 +106,11 @@ public class MapsFragment extends Fragment implements GoogleMap.InfoWindowAdapte
         View view = binding.getRoot();
 
         vm = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(MapsViewModel.class);
+
+        if (this.getArguments() != null) {
+            centerLatitude = this.getArguments().getDouble("centerLatitude");
+            centerLongitude = this.getArguments().getDouble("centerLongitude");
+        }
 
         return view;
     }
@@ -117,58 +127,61 @@ public class MapsFragment extends Fragment implements GoogleMap.InfoWindowAdapte
     @Nullable
     @Override
     public View getInfoContents(@NonNull Marker marker) {
-        int position = (int) marker.getTag();
-        MapsStateItem item = allMarkers.get(position);
-        Log.i("Image window", item.getImage());
         InfoWindowBinding bindingWindow = InfoWindowBinding.inflate(MapsFragment.this.getLayoutInflater());
-        bindingWindow.tvMapwindowTitle.setText(item.getName());
-        bindingWindow.tvMapwindowSubtitle.setText(""); //TODO : mettre type de cuisine?
+        Integer position = (Integer) marker.getTag();
 
-        if (item.getStarsCount() == null) {
-            bindingWindow.mapwindowNumStars1.setVisibility(View.INVISIBLE);
-            bindingWindow.mapwindowNumStars2.setVisibility(View.INVISIBLE);
-            bindingWindow.mapwindowNumStars3.setVisibility(View.INVISIBLE);
+        if (position != null) {
+            MapsStateItem item = allMarkers.get(position);
+
+            bindingWindow.tvMapwindowTitle.setText(item.getName());
+            bindingWindow.tvMapwindowSubtitle.setText("");
+            if (item.getStarsCount() == null) {
+                bindingWindow.mapwindowNumStars1.setVisibility(View.INVISIBLE);
+                bindingWindow.mapwindowNumStars2.setVisibility(View.INVISIBLE);
+                bindingWindow.mapwindowNumStars3.setVisibility(View.INVISIBLE);
+            }
+            else {
+                if (item.getStarsCount() == 0.5)
+                    bindingWindow.mapwindowNumStars1.setImageDrawable(ContextCompat.getDrawable(requireActivity(), R.drawable.ic_star_half));
+                else if (item.getStarsCount() > 0.5)
+                    bindingWindow.mapwindowNumStars1.setImageDrawable(ContextCompat.getDrawable(requireActivity(), R.drawable.ic_star_filled));
+                if (item.getStarsCount() == 1.5)
+                    bindingWindow.mapwindowNumStars2.setImageDrawable(ContextCompat.getDrawable(requireActivity(), R.drawable.ic_star_half));
+                else if (item.getStarsCount() > 1.5)
+                    bindingWindow.mapwindowNumStars2.setImageDrawable(ContextCompat.getDrawable(requireActivity(), R.drawable.ic_star_filled));
+                if (item.getStarsCount() == 2.5)
+                    bindingWindow.mapwindowNumStars3.setImageDrawable(ContextCompat.getDrawable(requireActivity(), R.drawable.ic_star_half));
+                else if (item.getStarsCount() > 2.5)
+                    bindingWindow.mapwindowNumStars3.setImageDrawable(ContextCompat.getDrawable(requireActivity(), R.drawable.ic_star_filled));
+            }
+
+            bindingWindow.tvMapwindowWorkmates.setText(getString(R.string.num_workmates, item.workmatesCount));
+
+            if (item.getImage() != null && !item.getImage().isEmpty()) {
+                String url = item.getImage().replace("maxwidth=150", "maxwidth=90");
+                Glide.with(requireActivity()).load(url)
+                        .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                        .placeholder(R.drawable.ic_downloading_24)
+                        .error(R.drawable.ic_search)
+                        .centerCrop()
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource,
+                                                           boolean isFirstResource) {
+                                if (!dataSource.equals(DataSource.MEMORY_CACHE)) marker.showInfoWindow();
+                                return false;
+                            }
+                        })
+                        .into(bindingWindow.ivMapwindow);
+            }
         }
-        else {
-            if (item.getStarsCount() == 0.5) bindingWindow.mapwindowNumStars1.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_half));
-            else if (item.getStarsCount() > 0.5)
-                bindingWindow.mapwindowNumStars1.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_filled));
-            if (item.getStarsCount() == 1.5) bindingWindow.mapwindowNumStars2.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_half));
-            else if (item.getStarsCount() > 1.5)
-                bindingWindow.mapwindowNumStars2.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_filled));
-            if (item.getStarsCount() == 2.5) bindingWindow.mapwindowNumStars3.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_half));
-            else if (item.getStarsCount() > 2.5)
-                bindingWindow.mapwindowNumStars3.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_filled));
-        }
 
-        bindingWindow.tvMapwindowWorkmates.setText(getString(R.string.num_workmates, item.workmatesCount));
-
-        if (item.getImage() != null && !item.getImage().isEmpty()) {
-            String url = item.getImage().replace("maxwidth=150", "maxwidth=90");
-            Glide.with(getActivity()).load(url)
-                    .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                    .placeholder(R.drawable.ic_downloading_24)
-                    .error(R.drawable.ic_search)
-                    .centerCrop()
-                    .listener(new RequestListener<Drawable>() {
-                        @Override
-                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                            return false;
-                        }
-
-                        @Override
-                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource,
-                                                       boolean isFirstResource) {
-                            if (!dataSource.equals(DataSource.MEMORY_CACHE)) marker.showInfoWindow();
-                            return false;
-                        }
-                    })
-                    .into((ImageView) bindingWindow.ivMapwindow);
-        }
-
-        View view = bindingWindow.getRoot();
-
-        return view;
+        return bindingWindow.getRoot();
     }
 
     @Nullable
@@ -179,18 +192,20 @@ public class MapsFragment extends Fragment implements GoogleMap.InfoWindowAdapte
 
     @Override
     public void onInfoWindowClick(@NonNull Marker marker) {
-        Intent i = new Intent(mapFragment.getContext(), DetailRestaurantActivity.class);
-        int position = (int) marker.getTag();
-        MapsStateItem item = allMarkers.get(position);
-        i.putExtra(DetailRestaurantActivity.RESTAURANT_SELECTED, item.getId());
-        startActivity(i);
+        if (marker.getTag() != null) {
+            int position = (int) marker.getTag();
+            MapsStateItem item = allMarkers.get(position);
+            Intent i = new Intent(mapFragment.getContext(), DetailRestaurantActivity.class);
+            i.putExtra(DetailRestaurantActivity.RESTAURANT_SELECTED, item.getId());
+            startActivity(i);
+        }
     }
 
     /**
      * Enables the My Location layer if the fine location permission has been granted.
      */
     private void enableMyLocation() {
-        if (ContextCompat.checkSelfPermission(mapFragment.getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             if (map != null) {
                 map.setMyLocationEnabled(true);
@@ -205,15 +220,11 @@ public class MapsFragment extends Fragment implements GoogleMap.InfoWindowAdapte
 
     @Override
     public boolean onMyLocationButtonClick() {
-        //Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
-        // Return false so that we don't consume the event and the default behavior still occurs
-        // (the camera animates to the user's current position).
         return false;
     }
 
     @Override
     public void onMyLocationClick(@NonNull Location location) {
-        //Toast.makeText(this, "Current location:\n" + location, Toast.LENGTH_LONG).show();
     }
 
     @Override

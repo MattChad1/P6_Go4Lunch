@@ -2,12 +2,11 @@ package com.go4lunch2.ui.detail_restaurant;
 
 import static com.go4lunch2.MyApplication.PREFS_NOTIFS;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +16,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -37,23 +37,17 @@ import java.util.List;
 
 public class DetailRestaurantActivity extends BaseActivity {
 
-    private String TAG = "MyLog DetailRestaurantA";
-
+    static public final String RESTAURANT_SELECTED = "restaurant_selected";
+    private final List<CustomUser> workmatesInterested = new ArrayList<>();
     private DetailRestaurantViewModel vm;
-
     private CustomUser currentCustomUser;
     private DetailRestaurantViewState restaurantSelected;
-
     private ActivityDetailRestaurantBinding binding;
-    private RecyclerView rv;
-    private List<CustomUser> workmatesInterested = new ArrayList<>();
-
-    static public final String RESTAURANT_SELECTED = "restaurant_selected";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        NotificationHelper.createNotificationChannel(this, "Noon", "Reminder for the restaurant chosen");
+        NotificationHelper.createNotificationChannel(this, getString(R.string.title_chanel), getString(R.string.desc_chanel));
 
         // Get the id of the restaurant
         Intent intent = getIntent();
@@ -79,10 +73,8 @@ public class DetailRestaurantActivity extends BaseActivity {
         vm.getDetailRestaurantLiveData(idRestaurant).observe(this, restaurant -> {
             restaurantSelected = restaurant;
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                Window w = getWindow();
-                w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-            }
+            Window w = getWindow();
+            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
             if (restaurant == null) finish();
             else {
@@ -92,7 +84,7 @@ public class DetailRestaurantActivity extends BaseActivity {
                 // If user selects this restaurant
                 // Set the notification that will be sent at noon
                 binding.fabRestaurantChosen.setOnClickListener(v -> {
-                    vm.updateRestaurantChosen(currentUser.getUid(), idRestaurant);
+                    vm.updateRestaurantChosen(currentUser.getUid(), idRestaurant, restaurant.getName());
                     if (MyApplication.settings.getBoolean(PREFS_NOTIFS, true)) {
                         Intent intentNotif = new Intent(this, ReminderBroadcast.class);
                         intentNotif.putExtra("nameRestaurant", restaurant.getName());
@@ -119,12 +111,18 @@ public class DetailRestaurantActivity extends BaseActivity {
                     binding.ivDetailStar3.setVisibility(View.GONE);
                 }
                 else {
-                    if (restaurant.getStarsCount() == 0.5) binding.ivDetailStar1.setImageDrawable(getDrawable(R.drawable.ic_star_half));
-                    else if (restaurant.getStarsCount() > 0.5) binding.ivDetailStar1.setImageDrawable(getDrawable(R.drawable.ic_star_filled));
-                    if (restaurant.getStarsCount() == 1.5) binding.ivDetailStar2.setImageDrawable(getDrawable(R.drawable.ic_star_half));
-                    else if (restaurant.getStarsCount() > 1.5) binding.ivDetailStar2.setImageDrawable(getDrawable(R.drawable.ic_star_filled));
-                    if (restaurant.getStarsCount() == 2.5) binding.ivDetailStar3.setImageDrawable(getDrawable(R.drawable.ic_star_half));
-                    else if (restaurant.getStarsCount() > 2.5) binding.ivDetailStar3.setImageDrawable(getDrawable(R.drawable.ic_star_filled));
+                    if (restaurant.getStarsCount() == 0.5)
+                        binding.ivDetailStar1.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_star_half));
+                    else if (restaurant.getStarsCount() > 0.5)
+                        binding.ivDetailStar1.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_star_filled));
+                    if (restaurant.getStarsCount() == 1.5)
+                        binding.ivDetailStar2.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_star_half));
+                    else if (restaurant.getStarsCount() > 1.5)
+                        binding.ivDetailStar2.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_star_filled));
+                    if (restaurant.getStarsCount() == 2.5)
+                        binding.ivDetailStar3.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_star_half));
+                    else if (restaurant.getStarsCount() > 2.5)
+                        binding.ivDetailStar3.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_star_filled));
                 }
 
                 // link for phone number of the restaurant
@@ -159,7 +157,7 @@ public class DetailRestaurantActivity extends BaseActivity {
         });
 
         // Set the list of workmates who will lunch in this restaurant and observe changes
-        rv = binding.rvListWorkmatesForOneRestaurant;
+        RecyclerView rv = binding.rvListWorkmatesForOneRestaurant;
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         DetailRestaurantAdapter adapter = new DetailRestaurantAdapter(this, workmatesInterested);
@@ -173,20 +171,18 @@ public class DetailRestaurantActivity extends BaseActivity {
     }
 
     protected void createAlertGrade() {
-        View viewDialog = LayoutInflater.from(this).inflate(R.layout.alertdialog_rates_layout, null);
+
+        @SuppressLint("InflateParams") View viewDialog = LayoutInflater.from(this).inflate(R.layout.alertdialog_rates_layout, null);
         Integer[] icons = {R.drawable.ic_star_empty, R.drawable.ic_star_half, R.drawable.ic_star_filled};
         RatesAdapter adapter = new RatesAdapter(this, getResources().getStringArray(R.array.rates), icons);
         ListView listView = viewDialog.findViewById(R.id.listview_alertgrade);
         listView.setAdapter(adapter);
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle(R.string.give_rate)
-                .setSingleChoiceItems(adapter, 0, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        vm.addRate("w1", restaurantSelected.id, which + 1);
-                        dialog.dismiss();
-                        Toast.makeText(DetailRestaurantActivity.this, R.string.rate_registered, Toast.LENGTH_LONG).show();
-                    }
+                .setSingleChoiceItems(adapter, 0, (dialog1, which) -> {
+                    vm.addRate(currentUser.getUid(), restaurantSelected.getId(), which + 1);
+                    dialog1.dismiss();
+                    Toast.makeText(DetailRestaurantActivity.this, R.string.rate_registered, Toast.LENGTH_LONG).show();
                 })
                 .create();
         dialog.show();
