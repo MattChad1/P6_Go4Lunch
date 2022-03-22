@@ -49,5 +49,5 @@ Cette carte Google maps affiche les restaurants à proximité. Elle se met à jo
 Il est possible de se connecter avec un compte Facebook de test ou un (vrai) compte Google
 Comptes Facebook de test :
 - will_iwpdejp_yang@tfbnw.net / gogo4512
-- elizabeth_kaafmrm_brownman@tfbnw.net / lunlun4512
+- elizabeth_kaafmrm_brownman@tfbnw.net / lunlun4512 
 
