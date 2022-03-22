@@ -12,14 +12,14 @@ Comptes Facebook de test :
 - will_iwpdejp_yang@tfbnw.net / gogo4512
 - elizabeth_kaafmrm_brownman@tfbnw.net / lunlun4512
 
-![Ecran d'accueil](https://www.natationpourtous.com/images/ext/Screenshot_go4lunch_home.png =250px)
+![Ecran d'accueil](/assets/images/Screenshot_go4lunch_home.png =270x)
 
 ### Liste des restaurants à proximité
 
 En faisant appel à différentes API telles que Places et Distances Matrix, l'application affiche la liste des restaurants à proximité. L'application propose également 
 aux utilisateurs de noter les restaurants et affiche la note moyenne sur cet écran.
 
-![Liste des restaurants](https://www.natationpourtous.com/images/ext/Screenshot_go4lunch_list.png =200px)
+![Liste des restaurants](/assets/images/Screenshot_go4lunch_list.png =270x)
 
 ### Ecran de détail d'un restaurant
 
@@ -27,14 +27,14 @@ Sur cet écran, l'utilisateur peut consulter les informations détaillées d'un 
 peut également donner une note au restaurant ou indiquer qu'il va y déjeuner. La liste des utilisateurs ayant sélectionné ce restaurant depuis la veille à midi s'affiche 
 en bas (affichage réactif, se mettant à jour instantanément pour tous les utilisateurs connectés)
 
-![Liste des restaurants](https://www.natationpourtous.com/images/ext/Screenshot_go4lunch_details.png =300px)
+![Liste des restaurants](/assets/images/Screenshot_go4lunch_details.png =270x)
 
 
 ### Carte des restaurants
 
 Cette carte Google maps affiche les restaurants à proximité. Elle se met à jour selon les déplacements de l'utilisateur.
 
-![Carte des restaurants](https://www.natationpourtous.com/images/ext/Screenshot_go4lunch_list.png =250px)
+![Carte des restaurants](/assets/images/Screenshot_go4lunch_list.png =270x)
 
 
 ## Aspects techniques
