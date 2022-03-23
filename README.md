@@ -6,15 +6,14 @@ destination des employés d'une entreprise pour qu'ils puissent facilement se re
 ## Fonctionnalités
 
 ### Connexion via Facebook ou Google
-<img src="app/src/main/assets/images/Screenshot_go4lunch_home.png" width=300 />
-![Ecran d'accueil](/assets/images/Screenshot_go4lunch_home.png =270x)
+<img src="app/src/main/assets/images/Screenshot_go4lunch_home.png" width=270 />
 
 ### Liste des restaurants à proximité
 
 En faisant appel à différentes API telles que Places et Distances Matrix, l'application affiche la liste des restaurants à proximité. L'application propose également 
 aux utilisateurs de noter les restaurants et affiche la note moyenne sur cet écran.
 
-![Liste des restaurants](/assets/images/Screenshot_go4lunch_list.png =270x)
+<img src="app/src/main/assets/images/Screenshot_go4lunch_details.png" width=270 />
 
 ### Ecran de détail d'un restaurant
 
@@ -29,8 +28,7 @@ en bas (affichage réactif, se mettant à jour instantanément pour tous les uti
 
 Cette carte Google maps affiche les restaurants à proximité. Elle se met à jour selon les déplacements de l'utilisateur.
 
-<img src="app/src/main/assets/images/Screenshot_go4lunch_list.png" width=250 />
-![Carte des restaurants](/assets/images/Screenshot_go4lunch_list.png =270x)
+<img src="app/src/main/assets/images/Screenshot_go4lunch_list.png" width=270 />
 
 ## Aspects techniques
 
