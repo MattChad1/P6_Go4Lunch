@@ -22,7 +22,7 @@ Sur cet écran, l'utilisateur peut consulter les informations détaillées d'un 
 peut également donner une note au restaurant ou indiquer qu'il va y déjeuner. La liste des utilisateurs ayant sélectionné ce restaurant depuis la veille à midi s'affiche 
 en bas (affichage réactif, se mettant à jour instantanément pour tous les utilisateurs connectés)
 
-![Liste des restaurants](/assets/images/Screenshot_go4lunch_details.png =270x)
+<img src="/assets/images/Screenshot_go4lunch_details.png" width=270 />
 
 
 ### Carte des restaurants
