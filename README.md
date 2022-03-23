@@ -31,7 +31,6 @@ Cette carte Google maps affiche les restaurants à proximité. Elle se met à jo
 
 ![Carte des restaurants](/assets/images/Screenshot_go4lunch_list.png =270x)
 
-
 ## Aspects techniques
 
 - Architecture MVVM
