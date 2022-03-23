@@ -6,7 +6,7 @@ destination des employés d'une entreprise pour qu'ils puissent facilement se re
 ## Fonctionnalités
 
 ### Connexion via Facebook ou Google
-
+<img src="app/src/main/assets/images/Screenshot_go4lunch_home.png" width=300 />
 ![Ecran d'accueil](/assets/images/Screenshot_go4lunch_home.png =270x)
 
 ### Liste des restaurants à proximité
@@ -22,13 +22,14 @@ Sur cet écran, l'utilisateur peut consulter les informations détaillées d'un 
 peut également donner une note au restaurant ou indiquer qu'il va y déjeuner. La liste des utilisateurs ayant sélectionné ce restaurant depuis la veille à midi s'affiche 
 en bas (affichage réactif, se mettant à jour instantanément pour tous les utilisateurs connectés)
 
-<img src="/assets/images/Screenshot_go4lunch_details.png" width=270 />
+<img src="app/src/main/assets/images/Screenshot_go4lunch_details.png" width=270 />
 
 
 ### Carte des restaurants
 
 Cette carte Google maps affiche les restaurants à proximité. Elle se met à jour selon les déplacements de l'utilisateur.
 
+<img src="app/src/main/assets/images/Screenshot_go4lunch_list.png" width=250 />
 ![Carte des restaurants](/assets/images/Screenshot_go4lunch_list.png =270x)
 
 ## Aspects techniques
